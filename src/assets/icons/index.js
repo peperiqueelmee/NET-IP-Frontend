@@ -1,0 +1,23 @@
+export { default as BikeFill } from './BikeFill';
+export { default as BikeFrameFill } from './BikeFrameFill';
+export { default as ChatOutline } from './ChatOutline';
+export { default as ChevronLeft } from './ChevronLeft';
+export { default as ChevronRight } from './ChevronRight';
+export { default as DropOutline } from './DropOutline';
+export { default as EmailFill } from './EmailFill';
+export { default as GearOutline } from './GearOutline';
+export { default as Gender } from './Gender';
+export { default as KeyFill } from './KeyFill';
+export { default as LocationFill } from './LocationFill';
+export { default as LocationOutline } from './LocationOutline';
+export { default as MountainFill } from './MountainFill';
+export { default as PadlockFill } from './PadlockFill';
+export { default as SearchFill } from './SearchFill';
+export { default as StarFill } from './StarFill';
+export { default as TagFill } from './TagFill';
+export { default as TagOutline } from './TagOutline';
+export { default as TypeOfBrakes } from './TypeOfBrakes';
+export { default as UserFill } from './UserFill';
+export { default as WhatsAppFill } from './WhatsAppFill';
+export { default as WheelFill } from './WheelFill';
+
