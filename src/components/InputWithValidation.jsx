@@ -61,7 +61,7 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
                 </label>
                 <input
                     type={type}
-                    className="mt-2 border focus:outline-none text-gray-900 text-sm rounded-md w-full pl-10 p-2.5 shadow-sm bg-zinc-100"
+                    className="mt-2 border focus:outline-none text-gray-900 text-sm rounded-md w-full pl-10 p-2.5 shadow-sm focus:shadow-md bg-zinc-100"
                     value={value}
                     onChange={(e) => {
                         {
