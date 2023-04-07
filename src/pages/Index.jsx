@@ -22,7 +22,7 @@ const Register = () => {
                 <p className="text-white font-semibold tracking-wider md:text-2xl lg:text-3xl mb-16">
                     Sistema de Gestion de Anexos NET IP
                 </p>
-                <div className="w-full bg-neutral-50 rounded-t-xl shadow-lg md:mt-0 sm:max-w-md xl:p-0 border-t-2 border-l-2 border-r-2 border-lime-600 flex">
+                <div className="w-full bg-neutral-50 rounded-t-xl  md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-t-2 border-l-2 border-r-2 border-lime-500 flex">
                     <div className="w-full p-6 sm:p-8 mx-auto my-auto">
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl text-center">
                             Ingresa a tu cuenta
@@ -58,7 +58,7 @@ const Register = () => {
                         </form>
                     </div>
                 </div>
-                <div className="w-full flex justify-evenly items-center h-20 bg-gradient-to-r from-zinc-600 to-gray-500 rounded-b-xl shadow md:mt-0 sm:max-w-md xl:p-0 border-r-2 border-l-2 border-b-2 border-t border-lime-600">
+                <div className="w-full flex justify-evenly items-center h-20 bg-gradient-to-r from-zinc-600 to-gray-500 rounded-b-xl shadow-md shadow-lime-700 md:mt-0 sm:max-w-md xl:p-0 border-r-2 border-l-2 border-b-2 border-t border-lime-600">
                     <div>
                         <KeyFill className="md:text-6xl text-4xl text-slate-300" />
                     </div>
