@@ -39,7 +39,6 @@
     }
 }
 
-
 .rainbow-border {
     --angle: 0deg;
     border: 3px solid;
@@ -54,14 +53,17 @@
 }
 
 @property --angle {
-    syntax: '<angle>';
+    syntax: "<angle>";
     initial-value: 0deg;
     inherits: false;
 }
 
-
 .home-page {
-    background-image: url('./assets/wallpaper/FondoNOBordeLogin.png');
+    background-image: url("./assets/wallpaper/FondoNOBordeLogin.png");
     background-size: cover;
     background-repeat: no-repeat;
-  }
+}
+
+.text-shadow {
+    text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+}

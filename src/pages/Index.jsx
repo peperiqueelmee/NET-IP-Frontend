@@ -19,8 +19,8 @@ const Register = () => {
     return (
         <>
             <div className="flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 home-page">
-                <p className="text-white font-semibold tracking-wider md:text-2xl lg:text-3xl mb-16">
-                    Sistema de Gestion de Anexos NET IP
+                <p className="text-white font-semibold tracking-wider md:text-2xl lg:text-3xl mb-16 text-shadow">
+                    Sistema de Gestion de Anexos <span className="text-lime-400">NET</span>{" "}<span className="text-slate-900">IP</span>
                 </p>
                 <div className="w-full bg-neutral-50 rounded-t-xl  md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-t-2 border-l-2 border-r-2 border-lime-500 flex">
                     <div className="w-full p-6 sm:p-8 mx-auto my-auto">
@@ -64,7 +64,7 @@ const Register = () => {
                     </div>
                     <div className="flex justify-center flex-col items-center text-sm lg:text-base">
                         <p className="font-medium text-zinc-300">¿Olvidaste tu contraseña?</p>
-                        <p className="font-semibold cursor-pointer text-gray-900 hover:text-gray-400 hover:underline">
+                        <p className="font-semibold cursor-pointer text-gray-900 hover:text-gray-400 hover:underline transition-colors duration-150">
                             Comunícate con soporte
                         </p>
                     </div>
