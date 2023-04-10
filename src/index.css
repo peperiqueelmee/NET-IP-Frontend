@@ -58,8 +58,14 @@
     inherits: false;
 }
 
+.login-page {
+    background-image: url("./assets/wallpaper/login.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .home-page {
-    background-image: url("./assets/wallpaper/FondoNOBordeLogin.png");
+    background-image: url("./assets/wallpaper/home.png");
     background-size: cover;
     background-repeat: no-repeat;
 }

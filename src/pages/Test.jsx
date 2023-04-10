@@ -1,11 +1,9 @@
+
+
 const Test = () => {
-    return (
-        <>
-            <button className="rainbow border-2">
-                Click Me
-            </button>
-        </>
-    );
+  return (
+    <div>Test</div>
+  )
 }
 
 export default Test

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { InputWithValidation } from "../components";
 import { KeyFill } from "../assets/icons";
 import { UserFill } from "../assets/icons";
@@ -18,9 +19,10 @@ const Register = () => {
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 home-page">
+            <div className="flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 login-page">
                 <p className="text-white font-semibold tracking-wider md:text-2xl lg:text-3xl mb-16 text-shadow">
-                    Sistema de Gestion de Anexos <span className="text-lime-400">NET</span>{" "}<span className="text-slate-900">IP</span>
+                    Sistema de Gestion de Anexos <span className="text-lime-400">NET</span>{" "}
+                    <span className="text-slate-900">IP</span>
                 </p>
                 <div className="w-full bg-neutral-50 rounded-t-xl  md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-t-2 border-l-2 border-r-2 border-lime-500 flex">
                     <div className="w-full p-6 sm:p-8 mx-auto my-auto">
@@ -47,14 +49,16 @@ const Register = () => {
                                 icon={<PadlockFill className="text-slate-600" />}
                             />
 
-                            <button
-                                type="submit"
-                                className="w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg 
+                            <Link to="/home">
+                                <button
+                                    type="submit"
+                                    className="w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg 
                                            text-sm px-5 py-2.5 text-center bg-lime-500 hover:bg-lime-600 
                                            transition-colors duration-150 disabled:bg-gray-300 cursor-pointer disabled:cursor-default mt-6"
-                            >
-                                Continuar
-                            </button>
+                                >
+                                    Iniciar Sesión
+                                </button>
+                            </Link>
                         </form>
                     </div>
                 </div>
