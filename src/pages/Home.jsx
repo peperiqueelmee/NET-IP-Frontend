@@ -47,31 +47,31 @@ const Home = () => {
     const categoriesResponsive = [
         {
             name: "Números Activos",
-            icon: <FiPhoneCall className={`text-2xl ${selectedIndex === 0 ? "text-white" : "text-zinc-800"}`} />,
+            icon: <FiPhoneCall className={`text-xl ${selectedIndex === 0 ? "text-white" : "text-zinc-800"}`} />,
         },
         {
             name: "Números Bloqueados",
-            icon: <FiPhoneOff className={`text-2xl ${selectedIndex === 1 ? "text-white" : "text-zinc-800"}`} />,
+            icon: <FiPhoneOff className={`text-xl ${selectedIndex === 1 ? "text-white" : "text-zinc-800"}`} />,
         },
         {
             name: "Gestión Troncales",
             icon: (
                 <MdOutlineManageAccounts
-                    className={`text-2xl ${selectedIndex === 2 ? "text-white" : "text-zinc-800"}`}
+                    className={`text-xl ${selectedIndex === 2 ? "text-white" : "text-zinc-800"}`}
                 />
             ),
         },
         {
             name: "Intercomunicador",
-            icon: <RiCellphoneFill className={`text-2xl ${selectedIndex === 3 ? "text-white" : "text-zinc-800"}`} />,
+            icon: <RiCellphoneFill className={`text-xl ${selectedIndex === 3 ? "text-white" : "text-zinc-800"}`} />,
         },
         {
             name: "Multi Call Ringing",
-            icon: <HiOutlineChatAlt2 className={`text-2xl ${selectedIndex === 4 ? "text-white" : "text-zinc-800"}`} />,
+            icon: <HiOutlineChatAlt2 className={`text-xl ${selectedIndex === 4 ? "text-white" : "text-zinc-800"}`} />,
         },
         {
             name: "Log",
-            icon: <BsQuestionCircle className={`text-2xl ${selectedIndex === 5 ? "text-white" : "text-zinc-800"}`} />,
+            icon: <BsQuestionCircle className={`text-xl ${selectedIndex === 5 ? "text-white" : "text-zinc-800"}`} />,
         },
     ];
 
@@ -83,14 +83,14 @@ const Home = () => {
     return (
         <div className="h-screen home-page">
             <div className="container mx-auto px-10">
-                <div className="flex items-center justify-between pt-10  flex-col md:flex-row">
-                    <p className="text-white font-semibold tracking-wider md:text-2xl xl:text-3xl text-shadow">
+                <div className="flex items-center justify-between pt-10 flex-col md:flex-row">
+                    <p className="text-white font-semibold tracking-wider text-sm md:text-2xl xl:text-3xl text-shadow">
                         Sistema de Gestión de Anexos <span className="text-lime-400">NET</span>{" "}
                         <span className="text-slate-900">IP</span>
                     </p>
 
                     {/* Username, help, sing off */}
-                    <div className="flex gap-3 flex-row md:flex-col lg:flex-row mt-6 md:mt-0">
+                    <div className="sm:flex gap-3 flex-row md:flex-col lg:flex-row mt-6 md:mt-0 hidden">
                         <div className="border-2 border-lime-500 px-3 py-1 rounded-lg text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800">
                             <div className="flex items-center gap-1">
                                 <UserFill className="text-sm md:text-lg text-lime-400" />
@@ -198,6 +198,24 @@ const Home = () => {
                             </div>
                         </div>
                     ))}
+                </div>
+            </div>
+
+            {/* Responsive buttons */}
+            <div className="block sm:hidden fixed inset-x-0 bottom-0 z-40 bg-gradient-to-r from-lime-600 to-green-600 rounded-t-full px-10 shadow-inner w-full md:hidden">
+                <div className="flex justify-between items-center h-12">
+                    <div className="flex flex-col justify-center items-center">
+                        <UserFill className="text-base  text-white" />
+                        <span className="text-xs text-slate-200">nombre@usuario</span>
+                    </div>
+                    <div className="flex flex-col justify-center items-center">
+                        <IoIosHelpBuoy className="text-base  text-white" />
+                        <span className="text-xs text-slate-200">Ayuda</span>
+                    </div>
+                    <Link to="/" className="flex flex-col justify-center items-center">
+                        <GiExitDoor className="text-base text-white" />
+                        <span className="text-xs text-slate-200">Cerrar Sesión</span>
+                    </Link>
                 </div>
             </div>
         </div>
