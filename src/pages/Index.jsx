@@ -5,6 +5,7 @@ import { KeyFill } from "../assets/icons";
 import { UserFill } from "../assets/icons";
 import { PadlockFill } from "../assets/icons";
 
+
 const Register = () => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");

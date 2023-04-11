@@ -5,11 +5,16 @@ import { HiOutlineChatAlt2 } from "react-icons/hi";
 import { BsQuestionCircle } from "react-icons/bs";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { RiCellphoneFill } from "react-icons/ri";
-import { UserFill } from "../assets/icons";
+import { UserFill, SearchFill } from "../assets/icons";
 import { IoIosHelpBuoy } from "react-icons/io";
 import { GiExitDoor } from "react-icons/gi";
 
+import { useMediaQuery } from "react-responsive";
+
+import Test from "./Test";
+
 const Home = () => {
+    const isSmallScreen = useMediaQuery({ maxWidth: 900 });
     const [selectedCategory, setSelectedCategory] = useState("Números Activos");
     const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -112,7 +117,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className="hidden lg:block bg-white py-4 px-2 mt-10 w-full border-2 border-t-lime-500 border-l-lime-500 border-r-lime-500">
+                <div className="hidden lg:block bg-white py-4 px-2 mt-10 w-full border-2 border-t-lime-500 border-l-lime-500 border-r-lime-500 rounded-t-2xl">
                     {/* Categories */}
                     <div className="ml-10 flex flex-wrap gap-8 justify-start">
                         {categories.map(({ name, icon }, index) => (
@@ -167,37 +172,132 @@ const Home = () => {
                         ))}
                     </div>
                 </div>
+                {/* Table */}
+                <div className="hidden lg:block">
+                    <div className="bg-gradient-to-r from-gray-300  via-gray-400 to-gray-500 w-full">
+                        <div className="flex py-5 px-5 lg:justify-between flex-wrap justify-center gap-1 lg:gap-0">
+                            <div className="flex gap-4 lg:gap-8 flex-wrap justify-center">
+                                <button
+                                    className={`${
+                                        isSmallScreen ? "w-full" : ""
+                                    } bg-gray-200 text-zinc-700 rounded-2xl px-4 py-1 text-xs lg:text-sm font-medium shadow hover:shadow-lime-400 active:bg-gradient-to-r from-lime-500 to-lime-600 active:text-slate-100`}
+                                >
+                                    Listar todos los números activos
+                                </button>
+
+                                <div className="flex items-center">
+                                    <label className="text-xs lg:text-sm font-medium">
+                                        <span className="text-red-600">+</span>56
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="ml-1 rounded-l-2xl h-full outline-none pl-4 w-28 lg:w-40  text-xs lg:text-sm focus:border focus:border-lime-400 hover:border border-lime-400 shadow-md"
+                                    />
+                                    <button className="bg-gray-200 text-zinc-700 rounded-r-2xl px-3 py-1 text-sm font-medium shadow hover:shadow-lime-400 active:bg-gradient-to-r from-lime-500 to-lime-600 active:text-slate-100">
+                                        <div
+                                            className={`${
+                                                isSmallScreen ? "w-full" : ""
+                                            } flex items-center gap-2 w-full`}
+                                        >
+                                            <SearchFill />
+                                            <span className="text-xs lg:text-sm hidden sm:block">
+                                                Buscar número activo
+                                            </span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button
+                                className={`{ ${
+                                    isSmallScreen ? "w-full" : ""
+                                } mt-2 md:mt-0 bg-rose-500 text-zinc-200 rounded-2xl px-4 py-1 text-xs lg:text-sm font-medium shadow hover:shadow-rose-400 active:bg-gradient-to-r from-rose-200 to-rose-300 active:text-slate-700`}
+                            >
+                                Generar reporte
+                            </button>
+                        </div>
+                    </div>
+                    <Test />
+                </div>
             </div>
 
             {/* categories responsive */}
-            <div className="flex lg:hidden h-2/3 items-center">
-                <div className="flex flex-col mt-10">
-                    {categoriesResponsive.map(({ name, icon }, index) => (
-                        <div
-                            id={name}
-                            key={name}
-                            className={`shadow-md cursor-pointer bg-zinc-50 transition duration-300 ease-in-out
-                               ${selectedCategory === name ? "shadow-lime-600 border border-lime-600" : ""}`}
-                            onClick={() => handleCategorySelect(name, index)}
-                        >
+            <div className="flex items-center lg:hidden gap-2 overflow-x-auto mt-5">
+                <div className="flex h-2/3 items-center">
+                    <div className="flex flex-col mt-10">
+                        {categoriesResponsive.map(({ name, icon }, index) => (
                             <div
-                                className={`${
-                                    selectedCategory === name
-                                        ? "bg-gradient-to-r from-lime-500 to-lime-600"
-                                        : "bg-zinc-50"
-                                } flex items-center gap-2 px-4`}
+                                id={name}
+                                key={name}
+                                className={`shadow-md cursor-pointer bg-zinc-50 transition duration-300 ease-in-out
+                               ${selectedCategory === name ? "shadow-lime-600 border border-lime-600" : ""}`}
+                                onClick={() => handleCategorySelect(name, index)}
                             >
-                                <div className="py-3">{icon}</div>
-                                <span
-                                    className={`hidden md:block text-sm font-medium ${
-                                        selectedCategory === name ? "text-white" : "text-zinc-800"
-                                    } `}
+                                <div
+                                    className={`${
+                                        selectedCategory === name
+                                            ? "bg-gradient-to-r from-lime-500 to-lime-600"
+                                            : "bg-zinc-50"
+                                    } flex items-center gap-2 px-4`}
                                 >
-                                    {name}
-                                </span>
+                                    <div className="py-3">{icon}</div>
+                                    <span
+                                        className={`hidden md:block text-sm font-medium ${
+                                            selectedCategory === name ? "text-white" : "text-zinc-800"
+                                        } `}
+                                    >
+                                        {name}
+                                    </span>
+                                </div>
                             </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="px-3">
+                    <div className="bg-gradient-to-r from-gray-300  via-gray-400 to-gray-500 w-full rounded-t-xl">
+                        <div className="flex py-5 px-5 lg:justify-between flex-wrap justify-center gap-1 lg:gap-0">
+                            <div className="flex gap-4 lg:gap-8 flex-wrap justify-center">
+                                <button
+                                    className={`${
+                                        isSmallScreen ? "w-full" : ""
+                                    } bg-gray-200 text-zinc-700 rounded-2xl px-4 py-1 text-xs lg:text-sm font-medium shadow hover:shadow-lime-400 active:bg-gradient-to-r from-lime-500 to-lime-600 active:text-slate-100`}
+                                >
+                                    Listar todos los números activos
+                                </button>
+
+                                <div className="flex items-center">
+                                    <label className="text-xs lg:text-sm font-medium">
+                                        <span className="text-red-600">+</span>56
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="ml-1 rounded-l-2xl h-full outline-none pl-4 w-28 lg:w-40  text-xs lg:text-sm focus:border focus:border-lime-400 hover:border border-lime-400 shadow-md"
+                                    />
+                                    <button className="bg-gray-200 text-zinc-700 rounded-r-2xl px-3 py-1 text-sm font-medium shadow hover:shadow-lime-400 active:bg-gradient-to-r from-lime-500 to-lime-600 active:text-slate-100">
+                                        <div
+                                            className={`${
+                                                isSmallScreen ? "w-full" : ""
+                                            } flex items-center gap-2 w-full`}
+                                        >
+                                            <SearchFill />
+                                            <span className="text-xs lg:text-sm ">
+                                                Buscar número activo
+                                            </span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button
+                                className={`{ ${
+                                    isSmallScreen ? "w-full mt-2" : ""
+                                }  bg-rose-500 text-zinc-200 rounded-2xl px-4 py-1 text-xs lg:text-sm font-medium shadow hover:shadow-rose-400 active:bg-gradient-to-r from-rose-200 to-rose-300 active:text-slate-700`}
+                            >
+                                Generar reporte
+                            </button>
                         </div>
-                    ))}
+                    </div>
+                    <Test />
                 </div>
             </div>
 
