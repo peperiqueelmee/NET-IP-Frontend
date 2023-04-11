@@ -1,4 +1,4 @@
-import ResultsTableActiveNumbers from '../ResultsTable/ResultsTableActiveNumbers';
+import ResultsTableActiveNumbers from '../resultsTable/ResultsTableActiveNumbers';
 import { SearchFill } from '../../assets/icons';
 import { useAction } from '../../hooks';
 import { useMediaQuery } from 'react-responsive';
