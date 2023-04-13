@@ -11,7 +11,7 @@ const Home = () => {
 		<div className='h-screen home-page'>
 			<div className='container mx-auto px-10'>
 				<div className='flex items-center justify-between pt-10 flex-col md:flex-row'>
-					<p className='text-white font-semibold tracking-wider text-sm md:text-xl xl:text-2xl text-shadow'>
+					<p className='text-white font-semibold tracking-wider text-sm md:text-xl xl:text-2xl text-shadow focus-in-expand'>
 						Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
 						<span className='text-slate-900'>IP</span>
 					</p>
