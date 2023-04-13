@@ -33,21 +33,21 @@ const ResultsTableBlockNumbers = () => {
 						</tr>
 					</thead>
 					<tbody>
-						<tr class='bg-white border-b text-xs lg:text-base text-center'>
+						<tr class='bg-white border-b text-xs lg:text-sm text-center'>
 							<td class='px-6 py-4'>+56912345678</td>
 							<td class='px-6 py-4 border-x'>José Riquelme Aravena</td>
 							<td class='px-6 py-4 border-x'>18.323.323-3</td>
 							<td class='px-6 py-4 border-x'>Calle prueba #234 Viña del Mar</td>
 							<td class='px-6 py-4 font-medium text-red-500'>Bloqueado</td>
 						</tr>
-						<tr class='border-b bg-gray-100 text-xs lg:text-base'>
+						<tr class='border-b bg-gray-100 text-xs lg:text-sm text-center'>
 							<td class='px-6 py-4'>+56912345678</td>
 							<td class='px-6 py-4 border-x'>José Riquelme Aravena</td>
 							<td class='px-6 py-4 border-x'>18.323.323-3</td>
 							<td class='px-6 py-4 border-x'>Calle prueba #234 Viña del Mar</td>
 							<td class='px-6 py-4 font-medium text-red-500'>Bloqueado</td>
 						</tr>
-						<tr class='bg-white border-b text-xs lg:text-base'>
+						<tr class='bg-white border-b text-xs lg:text-sm text-center'>
 							<td class='px-6 py-4'>+56912345678</td>
 							<td class='px-6 py-4 border-x'>José Riquelme Aravena</td>
 							<td class='px-6 py-4 border-x'>18.323.323-3</td>

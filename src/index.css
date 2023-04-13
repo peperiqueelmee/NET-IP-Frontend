@@ -3,73 +3,74 @@
 @tailwind utilities;
 
 .grid-container {
-    display: grid;
-    row-gap: 36px;
-    column-gap: 24px;
-    grid-template-columns: repeat(6, 1fr);
+	display: grid;
+	row-gap: 36px;
+	column-gap: 24px;
+	grid-template-columns: repeat(6, 1fr);
 }
 
 @media (max-width: 1879px) {
-    .grid-container {
-        grid-template-columns: repeat(5, 1fr);
-    }
+	.grid-container {
+		grid-template-columns: repeat(5, 1fr);
+	}
 }
 
 @media (max-width: 1639px) {
-    .grid-container {
-        grid-template-columns: repeat(4, 1fr);
-    }
+	.grid-container {
+		grid-template-columns: repeat(4, 1fr);
+	}
 }
 
 @media (max-width: 1227px) {
-    .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
+	.grid-container {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 
 @media (max-width: 949px) {
-    .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
+	.grid-container {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
 @media (max-width: 549px) {
-    .grid-container {
-        grid-template-columns: 1fr;
-    }
+	.grid-container {
+		grid-template-columns: 1fr;
+	}
 }
 
 .rainbow-border {
-    --angle: 0deg;
-    border: 3px solid;
-    border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
-    animation: 8s rotate linear infinite;
+	--angle: 0deg;
+	border: 3px solid;
+	border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
+	animation: 8s rotate linear infinite;
 }
 
 @keyframes rotate {
-    to {
-        --angle: 360deg;
-    }
+	to {
+		--angle: 360deg;
+	}
 }
 
 @property --angle {
-    syntax: "<angle>";
-    initial-value: 0deg;
-    inherits: false;
+	syntax: '<angle>';
+	initial-value: 0deg;
+	inherits: false;
 }
 
 .login-page {
-    background-image: url("./assets/wallpaper/login.png");
-    background-size: cover;
-    background-repeat: no-repeat;
+	background-image: url('./assets/wallpaper/login.png');
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
 .home-page {
-    background-image: url("./assets/wallpaper/home.png");
-    background-size: cover;
-    background-repeat: no-repeat;
+	background-image: url('./assets/wallpaper/home.png');
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
 .text-shadow {
-    text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+	text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
 }
+
