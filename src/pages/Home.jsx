@@ -18,24 +18,24 @@ const Home = () => {
 
 					{/* Buttons: Username, Help, Sing off */}
 					<div className='sm:flex gap-3 flex-row md:flex-col lg:flex-row mt-6 md:mt-0 hidden'>
-						<div className='border-2 border-lime-500 px-3 py-1 rounded-lg text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
+						<div className='border-2 border-lime-500 px-4 py-1 rounded-full text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
 							<div className='flex items-center gap-1'>
 								<UserFill className='text-sm md:text-base text-lime-400' />
-								<span>nombre@Usuario</span>
+								<span className='flex w-full justify-center'>nombre@Usuario</span>
 							</div>
 						</div>
-						<div className='border-2 border-lime-500 px-3 py-1 rounded-lg text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
+						<div className='border-2 border-lime-500 px-4 py-1 rounded-full text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
 							<div className='flex items-center gap-1'>
 								<HelpBuoyFill className='text-sm md:text-base text-lime-400' />
-								Ayuda
+								<span className='flex w-full justify-center'>Ayuda</span>
 							</div>
 						</div>
-						<div className='border-2 border-lime-500 px-3 py-1 rounded-lg text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
+						<div className='border-2 border-lime-500 px-4 py-1 rounded-full text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
 							<Link
 								to='/'
 								className='flex items-center gap-1'>
 								<ExitDoorFill className='text-sm md:text-base text-lime-400' />
-								Cerrar Sesión
+								<span className='flex w-full justify-center'>Cerrar Sesión</span>
 							</Link>
 						</div>
 					</div>
