@@ -6,7 +6,7 @@ import { UserFill, HelpBuoyFill, ExitDoorFill } from '../assets/icons';
 const Home = () => {
 	return (
 		<div className='h-screen home-page'>
-			<div className='container mx-auto px-10'>
+			<div className='container mx-auto px-6 md:px-10'>
 				<div className='flex items-center justify-between pt-10 flex-col md:flex-row'>
 					<p className='text-white font-semibold tracking-wider text-sm md:text-xl xl:text-2xl text-shadow focus-in-expand'>
 						Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
