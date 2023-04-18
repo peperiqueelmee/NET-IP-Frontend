@@ -1,4 +1,5 @@
 import { useState, createContext } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 import {
 	PhoneCallOutline,
@@ -13,18 +14,21 @@ const ActionContext = createContext();
 
 const ActionProvider = ({ children }) => {
 	const [selectedAction, setSelectedAction] = useState(0);
+	const mobileScreen = useMediaQuery({ maxWidth: 640 });
 
 	const handleActionSelect = (index) => {
 		setSelectedAction(index);
 	};
 
-	const getActions = (sizeIcon) => {
+	const getActions = (sizeIconLarge, sizeIconSmall) => {
 		const actions = [
 			{
 				name: 'Números Activos',
 				icon: (
 					<PhoneCallOutline
-						className={`${sizeIcon} ${selectedAction === 0 ? 'text-white' : 'text-zinc-800'}`}
+						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
+							selectedAction === 0 ? 'text-white' : 'text-zinc-800'
+						}`}
 					/>
 				),
 			},
@@ -32,7 +36,9 @@ const ActionProvider = ({ children }) => {
 				name: 'Números Bloqueados',
 				icon: (
 					<PhoneOffOutline
-						className={`${sizeIcon} ${selectedAction === 1 ? 'text-white' : 'text-zinc-800'}`}
+						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
+							selectedAction === 1 ? 'text-white' : 'text-zinc-800'
+						}`}
 					/>
 				),
 			},
@@ -40,21 +46,29 @@ const ActionProvider = ({ children }) => {
 				name: 'Gestión Troncales Telefónicos',
 				icon: (
 					<ManagementOutline
-						className={`${sizeIcon} ${selectedAction === 2 ? 'text-white' : 'text-zinc-800'}`}
+						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
+							selectedAction === 2 ? 'text-white' : 'text-zinc-800'
+						}`}
 					/>
 				),
 			},
 			{
 				name: 'Intercomunicador',
 				icon: (
-					<IntercomFill className={`${sizeIcon} ${selectedAction === 3 ? 'text-white' : 'text-zinc-800'}`} />
+					<IntercomFill
+						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
+							selectedAction === 3 ? 'text-white' : 'text-zinc-800'
+						}`}
+					/>
 				),
 			},
 			{
 				name: 'Multi Call Ringing',
 				icon: (
 					<ConversationOutline
-						className={`${sizeIcon} ${selectedAction === 4 ? 'text-white' : 'text-zinc-800'}`}
+						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
+							selectedAction === 4 ? 'text-white' : 'text-zinc-800'
+						}`}
 					/>
 				),
 			},
@@ -62,7 +76,9 @@ const ActionProvider = ({ children }) => {
 				name: 'Log',
 				icon: (
 					<QuestionCircleOutline
-						className={`${sizeIcon} ${selectedAction === 5 ? 'text-white' : 'text-zinc-800'}`}
+						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
+							selectedAction === 5 ? 'text-white' : 'text-zinc-800'
+						}`}
 					/>
 				),
 			},

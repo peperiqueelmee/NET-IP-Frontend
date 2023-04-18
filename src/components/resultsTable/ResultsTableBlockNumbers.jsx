@@ -1,7 +1,7 @@
 const ResultsTableBlockNumbers = () => {
 	return (
 		<>
-			<div class='relative overflow-x-auto shadow-md'>
+			<div class='hidden sm:block relative overflow-x-auto shadow-md'>
 				<table class='w-full text-center text-gray-500'>
 					<thead class='text-xs text-gray-700 bg-gray-200 border-b-2 border-gray-300'>
 						<tr>

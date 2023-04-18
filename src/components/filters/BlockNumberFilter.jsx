@@ -1,5 +1,6 @@
 import Grow from '@mui/material/Grow';
 import ResultsTableBlockNumbers from '../resultsTable/ResultsTableBlockNumbers';
+import ResultsTableBlockNumbersResponsive from '../resultsTable/ResultsTableBlockNumbersResponsive';
 import { SearchFill } from '../../assets/icons';
 import { useAction } from '../../hooks';
 import { useMediaQuery } from 'react-responsive';
@@ -13,8 +14,8 @@ const BlockNumberFilter = () => {
 			<Grow
 				in={selectedAction === 1}
 				timeout={500}>
-				<div className={`px-3 lg:px-0 ${selectedAction === 1 ? 'block' : 'hidden'} `}>
-					<div className='bg-gradient-to-r from-gray-300  via-gray-400 to-gray-500 w-full rounded-t-xl lg:rounded-none'>
+				<div className={`pb-14 ${selectedAction === 1 ? 'block' : 'hidden'} `}>
+					<div className='bg-gradient-to-r from-gray-300  via-gray-400 to-gray-500 w-full rounded-none'>
 						<div className='flex py-5 px-5 lg:justify-between flex-wrap justify-center gap-1 lg:gap-0'>
 							<div className='flex gap-4 lg:gap-8 flex-wrap justify-center'>
 								{/* Filter by all numbers */}
@@ -52,12 +53,13 @@ const BlockNumberFilter = () => {
 							<button
 								className={`{ ${
 									isSmallScreen ? 'w-full' : ''
-								} mt-2 md:mt-0 bg-rose-500 text-zinc-200 rounded-2xl px-4 py-1 text-xs lg:text-sm font-medium shadow hover:shadow-rose-400 active:bg-gradient-to-r from-rose-200 to-rose-300 active:text-slate-700`}>
+								} lg:mt-0 mt-2 bg-rose-500 text-zinc-200 rounded-2xl px-4 py-1 text-xs lg:text-sm font-medium shadow hover:shadow-rose-400 active:bg-gradient-to-r from-rose-200 to-rose-300 active:text-slate-700`}>
 								Generar reporte
 							</button>
 						</div>
 					</div>
 					<ResultsTableBlockNumbers />
+					<ResultsTableBlockNumbersResponsive />
 				</div>
 			</Grow>
 		</>

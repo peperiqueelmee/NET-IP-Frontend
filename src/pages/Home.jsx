@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import ActiveNumberFilter from '../components/filters/ActiveNumberFilter';
-import BlockNumberFilter from '../components/filters/BlockNumberFilter';
-import Actions from '../components/Actions/Actions';
-import ActionsResponsive from '../components/Actions/ActionsResponsive';
+import { Actions, ActiveNumberFilter,BlockNumberFilter } from '../components';
 import { UserFill, HelpBuoyFill, ExitDoorFill } from '../assets/icons';
 
 const Home = () => {
@@ -42,7 +39,7 @@ const Home = () => {
 				</div>
 
 				{/*  Actions */}
-				<div className='hidden lg:block'>
+				<div className='block'>
 					<Actions />
 					<ActiveNumberFilter />
 					<BlockNumberFilter />
@@ -50,12 +47,6 @@ const Home = () => {
 			</div>
 
 			{/* RESPONSIVE components less than 1024px */}
-			{/* Actions */}
-			<div className='flex items-center lg:hidden gap-2 overflow-x-auto mt-5'>
-				<ActionsResponsive />
-				<ActiveNumberFilter />
-				<BlockNumberFilter />
-			</div>
 
 			{/* Buttons: Username, Help, Sing off */}
 			<div className='block sm:hidden fixed inset-x-0 bottom-0 z-40 bg-gradient-to-r from-lime-600 to-green-600 rounded-t-full px-10 shadow-inner w-full md:hidden'>
