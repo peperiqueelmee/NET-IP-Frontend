@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Actions, ActiveNumberFilter, BlockNumberFilter } from '../components';
 import { UserFill, HelpBuoyFill, ExitDoorFill } from '../assets/icons';
