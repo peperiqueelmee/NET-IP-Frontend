@@ -52,7 +52,7 @@ const Register = () => {
 
 	return (
 		<>
-			<div className='flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 login-page'>
+			<div className='flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 login-page overflow-y-auto'>
 				<p className='text-white font-semibold tracking-wider md:text-2xl lg:text-3xl mb-16 text-shadow'>
 					Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
 					<span className='text-slate-900'>IP</span>
