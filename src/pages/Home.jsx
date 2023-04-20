@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { Actions, ActiveNumberFilter, BlockNumberFilter } from '../components';
 import { UserFill, HelpBuoyFill, ExitDoorFill } from '../assets/icons';
 
 const Home = () => {
+	const mobileScreen = useMediaQuery({ maxWidth: 640 });
 	const navigate = useNavigate();
 	const token = localStorage.getItem('token');
 	const username = localStorage.getItem('username');
@@ -21,7 +23,7 @@ const Home = () => {
 
 	return (
 		<div className='h-screen home-page'>
-			<div className='container mx-auto px-6 md:px-10'>
+			<div className={`container mx-auto px-6 md:px-10 ${mobileScreen ? 'home-page' : ''}`}>
 				<div className='flex items-center justify-between pt-10 flex-col md:flex-row'>
 					<p className='text-white font-semibold tracking-wider text-sm md:text-xl xl:text-2xl text-shadow focus-in-expand'>
 						Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
