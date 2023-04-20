@@ -14,7 +14,7 @@ const ActionContext = createContext();
 
 const ActionProvider = ({ children }) => {
 	const [selectedAction, setSelectedAction] = useState(0);
-	const mobileScreen = useMediaQuery({ maxWidth: 640 });
+	const mobileScreen = useMediaQuery({ maxWidth: 1024 });
 
 	const handleActionSelect = (index) => {
 		setSelectedAction(index);
