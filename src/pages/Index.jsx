@@ -18,17 +18,16 @@ const Register = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		if ([username].includes('') || [password].includes('')) {
-			if ([username].includes('')) {
-				setInputUsernameEmpty(true);
-			}
-
-			if ([password].includes('')) {
-				setInputPasswordEmpty(true);
-			}
+		// Validate full fields
+		const isUsernameEmpty = !username;
+		const isPasswordEmpty = !password;
+		if (isUsernameEmpty || isPasswordEmpty) {
+			setInputUsernameEmpty(isUsernameEmpty);
+			setInputPasswordEmpty(isPasswordEmpty);
 			return;
 		}
 
+		// Login
 		try {
 			const url = `${import.meta.env.VITE_BACKEND_URL}/employee/login`;
 			const employeeData = {
