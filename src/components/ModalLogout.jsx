@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Test() {
+const ModalLogout = () => {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 
@@ -46,4 +46,6 @@ export default function Test() {
 			)}
 		</div>
 	);
-}
+};
+
+export default ModalLogout;
