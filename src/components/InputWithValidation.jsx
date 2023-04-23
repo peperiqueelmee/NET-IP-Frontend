@@ -1,67 +1,37 @@
-import { IoMdCloseCircle, IoIosCheckmarkCircle } from 'react-icons/io';
 import { useEffect, useState } from 'react';
+import { IoIosCheckmarkCircle, IoMdCloseCircle } from 'react-icons/io';
 import { EyeFill, EyeFillInvisible } from '../assets/icons';
+import { inputHasError } from '../utils/utils';
+import { Button } from '@mui/material';
 
-const validateInput = (input) => {
-	const { parentElement } = input;
-	const isEmpty = !input.value;
-	const isInvalidEmail = input.type === 'email' && !validateEmail(input.value);
-	const errorIcon = parentElement.querySelector('.error-icon');
-	const successIcon = parentElement.querySelector('.success-icon');
-	const errorMessage = parentElement.querySelector('.error-message');
-
-	input.classList.toggle('border-red-500', isEmpty || isInvalidEmail);
-	input.classList.toggle('border-emerald-500', !isEmpty && !isInvalidEmail);
-	errorIcon.classList.toggle('hidden', !isEmpty && !isInvalidEmail);
-	errorIcon.classList.toggle('flex', isEmpty || isInvalidEmail);
-	successIcon.classList.toggle('hidden', isEmpty || isInvalidEmail);
-	successIcon.classList.toggle('flex', !isEmpty && !isInvalidEmail);
-	errorMessage.classList.toggle('invisible', !isEmpty && !isInvalidEmail);
-};
-
-const validateEmail = (email) => {
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	return emailRegex.test(email);
-};
-
-const InputWithValidation = ({ label, type, placeholder, errorMessage, value, onChange, icon, emptyInputShipment }) => {
-	const [InputEmpty, setInputEmpty] = useState(false);
-	const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+const InputWithValidationTest = ({ label, icon, type, value, placeholder, errorMessage, onChange, submitForm }) => {
 	const [typeInput, setTypeInput] = useState(type);
+	const [successInput, setSuccessInput] = useState(false);
+	const [errorInput, setErrorInput] = useState(false);
+	const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
 	useEffect(() => {
-		setInputEmpty(emptyInputShipment);
-	}, [emptyInputShipment]);
+		setErrorInput(submitForm);
+	}, [submitForm]);
 
 	const handleBlur = (e) => {
-		validateInput(e.target);
+		const input = e.target;
+		setErrorInput(inputHasError(input));
+		setSuccessInput(!inputHasError(input));
 	};
 	const handleChange = (e) => {
-		validateInput(e.target);
-		removeFocus(e);
+		const input = e.target;
+		setErrorInput(inputHasError(input));
+		setSuccessInput(!inputHasError(input));
 	};
 	const togglePasswordVisibility = () => {
 		setTypeInput(typeInput === 'password' ? 'text' : 'password');
 		setPasswordIsVisible(!passwordIsVisible);
 	};
 
-	const handleFocus = (e) => {
-		const { parentElement } = e.target;
-		const errorIcon = parentElement.querySelector('.error-icon');
-		const successIcon = parentElement.querySelector('.success-icon');
-		const errorMessage = parentElement.querySelector('.error-message');
-
-		errorMessage.classList.toggle('invisible', true);
-		errorIcon.classList.toggle('flex', false);
-		errorIcon.classList.toggle('hidden', true);
-		successIcon.classList.toggle('flex', false);
-		successIcon.classList.toggle('hidden', true);
-
-		e.target.classList.add('focus:border-sky-500');
-	};
-
-	const removeFocus = (e) => {
-		e.target.classList.remove('focus:border-sky-500');
+	const handleFocus = () => {
+		setErrorInput(false);
+		setSuccessInput(false);
 	};
 
 	return (
@@ -69,13 +39,14 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 			<div className='relative mt-2'>
 				<label className='block mb-2 text-sm font-medium text-slate-600'>
 					{label}
-					<span className='text-rose-500'>*</span>
+					<span className='text-red-500'>*</span>
 				</label>
 				<input
 					type={typeInput}
-					className={`mt-2 border focus:outline-none text-gray-900 text-sm rounded-md w-full pl-10 p-2.5 shadow-sm focus:shadow-md bg-zinc-100 ${
-						InputEmpty ? 'border-red-500' : ''
-					}`}
+					className={`mt-2 border focus:outline-none text-gray-900 text-sm rounded-md 
+								w-full pl-10 p-2.5 shadow-sm focus:shadow-md bg-zinc-100 
+								${errorInput ? 'border-red-500' : ''} ${successInput ? 'border-emerald-500' : ''} 
+								${!errorInput & !successInput ? 'focus:border-sky-500' : ''}`}
 					value={value}
 					onChange={(e) => {
 						{
@@ -88,35 +59,39 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 					onBlur={handleBlur}
 					required=''
 				/>
-
+				{/* Left Icon Input */}
 				<div className='absolute inset-y-0 left-0 mt-12 items-center pl-3 pointer-events-none'>
 					<div>{icon}</div>
 				</div>
+				{/* Right Icon Input */}
 				<div className='absolute inset-y-0 right-0 mt-12 items-center pr-3'>
-					<div className='flex  gap-2 items-center'>
+					<div className='flex items-center'>
+						{/* Icon to see password */}
 						{type === 'password' && (
 							<div
 								onClick={togglePasswordVisibility}
-								className='cursor-pointer'>
-								{passwordIsVisible ? (
-									<EyeFillInvisible className='h-5 w-5 text-slate-600 text-opacity-70' />
-								) : (
-									<EyeFill className='h-5 w-5 text-slate-600 text-opacity-70' />
-								)}
+								className='cursor-pointer flex'>
+								<Button sx={{ marginRight: -1, p: 0, borderRadius: '50%', width: 20, height: 20 }}>
+									{passwordIsVisible ? (
+										<EyeFillInvisible className='h-5 w-5 text-slate-600 text-opacity-70' />
+									) : (
+										<EyeFill className='h-5 w-5 text-slate-600 text-opacity-70' />
+									)}
+								</Button>
 							</div>
 						)}
-						<div>
-							<div className={`error-icon ${InputEmpty ? 'flex' : 'hidden'} cursor-text`}>
+						{/* Error or success icons */}
+						<div className={`${errorInput || successInput ? 'visible' : 'invisible'} cursor-text`}>
+							{errorInput ? (
 								<IoMdCloseCircle className='h-5 w-5 text-red-500' />
-							</div>
-							<div className='hidden success-icon'>
-								<IoIosCheckmarkCircle className='h-5 w-5 text-emerald-500 cursor-text' />
-							</div>
+							) : (
+								<IoIosCheckmarkCircle className='h-5 w-5 text-emerald-500' />
+							)}
 						</div>
 					</div>
 				</div>
-
-				<div className={`text-xs text-red-500 ml-1  ${InputEmpty ? 'visible' : 'invisible'} error-message`}>
+				{/* Error message */}
+				<div className={`text-xs text-red-500 ml-1  ${errorInput ? 'visible' : 'invisible'}`}>
 					{errorMessage}
 				</div>
 			</div>
@@ -124,4 +99,4 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 	);
 };
 
-export default InputWithValidation;
+export default InputWithValidationTest;

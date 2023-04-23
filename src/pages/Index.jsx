@@ -7,8 +7,8 @@ import { KeyFill, PadlockFill, UserFill } from '../assets/icons';
 
 const Register = () => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [inputUsernameEmpty, setInputUsernameEmpty] = useState(false);
-	const [inputPasswordEmpty, setInputPasswordEmpty] = useState(false);
+	const [inputUsernameSubmitEmpty, setInputUsernameSubmitEmpty] = useState(false);
+	const [inputPasswordSubmitEmpty, setInputPasswordSubmitEmpty] = useState(false);
 	const [IsInvalidCredentials, setIsInvalidCredentials] = useState(false);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -23,8 +23,8 @@ const Register = () => {
 		const isUsernameEmpty = !username;
 		const isPasswordEmpty = !password;
 		if (isUsernameEmpty || isPasswordEmpty) {
-			setInputUsernameEmpty(isUsernameEmpty);
-			setInputPasswordEmpty(isPasswordEmpty);
+			setInputUsernameSubmitEmpty(isUsernameEmpty);
+			setInputPasswordSubmitEmpty(isPasswordEmpty);
 			return;
 		}
 
@@ -99,7 +99,7 @@ const Register = () => {
 								value={username}
 								onChange={setUsername}
 								icon={<UserFill className='text-slate-600' />}
-								emptyInputShipment={inputUsernameEmpty}
+								submitForm={inputUsernameSubmitEmpty}
 							/>
 							<InputWithValidation
 								label='Contraseña'
@@ -109,7 +109,7 @@ const Register = () => {
 								value={password}
 								onChange={setPassword}
 								icon={<PadlockFill className='text-slate-600' />}
-								emptyInputShipment={inputPasswordEmpty}
+								submitForm={inputPasswordSubmitEmpty}
 							/>
 
 							<button

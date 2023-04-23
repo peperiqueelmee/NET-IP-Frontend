@@ -12,4 +12,3 @@ export { default as PhoneOffOutline } from './PhoneOffOutline';
 export { default as QuestionCircleOutline } from './QuestionCircleOutline';
 export { default as SearchFill } from './SearchFill';
 export { default as UserFill } from './UserFill';
-
