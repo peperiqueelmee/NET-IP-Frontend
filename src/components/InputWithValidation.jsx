@@ -1,5 +1,7 @@
 import { IoMdCloseCircle, IoIosCheckmarkCircle } from 'react-icons/io';
 import { useEffect, useState } from 'react';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import Button from '@mui/material/Button';
 
 const validateInput = (input) => {
 	const { parentElement } = input;
@@ -25,6 +27,9 @@ const validateEmail = (email) => {
 
 const InputWithValidation = ({ label, type, placeholder, errorMessage, value, onChange, icon, emptyInputShipment }) => {
 	const [InputEmpty, setInputEmpty] = useState(false);
+	const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+	const [typeInput, setTypeInput] = useState(type);
+
 	useEffect(() => {
 		setInputEmpty(emptyInputShipment);
 	}, [emptyInputShipment]);
@@ -57,6 +62,11 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 		e.target.classList.remove('focus:border-sky-500');
 	};
 
+	const test = () => {
+		setTypeInput(typeInput === 'password' ? 'text' : 'password');
+		setPasswordIsVisible(!passwordIsVisible);
+	};
+
 	return (
 		<>
 			<div className='relative mt-2'>
@@ -65,7 +75,7 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 					<span className='text-rose-500'>*</span>
 				</label>
 				<input
-					type={type}
+					type={typeInput}
 					className={`mt-2 border focus:outline-none text-gray-900 text-sm rounded-md w-full pl-10 p-2.5 shadow-sm focus:shadow-md bg-zinc-100 ${
 						InputEmpty ? 'border-red-500' : ''
 					}`}
@@ -85,12 +95,27 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 				<div className='absolute inset-y-0 left-0 mt-12 items-center pl-3 pointer-events-none'>
 					<div>{icon}</div>
 				</div>
-				<div className='absolute inset-y-0 right-0 mt-12 items-center pr-3 pointer-events-none'>
-					<div className={`error-icon ${InputEmpty ? 'flex' : 'hidden'}`}>
-						<IoMdCloseCircle className='h-5 w-5 text-red-500' />
-					</div>
-					<div className='hidden success-icon'>
-						<IoIosCheckmarkCircle className='h-5 w-5 text-emerald-500' />
+				<div className='absolute inset-y-0 right-0 mt-12 items-center pr-3'>
+					<div className='flex  gap-2 items-center'>
+						{type === 'password' && (
+							<div
+								onClick={test}
+								className='cursor-pointer'>
+								{passwordIsVisible ? (
+									<AiFillEyeInvisible className='h-5 w-5 text-slate-600 text-opacity-70' />
+								) : (
+									<AiFillEye className='h-5 w-5 text-slate-600 text-opacity-70' />
+								)}
+							</div>
+						)}
+						<div>
+							<div className={`error-icon ${InputEmpty ? 'flex' : 'hidden'} cursor-text`}>
+								<IoMdCloseCircle className='h-5 w-5 text-red-500' />
+							</div>
+							<div className='hidden success-icon'>
+								<IoIosCheckmarkCircle className='h-5 w-5 text-emerald-500 cursor-text' />
+							</div>
+						</div>
 					</div>
 				</div>
 
