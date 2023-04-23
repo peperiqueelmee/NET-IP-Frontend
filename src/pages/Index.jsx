@@ -2,15 +2,16 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { InputWithValidation } from '../components';
+import { InputWithValidation, Spinner } from '../components';
 import { KeyFill, PadlockFill, UserFill } from '../assets/icons';
 
 const Register = () => {
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 	const [inputUsernameEmpty, setInputUsernameEmpty] = useState(false);
 	const [inputPasswordEmpty, setInputPasswordEmpty] = useState(false);
 	const [IsInvalidCredentials, setIsInvalidCredentials] = useState(false);
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 	const [messageError, setMessageError] = useState('');
 
 	const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Register = () => {
 
 		// Login
 		try {
+			setIsLoading(true);
 			const url = `${import.meta.env.VITE_BACKEND_URL}/employee/login`;
 			const employeeData = {
 				username,
@@ -38,17 +40,19 @@ const Register = () => {
 				data: { data },
 			} = await axios.post(url, employeeData);
 
+			setIsLoading(false);
 			localStorage.setItem('token', data.token);
 			localStorage.setItem('username', data.username);
 			navigate('/home');
 		} catch (error) {
 			setIsInvalidCredentials(true);
-			const errorCode = error.response.status;
+			setIsLoading(false);
 
-			if (errorCode === 400) {
+			if (error.code === 'ERR_BAD_REQUEST') {
 				setMessageError('Usuario o contraseña incorrecta.');
 				return;
 			}
+			setMessageError('Error de servidor. Reintentar.');
 		}
 	};
 
@@ -70,9 +74,7 @@ const Register = () => {
 					<div
 						className='flex bg-red-800 bg-opacity-40  rounded-xl
 				 				sm:py-5 py-3 text-center text-sm lg:text-base justify-between px-10'>
-						<div className='text-slate-100'>
-							{messageError ? messageError : 'Error de servidor. Reintentar.'}
-						</div>
+						<div className='text-slate-100'>{messageError}</div>
 						<div
 							className='font-bold text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-300'
 							onClick={removeErrorMessage}>
@@ -111,11 +113,12 @@ const Register = () => {
 							/>
 
 							<button
+								disabled={isLoading}
 								type='submit'
 								className='w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg 
                                            text-sm px-5 py-2.5 text-center bg-lime-500 hover:bg-lime-600 
-                                           transition-colors duration-150 disabled:bg-gray-300 cursor-pointer disabled:cursor-default mt-6'>
-								Iniciar Sesión
+                                           transition-colors duration-150 cursor-pointer disabled:cursor-default mt-6 disabled:bg-gray-400'>
+								{isLoading ? <Spinner /> : 'Iniciar Sesión'}
 							</button>
 						</form>
 					</div>
