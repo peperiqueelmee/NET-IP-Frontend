@@ -1,17 +1,17 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { InputWithValidation } from '../components';
-import { KeyFill } from '../assets/icons';
-import { UserFill } from '../assets/icons';
-import { PadlockFill } from '../assets/icons';
-import axios from 'axios';
+import { KeyFill, PadlockFill, UserFill } from '../assets/icons';
 
 const Register = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [inputUsernameEmpty, setInputUsernameEmpty] = useState(false);
 	const [inputPasswordEmpty, setInputPasswordEmpty] = useState(false);
-	const [invalidCredentials, setInvalidCredentials] = useState(false);
+	const [IsInvalidCredentials, setIsInvalidCredentials] = useState(false);
+	const [messageError, setMessageError] = useState('');
 
 	const navigate = useNavigate();
 
@@ -42,12 +42,18 @@ const Register = () => {
 			localStorage.setItem('username', data.username);
 			navigate('/home');
 		} catch (error) {
-			setInvalidCredentials(true);
-			setTimeout(() => {
-				setInvalidCredentials(false);
-			}, 4000);
-			console.log(error);
+			setIsInvalidCredentials(true);
+			const errorCode = error.response.status;
+
+			if (errorCode === 400) {
+				setMessageError('Usuario o contraseña incorrecta.');
+				return;
+			}
 		}
+	};
+
+	const removeErrorMessage = () => {
+		setIsInvalidCredentials(false);
 	};
 
 	return (
@@ -57,13 +63,31 @@ const Register = () => {
 					Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
 					<span className='text-slate-900'>IP</span>
 				</p>
-				<div className='w-full bg-neutral-50 rounded-t-xl  md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-t-2 border-l-2 border-r-2 border-lime-500 flex'>
+				<div
+					className={`${
+						IsInvalidCredentials ? 'block' : 'hidden'
+					} bg-black mb-3 rounded-xl w-full sm:max-w-md border border-red-500`}>
+					<div
+						className='flex bg-red-800 bg-opacity-40  rounded-xl
+				 				sm:py-5 py-3 text-center text-sm lg:text-base justify-between px-10'>
+						<div className='text-slate-100'>
+							{messageError ? messageError : 'Error de servidor. Reintentar.'}
+						</div>
+						<div
+							className='font-bold text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-300'
+							onClick={removeErrorMessage}>
+							X
+						</div>
+					</div>
+				</div>
+				<div className='w-full bg-neutral-50 rounded-t-xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-t-2 border-l-2 border-r-2 border-lime-500 flex'>
 					<div className='w-full p-6 sm:p-8 mx-auto my-auto'>
 						<h1 className='text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl text-center'>
 							Ingresa a tu cuenta
 						</h1>
 						<form
 							className='mt-8'
+							onClick={removeErrorMessage}
 							onSubmit={handleSubmit}>
 							<InputWithValidation
 								label='Usuario'
@@ -85,12 +109,6 @@ const Register = () => {
 								icon={<PadlockFill className='text-slate-600' />}
 								emptyInputShipment={inputPasswordEmpty}
 							/>
-
-							<div className={`${invalidCredentials ? 'visible' : 'invisible'} flex justify-center`}>
-								<span className='text-xs text-red-600 font-medium tracking-wide'>
-									Credenciales invalidas
-								</span>
-							</div>
 
 							<button
 								type='submit'
