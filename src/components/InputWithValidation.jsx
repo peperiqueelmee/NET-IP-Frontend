@@ -1,7 +1,6 @@
 import { IoMdCloseCircle, IoIosCheckmarkCircle } from 'react-icons/io';
 import { useEffect, useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import Button from '@mui/material/Button';
 
 const validateInput = (input) => {
 	const { parentElement } = input;
@@ -37,10 +36,13 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 	const handleBlur = (e) => {
 		validateInput(e.target);
 	};
-
 	const handleChange = (e) => {
 		validateInput(e.target);
 		removeFocus(e);
+	};
+	const togglePasswordVisibility = () => {
+		setTypeInput(typeInput === 'password' ? 'text' : 'password');
+		setPasswordIsVisible(!passwordIsVisible);
 	};
 
 	const handleFocus = (e) => {
@@ -60,11 +62,6 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 
 	const removeFocus = (e) => {
 		e.target.classList.remove('focus:border-sky-500');
-	};
-
-	const test = () => {
-		setTypeInput(typeInput === 'password' ? 'text' : 'password');
-		setPasswordIsVisible(!passwordIsVisible);
 	};
 
 	return (
@@ -99,7 +96,7 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 					<div className='flex  gap-2 items-center'>
 						{type === 'password' && (
 							<div
-								onClick={test}
+								onClick={togglePasswordVisibility}
 								className='cursor-pointer'>
 								{passwordIsVisible ? (
 									<AiFillEyeInvisible className='h-5 w-5 text-slate-600 text-opacity-70' />
