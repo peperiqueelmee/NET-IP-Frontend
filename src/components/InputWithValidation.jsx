@@ -1,6 +1,6 @@
 import { IoMdCloseCircle, IoIosCheckmarkCircle } from 'react-icons/io';
 import { useEffect, useState } from 'react';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { EyeFill, EyeFillInvisible } from '../assets/icons';
 
 const validateInput = (input) => {
 	const { parentElement } = input;
@@ -99,9 +99,9 @@ const InputWithValidation = ({ label, type, placeholder, errorMessage, value, on
 								onClick={togglePasswordVisibility}
 								className='cursor-pointer'>
 								{passwordIsVisible ? (
-									<AiFillEyeInvisible className='h-5 w-5 text-slate-600 text-opacity-70' />
+									<EyeFillInvisible className='h-5 w-5 text-slate-600 text-opacity-70' />
 								) : (
-									<AiFillEye className='h-5 w-5 text-slate-600 text-opacity-70' />
+									<EyeFill className='h-5 w-5 text-slate-600 text-opacity-70' />
 								)}
 							</div>
 						)}
