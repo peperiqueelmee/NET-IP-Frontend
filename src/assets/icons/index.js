@@ -1,4 +1,5 @@
 export { default as ConversationOutline } from './ConversationOutline';
+export { default as ExitDoorFill } from './ExitDoorFill';
 export { default as EyeFill } from './EyeFill';
 export { default as EyeFillInvisible } from './EyeFillInvisible';
 export { default as HelpBuoyFill } from './HelpBuoyFill';
@@ -11,3 +12,4 @@ export { default as PhoneOffOutline } from './PhoneOffOutline';
 export { default as QuestionCircleOutline } from './QuestionCircleOutline';
 export { default as SearchFill } from './SearchFill';
 export { default as UserFill } from './UserFill';
+
