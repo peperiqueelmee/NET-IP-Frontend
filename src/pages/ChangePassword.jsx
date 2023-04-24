@@ -84,20 +84,20 @@ const ChangePassword = () => {
 					<span className='text-slate-900'>IP</span>
 				</p>
 				{/*  Error message */}
-				<div className={`bg-black mb-3 rounded-xl w-full sm:max-w-md border border-green-500`}>
+				<div className={`bg-black mb-3 rounded-xl w-full sm:max-w-md border border-blue-500`}>
 					<div
-						className='flex bg-green-400 bg-opacity-40  rounded-xl
+						className='flex bg-blue-500 bg-opacity-40  rounded-xl
 				 				sm:py-5 py-3 text-center text-sm lg:text-base justify-between px-10'>
 						<div className='text-slate-100'>Hola (Usuario), Cambia tu contraseña aquí.</div>
 						<div
-							className='font-bold text-green-500 hover:text-green-700 cursor-pointer transition-colors duration-300'
+							className='font-bold text-blue-500 hover:text-blue-700 cursor-pointer transition-colors duration-300'
 							onClick={removeErrorMessage}>
 							X
 						</div>
 					</div>
 				</div>
 				{/*  Form */}
-				<div className='w-full bg-neutral-50 rounded-t-xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-t-2 border-l-2 border-r-2 border-lime-500 flex'>
+				<div className='w-full bg-neutral-50 rounded-2xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-2 border-lime-500 flex'>
 					<div className='w-full p-6 sm:p-8 mx-auto my-auto'>
 						<h1 className='text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl text-center'>
 							Cambiar contraseña
