@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { IoIosCheckmarkCircle, IoMdCloseCircle } from 'react-icons/io';
-import { EyeFill, EyeFillInvisible } from '../assets/icons';
-import { inputHasError } from '../utils/utils';
 import { Button } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { CheckCircleFill, CloseCircleFill, EyeFill, EyeFillInvisible } from '../assets/icons';
+import { inputHasError } from '../utils/utils';
 
 const InputWithValidationTest = ({ label, icon, type, value, placeholder, errorMessage, onChange, submitForm }) => {
 	const [typeInput, setTypeInput] = useState(type);
@@ -24,14 +23,14 @@ const InputWithValidationTest = ({ label, icon, type, value, placeholder, errorM
 		setErrorInput(inputHasError(input));
 		setSuccessInput(!inputHasError(input));
 	};
-	const togglePasswordVisibility = () => {
-		setTypeInput(typeInput === 'password' ? 'text' : 'password');
-		setPasswordIsVisible(!passwordIsVisible);
-	};
-
 	const handleFocus = () => {
 		setErrorInput(false);
 		setSuccessInput(false);
+	};
+
+	const togglePasswordVisibility = () => {
+		setTypeInput(typeInput === 'password' ? 'text' : 'password');
+		setPasswordIsVisible(!passwordIsVisible);
 	};
 
 	return (
@@ -67,7 +66,7 @@ const InputWithValidationTest = ({ label, icon, type, value, placeholder, errorM
 				<div className='absolute inset-y-0 right-0 mt-12 items-center pr-3'>
 					<div className='flex items-center'>
 						{/* Icon to see password */}
-						{type === 'password' && (
+						{type === 'password' && value.length > 0 && (
 							<div
 								onClick={togglePasswordVisibility}
 								className='cursor-pointer flex'>
@@ -83,9 +82,9 @@ const InputWithValidationTest = ({ label, icon, type, value, placeholder, errorM
 						{/* Error or success icons */}
 						<div className={`${errorInput || successInput ? 'visible' : 'invisible'} cursor-text`}>
 							{errorInput ? (
-								<IoMdCloseCircle className='h-5 w-5 text-red-500' />
+								<CloseCircleFill className='h-5 w-5 text-red-500' />
 							) : (
-								<IoIosCheckmarkCircle className='h-5 w-5 text-emerald-500' />
+								<CheckCircleFill className='h-5 w-5 text-emerald-500' />
 							)}
 						</div>
 					</div>

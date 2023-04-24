@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { InputWithValidation, Spinner } from '../components';
 import { KeyFill, PadlockFill, UserFill } from '../assets/icons';
+import { InputWithValidation, Spinner } from '../components';
+import { RESPONSE_SERVER } from '../utils/utils';
 
 const Register = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,6 @@ const Register = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
 		// Validate full fields
 		const isUsernameEmpty = !username;
 		const isPasswordEmpty = !password;
@@ -27,7 +26,6 @@ const Register = () => {
 			setInputPasswordSubmitEmpty(isPasswordEmpty);
 			return;
 		}
-
 		// Login
 		try {
 			setIsLoading(true);
@@ -48,7 +46,7 @@ const Register = () => {
 			setIsInvalidCredentials(true);
 			setIsLoading(false);
 
-			if (error.code === 'ERR_BAD_REQUEST') {
+			if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
 				setMessageError('Usuario o contraseña incorrecta.');
 				return;
 			}

@@ -1,3 +1,5 @@
+export { default as CheckCircleFill } from './CheckCircleFill';
+export { default as CloseCircleFill } from './CloseCircleFill';
 export { default as ConversationOutline } from './ConversationOutline';
 export { default as ExitDoorFill } from './ExitDoorFill';
 export { default as EyeFill } from './EyeFill';

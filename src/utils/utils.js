@@ -10,4 +10,8 @@ const inputHasError = (input) => {
 	return isEmpty || isInvalidEmail;
 };
 
-export { inputHasError };
+const RESPONSE_SERVER = {
+	BAD_REQUEST: 'ERR_BAD_REQUEST',
+};
+
+export { inputHasError, RESPONSE_SERVER };
