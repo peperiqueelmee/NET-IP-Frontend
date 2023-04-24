@@ -108,7 +108,7 @@ const RecoverPassword = () => {
 								className='w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg 
                                            text-sm px-5 py-2.5 text-center bg-lime-500 hover:bg-lime-600 
                                            transition-colors duration-150 cursor-pointer disabled:cursor-default mt-6 disabled:bg-gray-400'>
-								{isLoading ? <Spinner /> : 'Recuperar contraseña'}
+								{isLoading ? <Spinner /> : 'Recuperar Contraseña'}
 							</button>
 						</form>
 						<div

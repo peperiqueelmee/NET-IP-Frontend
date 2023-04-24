@@ -74,7 +74,7 @@ const Register = () => {
 					<div
 						className='flex bg-red-800 bg-opacity-40  rounded-xl
 				 				sm:py-5 py-3 text-center text-xs sm:text-sm lg:text-base justify-between px-10'>
-						<div className='text-slate-10'>{messageError}</div>
+						<div className='text-slate-100'>{messageError}</div>
 						<div
 							className='font-bold text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-300'
 							onClick={removeErrorMessage}>
