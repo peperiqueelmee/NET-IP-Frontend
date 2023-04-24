@@ -1,61 +1,54 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { PadlockFill, UserFill } from '../assets/icons';
+import { Link } from 'react-router-dom';
+import { UserFill } from '../assets/icons';
 import { InputWithValidation, Spinner } from '../components';
 import { RESPONSE_SERVER } from '../utils/utils';
 
-const Register = () => {
+const RecoverPassword = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [inputUsernameSubmitEmpty, setInputUsernameSubmitEmpty] = useState(false);
-	const [inputPasswordSubmitEmpty, setInputPasswordSubmitEmpty] = useState(false);
-	const [IsInvalidCredentials, setIsInvalidCredentials] = useState(false);
+	const [IsUsernameInvalid, setIsUsernameInvalid] = useState(null);
 	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
-	const [messageError, setMessageError] = useState('');
-
-	const navigate = useNavigate();
+	const [message, setMessage] = useState('');
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// Validate full fields
 		const isUsernameEmpty = !username;
-		const isPasswordEmpty = !password;
-		if (isUsernameEmpty || isPasswordEmpty) {
+		if (isUsernameEmpty) {
 			setInputUsernameSubmitEmpty(isUsernameEmpty);
-			setInputPasswordSubmitEmpty(isPasswordEmpty);
 			return;
 		}
-		// Login
+		// Recover password
 		try {
 			setIsLoading(true);
-			const url = `${import.meta.env.VITE_BACKEND_URL}/employee/login`;
+			const url = `${import.meta.env.VITE_BACKEND_URL}/employee/forgot-password`;
 			const employeeData = {
 				username,
-				emp_password: password,
 			};
 			const {
 				data: { data },
 			} = await axios.post(url, employeeData);
 
+			setIsUsernameInvalid(false);
 			setIsLoading(false);
-			localStorage.setItem('token', data.token);
-			localStorage.setItem('username', data.username);
-			navigate('/home');
+
+			setMessage(`${data.name} revisa tu correo ${data.email} para continuar.`);
 		} catch (error) {
-			setIsInvalidCredentials(true);
+			setIsUsernameInvalid(true);
 			setIsLoading(false);
 
 			if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
-				setMessageError('Usuario o contraseña incorrecta.');
+				setMessage('Usuario no registrado.');
 				return;
 			}
-			setMessageError('Error de servidor. Reintentar.');
+			setMessage('Error de servidor. Reintentar.');
 		}
 	};
 
-	const removeErrorMessage = () => {
-		setIsInvalidCredentials(false);
+	const removeMessage = () => {
+		setIsUsernameInvalid(null);
 	};
 
 	return (
@@ -66,18 +59,24 @@ const Register = () => {
 					Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
 					<span className='text-slate-900'>IP</span>
 				</h1>
-				{/* Error message */}
+				{/* Error or success message  */}
 				<div
-					className={`${
-						IsInvalidCredentials ? 'block' : 'hidden'
-					} bg-black mb-3 rounded-xl w-full sm:max-w-md border border-red-500`}>
+					className={`bg-black mb-3 rounded-xl w-full sm:max-w-md border
+                                ${IsUsernameInvalid || IsUsernameInvalid === false ? 'block' : 'hidden'} 
+                                ${IsUsernameInvalid ? 'border-red-500' : 'border-blue-500'}`}>
 					<div
-						className='flex bg-red-800 bg-opacity-40  rounded-xl
-				 				sm:py-5 py-3 text-center text-xs sm:text-sm lg:text-base justify-between px-10'>
-						<div className='text-slate-10'>{messageError}</div>
+						className={`flex bg-opacity-40  rounded-xl
+				 				   sm:py-5 py-3 text-center text-xs sm:text-sm lg:text-base justify-between px-10
+                                   ${IsUsernameInvalid ? 'bg-red-800' : 'bg-blue-500'}`}>
+						<div className='text-slate-100'>{message}</div>
 						<div
-							className='font-bold text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-300'
-							onClick={removeErrorMessage}>
+							className={`font-bold cursor-pointer transition-colors duration-300
+                                       ${
+											IsUsernameInvalid
+												? 'text-red-500 hover:text-red-700'
+												: 'text-blue-500 hover:text-blue-600'
+										}`}
+							onClick={removeMessage}>
 							X
 						</div>
 					</div>
@@ -86,11 +85,11 @@ const Register = () => {
 				<div className='w-full bg-neutral-50 rounded-2xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-2 border-lime-500 flex'>
 					<div className='w-full p-6 sm:px-8 sm:pt-8 sm:pb-5 mx-auto my-auto'>
 						<h1 className='text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl text-center'>
-							Ingresa a tu cuenta
+							Recupera tu contraseña
 						</h1>
 						<form
-							className='mt-8'
-							onClick={removeErrorMessage}
+							className={`mt-8 ${IsUsernameInvalid === false ? 'hidden' : ''}`}
+							onClick={removeMessage}
 							onSubmit={handleSubmit}>
 							<InputWithValidation
 								label='Usuario'
@@ -102,16 +101,6 @@ const Register = () => {
 								icon={<UserFill className='text-slate-600' />}
 								submitForm={inputUsernameSubmitEmpty}
 							/>
-							<InputWithValidation
-								label='Contraseña'
-								type='password'
-								placeholder='Tu contraseña'
-								errorMessage='Por favor ingresa tu contraseña.'
-								value={password}
-								onChange={setPassword}
-								icon={<PadlockFill className='text-slate-600' />}
-								submitForm={inputPasswordSubmitEmpty}
-							/>
 
 							<button
 								disabled={isLoading}
@@ -119,17 +108,17 @@ const Register = () => {
 								className='w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg 
                                            text-sm px-5 py-2.5 text-center bg-lime-500 hover:bg-lime-600 
                                            transition-colors duration-150 cursor-pointer disabled:cursor-default mt-6 disabled:bg-gray-400'>
-								{isLoading ? <Spinner /> : 'Iniciar Sesión'}
+								{isLoading ? <Spinner /> : 'Recuperar contraseña'}
 							</button>
 						</form>
 						<div
 							className='flex justify-center mt-5 text-xs sm:text-sm
-									  text-slate-700  hover:text-slate-950 font-medium
+									  text-slate-700 hover:text-slate-950 font-medium
 									  transition-colors duration-700'>
 							<Link
-								to='/recuperar-contrasena'
+								to='/'
 								className='animated-text-underline cursor-pointer'>
-								¿Olvidaste tu contraseña?
+								Iniciar Sesión
 							</Link>
 						</div>
 					</div>
@@ -144,4 +133,4 @@ const Register = () => {
 	);
 };
 
-export default Register;
+export default RecoverPassword;
