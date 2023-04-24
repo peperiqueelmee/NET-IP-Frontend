@@ -18,7 +18,7 @@ function App() {
                 <Route path="home" element={<ActionProvider><Home /></ActionProvider>} />
                 <Route path="test" element={<Test />} />
                 <Route path="recuperar-contrasena" element={<RecoverPassword />} />
-                <Route path="cambiar-contrasena" element={<ChangePassword />} />
+                <Route path="cambiar-contrasena/:token" element={<ChangePassword />} />
                 <Route path="error-server" element={<ServerError />} />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
