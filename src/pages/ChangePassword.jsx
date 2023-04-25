@@ -1,17 +1,22 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { CheckCircleFill, PadlockFill } from '../assets/icons';
-import { InputWithValidation, Spinner } from '../components';
-import { RESPONSE_SERVER } from '../utils/utils';
+import { InformativeMessage, InputWithValidation, Spinner } from '../components';
+import axiosClient from '../config/axios';
 
 const ChangePassword = () => {
+	const params = useParams();
+	const { token } = params;
+
+	const [message, setMessage] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
-	const [IsInvalidCredentials, setIsInvalidCredentials] = useState(false);
+	// Data user
 	const [password, setPassword] = useState('');
 	const [repeatPassword, setRepeatPassword] = useState('');
-	const [messageError, setMessageError] = useState('');
-
+	// Request validations
+	const [hasError, setHasError] = useState(false);
+	const [passwordWasChanged, setPasswordWasChanged] = useState(null);
+	// Password validations
 	const [meetCharacterLength, setMetCharacterLength] = useState(false);
 	const [meetsLowerCase, setMeetsLowerCase] = useState(false);
 	const [meetsUpperCase, setMeetsUpperCase] = useState(false);
@@ -20,45 +25,43 @@ const ChangePassword = () => {
 	const passwordMeetsAllCriteria =
 		meetCharacterLength && meetsLowerCase && meetsUpperCase && meetsNumber && meetsEqualsPassword;
 
-	const navigate = useNavigate();
-
 	useEffect(() => {
 		checkPasswordStrength();
 	}, [password, repeatPassword]);
+	useEffect(() => {
+		const checkToken = async () => {
+			try {
+				const url = `/employee/forgot-password/${token}`;
+				const { data } = await axiosClient(url);
+				const employeeName = data.data.name;
+
+				setHasError(false);
+				setMessage(`Hola ${employeeName}, cambia tu contraseña aquí.`);
+			} catch (error) {
+				setHasError(true);
+				setMessage(`Enlace invalido.`);
+			}
+		};
+		checkToken();
+	}, []);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
-		// Login
+		// Change password
 		try {
 			setIsLoading(true);
-			const url = `${import.meta.env.VITE_BACKEND_URL}/employee/login`;
-			const employeeData = {
-				username: repeatPassword,
-				emp_password: password,
-			};
-			const {
-				data: { data },
-			} = await axios.post(url, employeeData);
+			const url = `/employee/forgot-password/${token}`;
+			const { data } = await axiosClient.post(url, { emp_password: password });
+			const employeeName = data.data.name;
 
 			setIsLoading(false);
-			localStorage.setItem('token', data.token);
-			localStorage.setItem('username', data.username);
-			navigate('/home');
+			setPasswordWasChanged(true);
+			setMessage(`${employeeName} tu contraseña ha sido cambiada.`);
 		} catch (error) {
-			setIsInvalidCredentials(true);
 			setIsLoading(false);
-
-			if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
-				setMessageError('Usuario o contraseña incorrecta.');
-				return;
-			}
-			setMessageError('Error de servidor. Reintentar.');
+			setHasError(true);
+			setMessage('Error de servidor. Reintentar.');
 		}
-	};
-
-	const removeErrorMessage = () => {
-		setIsInvalidCredentials(false);
 	};
 
 	const checkPasswordStrength = () => {
@@ -77,34 +80,30 @@ const ChangePassword = () => {
 
 	return (
 		<>
-			{/*  Tittle */}
 			<div className='flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 login-page overflow-y-auto'>
+				{/*  Tittle */}
 				<p className='text-white font-semibold tracking-wider md:text-2xl lg:text-3xl mb-16 text-shadow'>
 					Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
 					<span className='text-slate-900'>IP</span>
 				</p>
-				{/*  Error message */}
-				<div className={`bg-black mb-3 rounded-xl w-full sm:max-w-md border border-green-500`}>
-					<div
-						className='flex bg-green-400 bg-opacity-40  rounded-xl
-				 				sm:py-5 py-3 text-center text-sm lg:text-base justify-between px-10'>
-						<div className='text-slate-100'>Hola (Usuario), Cambia tu contraseña aquí.</div>
-						<div
-							className='font-bold text-green-500 hover:text-green-600 cursor-pointer transition-colors duration-300'
-							onClick={removeErrorMessage}>
-							X
-						</div>
-					</div>
-				</div>
+				{/* Informative message, success or error */}
+				<InformativeMessage
+					message={message}
+					border={hasError ? 'red-500' : passwordWasChanged ? 'blue-500' : 'green-500'}
+					background={hasError ? 'red-800' : passwordWasChanged ? 'blue-500' : 'green-400'}
+					text={hasError ? 'red-500' : passwordWasChanged ? 'blue-500' : 'green-500'}
+					textHover={hasError ? 'red-700' : passwordWasChanged ? 'blue-600' : 'green-700'}
+				/>
+
 				{/*  Form */}
 				<div className='opacity-90 w-full bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 rounded-2xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-2 border-lime-500 flex'>
 					<div className='w-full p-6 sm:p-8 mx-auto my-auto'>
-						<h1 className='text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl text-center'>
+						<h1
+							className={`text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl text-center`}>
 							Cambiar contraseña
 						</h1>
 						<form
-							className='mt-8'
-							onClick={removeErrorMessage}
+							className={`mt-8 ${hasError || passwordWasChanged ? 'hidden' : ''}`}
 							onSubmit={handleSubmit}>
 							<InputWithValidation
 								label='Nueva contraseña'
@@ -180,6 +179,16 @@ const ChangePassword = () => {
 								{isLoading ? <Spinner /> : 'Cambiar Contraseña'}
 							</button>
 						</form>
+						<div
+							className='flex justify-center mt-5 text-xs sm:text-sm
+									  text-slate-700 hover:text-slate-950 font-medium
+									  transition-colors duration-700'>
+							<Link
+								to='/'
+								className='animated-text-underline cursor-pointer'>
+								{passwordWasChanged ? 'Iniciar Sesión' : 'Volver al inicio'}
+							</Link>
+						</div>
 					</div>
 				</div>
 				{/* Footer */}

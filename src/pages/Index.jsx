@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PadlockFill, UserFill } from '../assets/icons';
-import { InputWithValidation, Spinner } from '../components';
+import { InformativeMessage, InputWithValidation, Spinner } from '../components';
+import axiosClient from '../config/axios';
 import { RESPONSE_SERVER } from '../utils/utils';
 
 const Register = () => {
@@ -29,19 +29,19 @@ const Register = () => {
 		// Login
 		try {
 			setIsLoading(true);
-			const url = `${import.meta.env.VITE_BACKEND_URL}/employee/login`;
+			const url = '/employee/login';
 			const employeeData = {
 				username,
 				emp_password: password,
 			};
-			const {
-				data: { data },
-			} = await axios.post(url, employeeData);
+			const { data } = await axiosClient.post(url, employeeData);
+			const token = data.data.token;
 
-			setIsLoading(false);
-			localStorage.setItem('token', data.token);
-			localStorage.setItem('username', data.username);
+			localStorage.setItem('token', token);
+			localStorage.setItem('username', username);
+
 			navigate('/home');
+			setIsLoading(false);
 		} catch (error) {
 			setIsInvalidCredentials(true);
 			setIsLoading(false);
@@ -67,21 +67,15 @@ const Register = () => {
 					<span className='text-slate-900'>IP</span>
 				</h1>
 				{/* Error message */}
-				<div
-					className={`${
-						IsInvalidCredentials ? 'block' : 'hidden'
-					} bg-black mb-3 rounded-xl w-full sm:max-w-md border border-red-500`}>
-					<div
-						className='flex bg-red-800 bg-opacity-40  rounded-xl
-				 				sm:py-5 py-3 text-center text-xs sm:text-sm lg:text-base justify-between px-10'>
-						<div className='text-slate-100'>{messageError}</div>
-						<div
-							className='font-bold text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-300'
-							onClick={removeErrorMessage}>
-							X
-						</div>
-					</div>
-				</div>
+				{IsInvalidCredentials && (
+					<InformativeMessage
+						message={messageError}
+						border={'red-500'}
+						background={'red-800'}
+						text={'red-500'}
+						textHover={'red-700'}
+					/>
+				)}
 				{/* Form */}
 				<div className='opacity-90 w-full bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 rounded-2xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-2 border-lime-500 flex'>
 					<div className='w-full p-6 sm:px-8 sm:pt-8 sm:pb-5 mx-auto my-auto'>

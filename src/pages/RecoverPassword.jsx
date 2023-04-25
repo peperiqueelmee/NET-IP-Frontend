@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserFill } from '../assets/icons';
-import { InputWithValidation, Spinner } from '../components';
+import { InputWithValidation, Spinner, InformativeMessage } from '../components';
+import axiosClient from '../config/axios';
 import { RESPONSE_SERVER } from '../utils/utils';
 
 const RecoverPassword = () => {
@@ -23,18 +23,17 @@ const RecoverPassword = () => {
 		// Recover password
 		try {
 			setIsLoading(true);
-			const url = `${import.meta.env.VITE_BACKEND_URL}/employee/forgot-password`;
+			const url = '/employee/forgot-password';
 			const employeeData = {
 				username,
 			};
-			const {
-				data: { data },
-			} = await axios.post(url, employeeData);
+			const { data } = await axiosClient.post(url, employeeData);
+			const name = data.data.name;
+			const email = data.data.email;
 
 			setIsUsernameInvalid(false);
 			setIsLoading(false);
-
-			setMessage(`${data.name} revisa tu correo ${data.email} para continuar.`);
+			setMessage(`${name} revisa tu correo ${email} para continuar.`);
 		} catch (error) {
 			setIsUsernameInvalid(true);
 			setIsLoading(false);
@@ -59,28 +58,16 @@ const RecoverPassword = () => {
 					Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
 					<span className='text-slate-900'>IP</span>
 				</h1>
-				{/* Error or success message  */}
-				<div
-					className={`bg-black mb-3 rounded-xl w-full sm:max-w-md border
-                                ${IsUsernameInvalid || IsUsernameInvalid === false ? 'block' : 'hidden'} 
-                                ${IsUsernameInvalid ? 'border-red-500' : 'border-blue-500'}`}>
-					<div
-						className={`flex bg-opacity-40  rounded-xl
-				 				   sm:py-5 py-3 text-center text-xs sm:text-sm lg:text-base justify-between px-10
-                                   ${IsUsernameInvalid ? 'bg-red-800' : 'bg-blue-500'}`}>
-						<div className='text-slate-100'>{message}</div>
-						<div
-							className={`font-bold cursor-pointer transition-colors duration-300
-                                       ${
-											IsUsernameInvalid
-												? 'text-red-500 hover:text-red-700'
-												: 'text-blue-500 hover:text-blue-600'
-										}`}
-							onClick={removeMessage}>
-							X
-						</div>
-					</div>
-				</div>
+				{/* Success or error message */}
+				{IsUsernameInvalid !== null ? (
+					<InformativeMessage
+						message={message}
+						border={IsUsernameInvalid ? 'red-500' : 'blue-500'}
+						background={IsUsernameInvalid ? 'red-800' : 'blue-500'}
+						text={IsUsernameInvalid ? 'red-500' : 'blue-500'}
+						textHover={IsUsernameInvalid ? 'red-700' : 'blue-600'}
+					/>
+				) : null}
 				{/* Form */}
 				<div className='opacity-90 w-full bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 rounded-2xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-2 border-lime-500 flex'>
 					<div className='w-full p-6 sm:px-8 sm:pt-8 sm:pb-5 mx-auto my-auto'>
