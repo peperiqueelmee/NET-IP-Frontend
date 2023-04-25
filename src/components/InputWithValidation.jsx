@@ -43,7 +43,7 @@ const InputWithValidationTest = ({ label, icon, type, value, placeholder, errorM
 				<input
 					type={typeInput}
 					className={`mt-2 border focus:outline-none text-gray-900 text-sm rounded-md 
-								w-full pl-10 p-2.5 shadow-sm focus:shadow-md bg-zinc-100 
+								w-full pl-10 p-2.5 shadow focus:shadow-md bg-slate-200 
 								${errorInput ? 'border-red-500' : ''} ${successInput ? 'border-emerald-500' : ''} 
 								${!errorInput & !successInput ? 'focus:border-sky-500' : ''}`}
 					value={value}
