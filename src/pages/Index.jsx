@@ -70,10 +70,10 @@ const Register = () => {
 				{IsInvalidCredentials && (
 					<InformativeMessage
 						message={messageError}
-						border={'red-500'}
-						background={'red-800'}
-						text={'red-500'}
-						textHover={'red-700'}
+						border={'border-red-500'}
+						background={'bg-red-800'}
+						text={'text-red-500'}
+						textHover={'hover:text-red-700'}
 					/>
 				)}
 				{/* Form */}

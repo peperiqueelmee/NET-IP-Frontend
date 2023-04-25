@@ -12,15 +12,15 @@ const InformativeMessage = ({ border, background, text, textHover, message }) =>
 			<div
 				className={`bg-black mb-3 rounded-xl w-full sm:max-w-md border
                                 ${isVisible ? 'block' : 'hidden'} 
-                                border-${border}`}>
+                                ${border}`}>
 				<div
 					className={`flex bg-opacity-40  rounded-xl
 				 				   sm:py-5 py-3 text-center text-xs sm:text-sm lg:text-base justify-between px-10
-                                   bg-${background}`}>
+                                   ${background}`}>
 					<div className='text-slate-100'>{message}</div>
 					<div
 						className={`font-bold cursor-pointer transition-colors duration-300
-                                    text-${text} hover:text-${textHover} `}
+                                    ${text} ${textHover} `}
 						onClick={removeMessage}>
 						X
 					</div>
