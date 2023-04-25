@@ -65,7 +65,7 @@ const RecoverPassword = () => {
 						border={IsUsernameInvalid ? 'border-red-500' : 'border-blue-500'}
 						background={IsUsernameInvalid ? 'bg-red-800' : 'bg-blue-500'}
 						text={IsUsernameInvalid ? 'text-red-500' : 'text-blue-500'}
-						textHover={IsUsernameInvalid ? 'hover:text-red-700' : 'hover:text-blue-600'}
+						textHover={IsUsernameInvalid ? 'hover:text-red-700' : 'hover:text-blue-700'}
 					/>
 				) : null}
 				{/* Form */}

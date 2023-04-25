@@ -89,10 +89,10 @@ const ChangePassword = () => {
 				{/* Informative message, success or error */}
 				<InformativeMessage
 					message={message}
-					border={hasError ? 'red-500' : passwordWasChanged ? 'blue-500' : 'green-500'}
-					background={hasError ? 'red-800' : passwordWasChanged ? 'blue-500' : 'green-400'}
-					text={hasError ? 'red-500' : passwordWasChanged ? 'blue-500' : 'green-500'}
-					textHover={hasError ? 'red-700' : passwordWasChanged ? 'blue-600' : 'green-700'}
+					border={hasError ? 'border-red-500' : passwordWasChanged ? 'border-blue-500' : 'border-green-500'}
+					background={hasError ? 'bg-red-800' : passwordWasChanged ? 'bg-blue-500' : 'bg-green-400'}
+					text={hasError ? 'text-red-500' : passwordWasChanged ? 'text-blue-500' : 'text-green-500'}
+					textHover={hasError ? 'hover:text-red-700' : passwordWasChanged ? 'hover:text-blue-700' : 'hover:text-green-700'}
 				/>
 
 				{/*  Form */}
