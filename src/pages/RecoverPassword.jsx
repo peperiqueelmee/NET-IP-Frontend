@@ -62,10 +62,10 @@ const RecoverPassword = () => {
 				{IsUsernameInvalid !== null ? (
 					<InformativeMessage
 						message={message}
-						border={IsUsernameInvalid ? 'red-500' : 'blue-500'}
-						background={IsUsernameInvalid ? 'red-800' : 'blue-500'}
-						text={IsUsernameInvalid ? 'red-500' : 'blue-500'}
-						textHover={IsUsernameInvalid ? 'red-700' : 'blue-600'}
+						border={IsUsernameInvalid ? 'border-red-500' : 'border-blue-500'}
+						background={IsUsernameInvalid ? 'bg-red-800' : 'bg-blue-500'}
+						text={IsUsernameInvalid ? 'text-red-500' : 'text-blue-500'}
+						textHover={IsUsernameInvalid ? 'hover:text-red-700' : 'hover:text-blue-600'}
 					/>
 				) : null}
 				{/* Form */}
