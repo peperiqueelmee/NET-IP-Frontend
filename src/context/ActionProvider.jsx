@@ -73,11 +73,21 @@ const ActionProvider = ({ children }) => {
 				),
 			},
 			{
+				name: 'Cuentas de Usuario',
+				icon: (
+					<ConversationOutline
+						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
+							selectedAction === 5 ? 'text-white' : 'text-zinc-800'
+						}`}
+					/>
+				),
+			},
+			{
 				name: 'Log',
 				icon: (
 					<QuestionCircleOutline
 						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
-							selectedAction === 5 ? 'text-white' : 'text-zinc-800'
+							selectedAction === 6 ? 'text-white' : 'text-zinc-800'
 						}`}
 					/>
 				),

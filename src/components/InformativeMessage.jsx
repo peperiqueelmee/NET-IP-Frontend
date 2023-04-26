@@ -15,9 +15,9 @@ const InformativeMessage = ({ border, background, text, textHover, message }) =>
                                 ${border}`}>
 				<div
 					className={`flex bg-opacity-40  rounded-xl
-				 				   sm:py-5 py-3 text-center text-xs sm:text-sm lg:text-base justify-between px-10
+				 				   py-3 text-center text-xs sm:text-sm lg:text-base justify-between px-10
                                    ${background}`}>
-					<div className='text-slate-100'>{message}</div>
+					<div className='text-slate-100 w-full'>{message}</div>
 					<div
 						className={`font-bold cursor-pointer transition-colors duration-300
                                     ${text} ${textHover} `}

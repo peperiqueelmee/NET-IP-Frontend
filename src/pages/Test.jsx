@@ -1,5 +1,11 @@
+import { ModalCreateEmployee } from '../components';
+
 const Test = () => {
-	return <>test</>;
+	return (
+		<>
+			<ModalCreateEmployee />
+		</>
+	);
 };
 
 export default Test;

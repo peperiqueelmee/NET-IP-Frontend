@@ -48,7 +48,6 @@ const BlockNumberFilter = () => {
 									</button>
 								</div>
 							</div>
-
 							{/*  Generate report */}
 							<button
 								className={`{ ${
