@@ -2,16 +2,28 @@ import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CheckCircleFill, CloseCircleFill, EyeFill, EyeFillInvisible } from '../assets/icons';
 import { inputHasError } from '../utils/utils';
+import InfoTooltip from './InfoTooltip';
 
-const InputWithValidationTest = ({ label, icon, type, value, placeholder, errorMessage, onChange, submitForm }) => {
+const InputWithValidationTest = ({
+	label,
+	icon,
+	type,
+	value,
+	placeholder,
+	errorMessage,
+	onChange,
+	error,
+	tooltip = false,
+	infoTooltip,
+}) => {
 	const [typeInput, setTypeInput] = useState(type);
 	const [successInput, setSuccessInput] = useState(false);
 	const [errorInput, setErrorInput] = useState(false);
 	const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
 	useEffect(() => {
-		setErrorInput(submitForm);
-	}, [submitForm]);
+		setErrorInput(error);
+	}, [error]);
 
 	const handleBlur = (e) => {
 		const input = e.target;
@@ -36,10 +48,17 @@ const InputWithValidationTest = ({ label, icon, type, value, placeholder, errorM
 	return (
 		<>
 			<div className='relative mt-2'>
-				<label className='block mb-2 text-xs sm:text-sm font-medium text-slate-600'>
-					{label}
-					<span className='text-red-500'>*</span>
-				</label>
+				<div className='flex items-center gap-1'>
+					<label className='block mb-2 text-xs sm:text-sm font-medium text-slate-600'>
+						{label}
+						<span className='text-red-500'>*</span>
+					</label>
+					{tooltip && (
+						<div>
+							<InfoTooltip info={infoTooltip} />
+						</div>
+					)}
+				</div>
 				<input
 					type={typeInput}
 					className={`mt-2 border focus:outline-none text-gray-900 text-xs sm:text-sm rounded-md 
@@ -82,7 +101,7 @@ const InputWithValidationTest = ({ label, icon, type, value, placeholder, errorM
 						{/* Error or success icons */}
 						<div className={`${errorInput || successInput ? 'visible' : 'invisible'} cursor-text`}>
 							{errorInput ? (
-								<CloseCircleFill className='h-5 w-5 sm:h-5 sm:w-5 text-red-500' />
+								<CloseCircleFill className='h-4 w-4 sm:h-5 sm:w-5 text-red-500' />
 							) : (
 								<CheckCircleFill className='h-4 w-4 sm:h-5 sm:w-5 text-emerald-500' />
 							)}

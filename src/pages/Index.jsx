@@ -26,8 +26,9 @@ const Register = () => {
 			setInputPasswordSubmitEmpty(isPasswordEmpty);
 			return;
 		}
-		// Login
+
 		try {
+			// Login
 			setIsLoading(true);
 			const url = '/employee/login';
 			const employeeData = {
@@ -68,13 +69,15 @@ const Register = () => {
 				</h1>
 				{/* Error message */}
 				{IsInvalidCredentials && (
-					<InformativeMessage
-						message={messageError}
-						border={'border-red-500'}
-						background={'bg-red-800'}
-						text={'text-red-500'}
-						textHover={'hover:text-red-700'}
-					/>
+					<div className='w-full mb-5 sm:max-w-md'>
+						<InformativeMessage
+							message={messageError}
+							border={'border-red-500'}
+							background={'bg-red-800'}
+							text={'text-red-500'}
+							textHover={'hover:text-red-700'}
+						/>
+					</div>
 				)}
 				{/* Form */}
 				<div className='opacity-90 w-full bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 rounded-2xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-2 border-lime-500 flex'>
@@ -94,7 +97,7 @@ const Register = () => {
 								value={username}
 								onChange={setUsername}
 								icon={<UserFill className='text-slate-600' />}
-								submitForm={inputUsernameSubmitEmpty}
+								error={inputUsernameSubmitEmpty}
 							/>
 							<InputWithValidation
 								label='Contraseña'
@@ -104,7 +107,7 @@ const Register = () => {
 								value={password}
 								onChange={setPassword}
 								icon={<PadlockFill className='text-slate-600' />}
-								submitForm={inputPasswordSubmitEmpty}
+								error={inputPasswordSubmitEmpty}
 							/>
 
 							<button

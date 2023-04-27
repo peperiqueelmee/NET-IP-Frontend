@@ -1,11 +1,8 @@
-import { ModalCreateEmployee } from '../components';
-
-const Test = () => {
+import InfoTooltip from "../components/InfoTooltip";
+export default function Test() {
 	return (
 		<>
-			<ModalCreateEmployee />
+			<InfoTooltip />
 		</>
 	);
-};
-
-export default Test;
+}

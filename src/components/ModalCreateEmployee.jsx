@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { InputWithValidation, InputAutocomplete, InformativeMessage } from '.';
+import { InformativeMessage, InputAutocomplete, InputWithValidation } from '.';
 import { EmailFill, IdCardFill, LabFill, PadlockFill, UserFill, UserSecretFill } from '../assets/icons';
 import axiosClient from '../config/axios';
 
@@ -18,6 +18,7 @@ const ModalCreateEmployee = () => {
 	const [password, setPassword] = useState('');
 	const [role, setRole] = useState(null);
 	// Validations
+	const [rutIsValid, setRutIsValid] = useState(null);
 	const formIsFull = names && lastnames && rut && email && username && password && role;
 	const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
 	//  Toggle modal
@@ -43,6 +44,7 @@ const ModalCreateEmployee = () => {
 	const handleToggleModal = (shouldClose) => {
 		setUserHasBeenCreated(null);
 		setOpen(!shouldClose);
+		clearForm();
 	};
 	const handleRoleSelect = (roleSelected) => {
 		setRoleSelected(roleSelected);
@@ -54,6 +56,8 @@ const ModalCreateEmployee = () => {
 		setRole(selectedObject.id);
 	};
 	const handleSubmit = async (e) => {
+		setUserHasBeenCreated(null);
+		setMessage('');
 		e.preventDefault();
 		try {
 			// Create employee
@@ -70,21 +74,29 @@ const ModalCreateEmployee = () => {
 			await axiosClient.post(url, employeeData);
 
 			setMessage('¡El usuario ha sido creado exitosamente!');
-			// Clear form
-			setNames('');
-			setLastnames('');
-			setRut('');
-			setEmail('');
-			setUsername('');
-			setPassword('');
-			setRole(null);
-			setRoleSelected('');
 			setUserHasBeenCreated(true);
 		} catch (error) {
 			setUserHasBeenCreated(false);
 			setMessage(error.response.data.message);
 		}
 	};
+
+	const removeErrorMessage = () => {
+		setUserHasBeenCreated(null);
+	};
+	const clearForm = async () => {
+		setMessage('');
+		setNames('');
+		setLastnames('');
+		setRut('');
+		setEmail('');
+		setUsername('');
+		setPassword('');
+		setRole(null);
+		setRoleSelected('');
+		setUserHasBeenCreated(null);
+	};
+
 	return (
 		<div>
 			<button
@@ -94,7 +106,7 @@ const ModalCreateEmployee = () => {
 			{open && (
 				<div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-x-auto sm:px-20 lg:px-40 xl:px-72 px-0'>
 					<div
-						className={`bg-slate-200 rounded-lg py-5 w-full flex flex-col items-center bg-opacity-90 overflow-auto mt-44 sm:mt-52 lg:mt-10 mb-5 mx-5`}>
+						className={`bg-slate-200 rounded-lg py-5 w-full sm:w-11/12 lg:w-10/12  2xl:w-8/12  flex flex-col items-center bg-opacity-90 overflow-auto mt-44 sm:mt-52 lg:mt-10 mb-5 mx-5`}>
 						{/* Success or error message */}
 						{userHasBeenCreated != null ? (
 							<div className='w-full px-3 flex justify-center'>
@@ -117,6 +129,7 @@ const ModalCreateEmployee = () => {
 								</div>
 								<form
 									className='w-full px-10 py-4 mt-2'
+									onClick={removeErrorMessage}
 									onSubmit={handleSubmit}>
 									<div className='flex flex-col'>
 										<div className='md:flex gap-4 block w-full justify-center'>
@@ -125,7 +138,7 @@ const ModalCreateEmployee = () => {
 													label='Nombre(s)'
 													type='text'
 													placeholder='Juan Carlos'
-													errorMessage='Por favor ingresa el nombre del trabajador.'
+													errorMessage='Por favor ingresa el/los nombre(s).'
 													value={names}
 													onChange={setNames}
 													icon={
@@ -140,7 +153,7 @@ const ModalCreateEmployee = () => {
 													label='Apellido(s)'
 													type='text'
 													placeholder='Bodoque Bodoque'
-													errorMessage='Por favor ingresa el nombre del trabajador.'
+													errorMessage='Por favor ingresa el/los apellido(s).'
 													value={lastnames}
 													onChange={setLastnames}
 													icon={
@@ -157,9 +170,11 @@ const ModalCreateEmployee = () => {
 													label='R.U.T'
 													type='text'
 													placeholder='10123456-3'
-													errorMessage='Por favor ingresa el nombre del trabajador.'
+													errorMessage='Por favor ingresa el RUT.'
 													value={rut}
 													onChange={setRut}
+													tooltip={true}
+													infoTooltip={'El formato de rut debe ser 12345678-9'}
 													icon={
 														<IdCardFill className={'text-slate-600 text-sm sm:text-base'} />
 													}
@@ -185,7 +200,7 @@ const ModalCreateEmployee = () => {
 													label='Username'
 													type='text'
 													placeholder='JcBodoque'
-													errorMessage='Por favor ingresa el nombre del trabajador.'
+													errorMessage='Por favor ingresa el nombre de usuario.'
 													value={username}
 													onChange={setUsername}
 													icon={
@@ -198,9 +213,13 @@ const ModalCreateEmployee = () => {
 													label='Password'
 													type='password'
 													placeholder='Contraseña'
-													errorMessage='Por favor ingresa el nombre del trabajador.'
+													errorMessage='Por favor ingresa la contraseña.'
 													value={password}
 													onChange={setPassword}
+													tooltip={true}
+													infoTooltip={
+														'El formato de contraseña debe ser 6-10 caracteres, al menos: 1 mayúscula, 1 minúscula, 1 número.'
+													}
 													icon={
 														<PadlockFill
 															className={'text-slate-600 text-sm sm:text-base'}
@@ -222,7 +241,13 @@ const ModalCreateEmployee = () => {
 											/>
 										</div>
 									</div>
-									<div className='flex space-x-4 mt-10 justify-center'>
+									{/* Error message */}
+									{userHasBeenCreated != null ? (
+										<div className={`text-red-600 font-medium text-xs text-center mt-4 `}>
+											{message}
+										</div>
+									) : null}
+									<div className='flex space-x-4 mt-8 justify-center'>
 										<button
 											className='bg-slate-200 hover:bg-slate-300 transition-colors duration-300
                                          text-gray-900 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border border-gray-300 font-medium'
@@ -233,7 +258,8 @@ const ModalCreateEmployee = () => {
 											type='submit'
 											disabled={!formIsFull}
 											className='bg-pink-600 hover:bg-pink-700 transition-colors duration-300
-                                         text-slate-100 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border border-pink-700 font-medium disabled:bg-gray-400 disabled:border-gray-500'>
+                                         			   text-slate-100 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border
+										               border-pink-700 font-medium disabled:bg-gray-400 disabled:border-gray-500'>
 											Guardar
 										</button>
 									</div>

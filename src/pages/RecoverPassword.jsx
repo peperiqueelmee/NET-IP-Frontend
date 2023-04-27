@@ -86,7 +86,7 @@ const RecoverPassword = () => {
 								value={username}
 								onChange={setUsername}
 								icon={<UserFill className='text-slate-600' />}
-								submitForm={inputUsernameSubmitEmpty}
+								error={inputUsernameSubmitEmpty}
 							/>
 
 							<button
