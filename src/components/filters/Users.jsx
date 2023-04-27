@@ -33,7 +33,7 @@ const Users = () => {
 									handleButtonClick('button1');
 								}}
 								className={`bg-gray-200 text-zinc-700 rounded-2xl px-4 py-1 
-								            text-xs lg:text-sm shadow hover:shadow-lime-400 w-10/12 sm:w-6/12 lg:w-32
+								            text-xs lg:text-sm shadow hover:shadow-lime-400 w-11/12 sm:w-6/12 lg:w-32
 											${selectedButton === 'button1' ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600' : ''}`}>
 								Crear Usuario
 							</button>
@@ -41,7 +41,7 @@ const Users = () => {
 						{/* List of user accounts */}
 						<div className='border border-lime-400 rounded-lg flex flex-col items-center justify-evenly py-2 px-4 text-xs lg:text-sm gap-y-1 font-medium'>
 							<div className='text-lime-400'>Listado cuentas de usuario</div>
-							<div className='flex gap-2 flex-col lg:flex-row w-10/12 sm:w-6/12 lg:w-auto'>
+							<div className='flex gap-2 flex-col lg:flex-row w-11/12 sm:w-6/12 lg:w-auto'>
 								<button
 									onClick={() => handleButtonClick('button2')}
 									className={`bg-gray-200 text-zinc-700 rounded-2xl px-4 py-1
