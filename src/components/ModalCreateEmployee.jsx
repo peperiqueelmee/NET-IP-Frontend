@@ -243,7 +243,7 @@ const ModalCreateEmployee = () => {
 									</div>
 									{/* Error message */}
 									{userHasBeenCreated != null ? (
-										<div className={`text-red-600 font-medium text-xs text-center mt-4 `}>
+										<div className={`text-red-600 font-medium text-xs text-center mt-4 block md:hidden`}>
 											{message}
 										</div>
 									) : null}

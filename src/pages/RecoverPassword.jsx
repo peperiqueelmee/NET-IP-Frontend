@@ -60,13 +60,15 @@ const RecoverPassword = () => {
 				</h1>
 				{/* Success or error message */}
 				{IsUsernameInvalid !== null ? (
-					<InformativeMessage
-						message={message}
-						border={IsUsernameInvalid ? 'border-red-500' : 'border-blue-500'}
-						background={IsUsernameInvalid ? 'bg-red-800' : 'bg-blue-500'}
-						text={IsUsernameInvalid ? 'text-red-500' : 'text-blue-500'}
-						textHover={IsUsernameInvalid ? 'hover:text-red-700' : 'hover:text-blue-700'}
-					/>
+					<div className='w-full mb-5 sm:max-w-md'>
+						<InformativeMessage
+							message={message}
+							border={IsUsernameInvalid ? 'border-red-500' : 'border-blue-500'}
+							background={IsUsernameInvalid ? 'bg-red-800' : 'bg-blue-500'}
+							text={IsUsernameInvalid ? 'text-red-500' : 'text-blue-500'}
+							textHover={IsUsernameInvalid ? 'hover:text-red-700' : 'hover:text-blue-700'}
+						/>
+					</div>
 				) : null}
 				{/* Form */}
 				<div className='opacity-90 w-full bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 rounded-2xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-2 border-lime-500 flex'>

@@ -33,7 +33,7 @@ const ChangePassword = () => {
 			try {
 				const url = `/employee/forgot-password/${token}`;
 				const { data } = await axiosClient(url);
-				const employeeName = data.data.name;
+				const employeeName = data.data;
 
 				setHasError(false);
 				setMessage(`Hola ${employeeName}, cambia tu contraseña aquí.`);
@@ -47,8 +47,8 @@ const ChangePassword = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// Change password
 		try {
+			// Change password
 			setIsLoading(true);
 			const url = `/employee/forgot-password/${token}`;
 			const { data } = await axiosClient.post(url, { emp_password: password });
@@ -87,14 +87,23 @@ const ChangePassword = () => {
 					<span className='text-slate-900'>IP</span>
 				</p>
 				{/* Informative message, success or error */}
-				<InformativeMessage
-					message={message}
-					border={hasError ? 'border-red-500' : passwordWasChanged ? 'border-blue-500' : 'border-green-500'}
-					background={hasError ? 'bg-red-800' : passwordWasChanged ? 'bg-blue-500' : 'bg-green-400'}
-					text={hasError ? 'text-red-500' : passwordWasChanged ? 'text-blue-500' : 'text-green-500'}
-					textHover={hasError ? 'hover:text-red-700' : passwordWasChanged ? 'hover:text-blue-700' : 'hover:text-green-700'}
-				/>
-
+				<div className='w-full mb-5 sm:max-w-md'>
+					<InformativeMessage
+						message={message}
+						border={
+							hasError ? 'border-red-500' : passwordWasChanged ? 'border-blue-500' : 'border-green-500'
+						}
+						background={hasError ? 'bg-red-800' : passwordWasChanged ? 'bg-blue-500' : 'bg-green-400'}
+						text={hasError ? 'text-red-500' : passwordWasChanged ? 'text-blue-500' : 'text-green-500'}
+						textHover={
+							hasError
+								? 'hover:text-red-700'
+								: passwordWasChanged
+								? 'hover:text-blue-700'
+								: 'hover:text-green-700'
+						}
+					/>
+				</div>
 				{/*  Form */}
 				<div className='opacity-90 w-full bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 rounded-2xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-2 border-lime-500 flex'>
 					<div className='w-full p-6 sm:p-8 mx-auto my-auto'>
