@@ -8,6 +8,7 @@ import {
 	IntercomFill,
 	ConversationOutline,
 	QuestionCircleOutline,
+	UserFill,
 } from '../assets/icons';
 
 const ActionContext = createContext();
@@ -75,7 +76,7 @@ const ActionProvider = ({ children }) => {
 			{
 				name: 'Cuentas de Usuario',
 				icon: (
-					<ConversationOutline
+					<UserFill
 						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
 							selectedAction === 5 ? 'text-white' : 'text-zinc-800'
 						}`}
