@@ -2,6 +2,7 @@ import Grow from '@mui/material/Grow';
 import { useState } from 'react';
 import { SearchFill } from '../../assets/icons';
 import { useAction } from '../../hooks';
+import InfoTooltip from '../InfoTooltip';
 
 const Users = () => {
 	const [selectedButton, setSelectedButton] = useState('');
@@ -13,6 +14,9 @@ const Users = () => {
 	const handleButtonClick = (buttonName) => {
 		setSelectedButton(buttonName);
 	};
+	const handleSubmit =() => {
+		console.log('test')
+	}
 
 	return (
 		<>
@@ -69,22 +73,30 @@ const Users = () => {
 						</div>
 						{/* Search by rut */}
 						<div className='border border-lime-400 rounded-lg flex flex-col items-center justify-evenly py-2 px-4 text-xs lg:text-sm gap-y-1 font-medium'>
-							<div className='text-lime-400'>Búsqueda por RUT</div>
-							<div className='flex items-center'>
+							<div className='flex items-center gap-3'>
+								<div className='text-lime-400'>Búsqueda por RUT</div>
+								<div style={{ marginTop: '3px' }}>
+									<InfoTooltip info={'El formato de rut debe ser 12345678-9'} />
+								</div>
+							</div>
+							<form 
+							onSubmit={handleSubmit}
+							className='flex items-center'>
 								<input
 									onClick={() => handleButtonClick('button5')}
 									className='rounded-l-2xl pl-4 text-xs lg:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500'
 									type='text'
 									placeholder='Ingresa RUT de usuario'
 								/>
-								<div
+								<button
+									type='submit'
 									onClick={() => handleButtonClick('button5')}
 									className={`bg-gray-200 rounded-r-2xl h-6 w-9 flex items-center justify-center cursor-pointer 
 												shadow hover:shadow-lime-400 
 												${selectedButton === 'button5' ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600' : ''}`}>
 									<SearchFill />
-								</div>
-							</div>
+								</button>
+							</form>
 						</div>
 					</div>
 				</div>
