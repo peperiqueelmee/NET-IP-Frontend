@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { InformativeMessage, InputAutocomplete, InputWithValidation } from '.';
 import { EmailFill, IdCardFill, LabFill, PadlockFill, UserFill, UserSecretFill } from '../assets/icons';
+import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '.';
+import { RESPONSE_SERVER } from '../utils/utils';
 import axiosClient from '../config/axios';
 
 const ModalCreateEmployee = () => {
+	const [isLoading, setIsLoading] = useState(null);
 	// Data form
 	const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
 	const [roleSelected, setRoleSelected] = useState('');
@@ -18,7 +20,6 @@ const ModalCreateEmployee = () => {
 	const [password, setPassword] = useState('');
 	const [role, setRole] = useState(null);
 	// Validations
-	const [rutIsValid, setRutIsValid] = useState(null);
 	const formIsFull = names && lastnames && rut && email && username && password && role;
 	const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
 	//  Toggle modal
@@ -56,6 +57,7 @@ const ModalCreateEmployee = () => {
 		setRole(selectedObject.id);
 	};
 	const handleSubmit = async (e) => {
+		setIsLoading(true);
 		setUserHasBeenCreated(null);
 		setMessage('');
 		e.preventDefault();
@@ -72,12 +74,17 @@ const ModalCreateEmployee = () => {
 				email,
 			};
 			await axiosClient.post(url, employeeData);
-
+			setIsLoading(null);
 			setMessage('¡El usuario ha sido creado exitosamente!');
 			setUserHasBeenCreated(true);
 		} catch (error) {
+			setIsLoading(null);
 			setUserHasBeenCreated(false);
-			setMessage(error.response.data.message);
+			if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
+				setMessage(error.response.data.message);
+				return;
+			}
+			setMessage('Error de servidor. Reintentar.');
 		}
 	};
 
@@ -218,7 +225,7 @@ const ModalCreateEmployee = () => {
 													onChange={setPassword}
 													tooltip={true}
 													infoTooltip={
-														'El formato de contraseña debe ser 6-10 caracteres, al menos: 1 mayúscula, 1 minúscula, 1 número.'
+														'El formato de contraseña debe ser 6-10 caracteres, contener al menos: 1 mayúscula, 1 minúscula, 1 número.'
 													}
 													icon={
 														<PadlockFill
@@ -243,23 +250,29 @@ const ModalCreateEmployee = () => {
 									</div>
 									{/* Error message */}
 									{userHasBeenCreated != null ? (
-										<div className={`text-red-600 font-medium text-xs text-center mt-4 block md:hidden`}>
+										<div
+											className={`text-red-600 font-medium text-xs text-center mt-4 block md:hidden`}>
 											{message}
 										</div>
 									) : null}
+									{isLoading && (
+										<div className='mt-4'>
+											<Spinner />
+										</div>
+									)}
 									<div className='flex space-x-4 mt-8 justify-center'>
 										<button
 											className='bg-slate-200 hover:bg-slate-300 transition-colors duration-300
-                                         text-gray-900 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border border-gray-300 font-medium'
+                                         text-gray-900 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border border-gray-300 font-medium w-20'
 											onClick={() => handleToggleModal(true)}>
 											Cancelar
 										</button>
 										<button
 											type='submit'
-											disabled={!formIsFull}
+											disabled={!formIsFull || isLoading}
 											className='bg-pink-600 hover:bg-pink-700 transition-colors duration-300
                                          			   text-slate-100 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border
-										               border-pink-700 font-medium disabled:bg-gray-400 disabled:border-gray-500'>
+										               border-pink-700 font-medium disabled:bg-gray-400 disabled:border-gray-500 w-20'>
 											Guardar
 										</button>
 									</div>
