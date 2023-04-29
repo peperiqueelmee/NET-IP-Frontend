@@ -1,22 +1,65 @@
-import Grow from '@mui/material/Grow';
 import { useState } from 'react';
+import Grow from '@mui/material/Grow';
 import { SearchFill } from '../../assets/icons';
+import { Spinner, EmployeesResultsTable, EmployeesResultsCards } from '../index.js';
 import { useAction } from '../../hooks';
+import axiosClient from '../../config/axios';
 import InfoTooltip from '../InfoTooltip';
 
 const Users = () => {
 	const [selectedButton, setSelectedButton] = useState('');
+	const [employees, setEmployees] = useState(null);
+	const [isLoading, setLoading] = useState(null);
 	const { selectedAction } = useAction();
+	const [rut, setRut] = useState('');
 
 	const modalCreateEmployee = () => {
 		document.getElementById('createEmployee').click();
 	};
+
 	const handleButtonClick = (buttonName) => {
 		setSelectedButton(buttonName);
 	};
-	const handleSubmit =() => {
-		console.log('test')
-	}
+	const handleListAllEmployees = async () => {
+		setLoading(true);
+		try {
+			const url = '/employee/employees';
+			const { data } = await axiosClient(url);
+			setEmployees(data.data);
+			console.log(data.data);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+			console.log(error);
+		}
+	};
+	const handleListEmployeeByRut = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			const url = `/employee/employees/${rut}`;
+			const { data } = await axiosClient(url);
+			setEmployees(data.data);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+			setEmployees('');
+			console.log(error);
+		}
+	};
+	const handleListEmployeesByStatus = async (status) => {
+		setLoading(true);
+		try {
+			const url = `/employee/employees/status/${status}`;
+			const { data } = await axiosClient(url);
+			setEmployees(data.data);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+			setEmployees('');
+			console.log(error);
+		}
+	};
 
 	return (
 		<>
@@ -47,7 +90,10 @@ const Users = () => {
 							<div className='text-lime-400'>Listado cuentas de usuario</div>
 							<div className='flex gap-2 flex-col lg:flex-row w-11/12 sm:w-6/12 lg:w-auto'>
 								<button
-									onClick={() => handleButtonClick('button2')}
+									onClick={() => {
+										handleListAllEmployees();
+										handleButtonClick('button2');
+									}}
 									className={`bg-gray-200 text-zinc-700 rounded-2xl px-4 py-1
 											    text-xs lg:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
 												${selectedButton === 'button2' ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600' : ''}`}>
@@ -55,14 +101,20 @@ const Users = () => {
 								</button>
 								<div className='flex justify-center gap-1'>
 									<button
-										onClick={() => handleButtonClick('button3')}
+										onClick={() => {
+											handleListEmployeesByStatus(1);
+											handleButtonClick('button3');
+										}}
 										className={`bg-gray-200 text-zinc-700 rounded-2xl px-4 py-1 
 													text-xs lg:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
 													${selectedButton === 'button3' ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600' : ''}`}>
 										Listar activos
 									</button>
 									<button
-										onClick={() => handleButtonClick('button4')}
+										onClick={() => {
+											handleListEmployeesByStatus(2);
+											handleButtonClick('button4');
+										}}
 										className={`bg-gray-200 text-zinc-700 rounded-2xl px-4 py-1 
 													text-xs lg:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
 													${selectedButton === 'button4' ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600' : ''}`}>
@@ -79,10 +131,12 @@ const Users = () => {
 									<InfoTooltip info={'El formato de rut debe ser 12345678-9'} />
 								</div>
 							</div>
-							<form 
-							onSubmit={handleSubmit}
-							className='flex items-center'>
+							<form
+								onSubmit={handleListEmployeeByRut}
+								className='flex items-center'>
 								<input
+									value={rut}
+									onChange={(e) => setRut(e.target.value)}
 									onClick={() => handleButtonClick('button5')}
 									className='rounded-l-2xl pl-4 text-xs lg:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500'
 									type='text'
@@ -90,7 +144,10 @@ const Users = () => {
 								/>
 								<button
 									type='submit'
-									onClick={() => handleButtonClick('button5')}
+									onClick={() => {
+										handleListEmployeeByRut();
+										handleButtonClick('button5');
+									}}
 									className={`bg-gray-200 rounded-r-2xl h-6 w-9 flex items-center justify-center cursor-pointer 
 												shadow hover:shadow-lime-400 
 												${selectedButton === 'button5' ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600' : ''}`}>
@@ -99,6 +156,15 @@ const Users = () => {
 							</form>
 						</div>
 					</div>
+					{/* Spinner */}
+					{isLoading && (
+						<div className='bg-black h-12 flex items-center justify-center opacity-70'>
+							<Spinner />
+						</div>
+					)}
+					{/* Results employees table */}
+					{employees !== null && <EmployeesResultsTable employees={employees} />}
+					{employees !== null && <EmployeesResultsCards employees={employees} />}
 				</div>
 			</Grow>
 		</>
