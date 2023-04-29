@@ -35,8 +35,8 @@ const EmployeesResultsCardsResponsive = ({ employees }) => {
 									<div className='flex w-full'>
 										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Cargo:</div>
 										<div
-											className={`w-1/2
-													${employee.role_id === 1 ? 'font-semibold' : ''}`}>
+											className={`w-1/2 font-semibold
+													${employee.role_id === 1 ? 'text-blue-950 italic' : ''}`}>
 											{employee.role.description}
 										</div>
 									</div>

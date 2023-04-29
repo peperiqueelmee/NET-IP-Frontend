@@ -62,8 +62,8 @@ const EmployeeResultsTable = ({ employees }) => {
 									<td className='px-4 py-4 border-x'>{employee.email}</td>
 									<td className='px-4 py-4 border-x'>{employee.username}</td>
 									<td
-										className={`px-6 py-4 border-x 
-										${employee.role_id === 1 ? 'font-semibold' : ''}`}>
+										className={`px-6 py-4 border-x font-semibold
+										${employee.role_id === 1 ? 'text-blue-950 italic' : ''}`}>
 										{employee.role.description}
 									</td>
 									<td

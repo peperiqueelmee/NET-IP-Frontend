@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Grow from '@mui/material/Grow';
 import { SearchFill } from '../../assets/icons';
 import { Spinner, EmployeesResultsTable, EmployeesResultsCards } from '../index.js';
@@ -7,11 +7,17 @@ import axiosClient from '../../config/axios';
 import InfoTooltip from '../InfoTooltip';
 
 const Users = () => {
-	const [selectedButton, setSelectedButton] = useState('');
-	const [employees, setEmployees] = useState(null);
-	const [isLoading, setLoading] = useState(null);
 	const { selectedAction } = useAction();
+	const [selectedButton, setSelectedButton] = useState('');
+	const [isLoading, setLoading] = useState(null);
+	const [employees, setEmployees] = useState(null);
 	const [rut, setRut] = useState('');
+
+	useEffect(() => {
+		setSelectedButton('');
+		setEmployees(null);
+		setRut('');
+	}, [selectedAction]);
 
 	const modalCreateEmployee = () => {
 		document.getElementById('createEmployee').click();
