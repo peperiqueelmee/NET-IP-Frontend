@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
+import { QuestionCircleOutline } from '../assets/icons';
 
 const InfoTooltip = ({ info }) => {
 	const [open, setOpen] = useState(false);
@@ -28,11 +28,9 @@ const InfoTooltip = ({ info }) => {
 						onClose={handleTooltipClose}
 						open={open}
 						title={info}>
-						<HelpOutlineIcon
-							style={{ color: '#0284c7', marginTop: '-9' }}
-							fontSize='small'
-							onClick={handleTooltipOpen}
-						/>
+						<div onClick={handleTooltipOpen}>
+							<QuestionCircleOutline className={'text-sm sm:text-base text-sky-600'} />
+						</div>
 					</Tooltip>
 				</div>
 			</ClickAwayListener>

@@ -54,7 +54,7 @@ const InputWithValidationTest = ({
 						<span className='text-red-500'>*</span>
 					</label>
 					{tooltip && (
-						<div>
+						<div style={{marginTop : '-6px'}}>
 							<InfoTooltip info={infoTooltip} />
 						</div>
 					)}

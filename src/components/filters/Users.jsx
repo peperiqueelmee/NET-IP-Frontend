@@ -13,16 +13,18 @@ const Users = () => {
 	const [employees, setEmployees] = useState(null);
 	const [rut, setRut] = useState('');
 
+	// Clear options selected.
 	useEffect(() => {
 		setSelectedButton('');
 		setEmployees(null);
 		setRut('');
 	}, [selectedAction]);
-
+	// Interaction with modal.
 	const modalCreateEmployee = () => {
+		setEmployees(null);
 		document.getElementById('createEmployee').click();
 	};
-
+	// Handles
 	const handleButtonClick = (buttonName) => {
 		setSelectedButton(buttonName);
 	};
