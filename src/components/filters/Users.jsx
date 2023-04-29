@@ -163,8 +163,8 @@ const Users = () => {
 						</div>
 					)}
 					{/* Results employees table */}
-					{employees !== null && <EmployeesResultsTable employees={employees} />}
-					{employees !== null && <EmployeesResultsCards employees={employees} />}
+					{employees !== null && isLoading === false && <EmployeesResultsTable employees={employees} />}
+					{employees !== null && isLoading === false && <EmployeesResultsCards employees={employees} />}
 				</div>
 			</Grow>
 		</>

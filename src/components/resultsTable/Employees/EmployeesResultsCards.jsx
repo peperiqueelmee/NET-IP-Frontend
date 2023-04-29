@@ -13,27 +13,27 @@ const EmployeesResultsCardsResponsive = ({ employees }) => {
 								{/* Content */}
 								<div className='flex flex-col gap-1 tracking-wide w-full ml-3 mt-2'>
 									<div className='flex w-full'>
-										<div className='w-1/2 font-bold text-gray-700'>Nombre(s):</div>
+										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Nombre(s):</div>
 										<div className='w-1/2'>{employee.names}</div>
 									</div>
 									<div className='flex w-full'>
-										<div className='w-1/2 font-bold text-gray-700'>Apellido(s):</div>
+										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Apellido(s):</div>
 										<div className='w-1/2'>{employee.lastnames}</div>
 									</div>
 									<div className='flex w-full'>
-										<div className='w-1/2 font-bold text-gray-700'>RUT:</div>
+										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>RUT:</div>
 										<div className='w-1/2'>{employee.rut}</div>
 									</div>
 									<div className='flex w-full'>
-										<div className='w-1/2 font-bold text-gray-700'>Email:</div>
+										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Email:</div>
 										<div className='w-1/2'>{employee.email}</div>
 									</div>
 									<div className='flex w-full'>
-										<div className='w-1/2 font-bold text-gray-700'>Username:</div>
+										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Username:</div>
 										<div className='w-1/2'>{employee.username}</div>
 									</div>
 									<div className='flex w-full'>
-										<div className='w-1/2 font-bold text-gray-700'>Cargo:</div>
+										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Cargo:</div>
 										<div
 											className={`w-1/2
 													${employee.role_id === 1 ? 'font-semibold' : ''}`}>
@@ -41,7 +41,7 @@ const EmployeesResultsCardsResponsive = ({ employees }) => {
 										</div>
 									</div>
 									<div className='flex w-full'>
-										<div className='w-1/2 font-bold text-gray-700'>Estado:</div>
+										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Estado:</div>
 										<div
 											className={`font-medium text-emerald-600 w-1/2
 													${employee.status_id === 1 ? 'text-emerald-500' : 'text-red-600'}`}>
