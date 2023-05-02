@@ -34,7 +34,6 @@ const Users = () => {
 			const url = '/employee/employees';
 			const { data } = await axiosClient(url);
 			setEmployees(data.data);
-			console.log(data.data);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);

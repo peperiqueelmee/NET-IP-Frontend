@@ -2,11 +2,11 @@ import { useState, createContext } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 import {
-	PhoneCallOutline,
-	PhoneOffOutline,
-	ManagementOutline,
-	IntercomFill,
 	ConversationOutline,
+	IntercomFill,
+	ManagementOutline,
+	NotebookFill,
+	PhoneCallOutline,
 	QuestionCircleOutline,
 	UserFill,
 } from '../assets/icons';
@@ -24,7 +24,7 @@ const ActionProvider = ({ children }) => {
 	const getActions = (sizeIconLarge, sizeIconSmall) => {
 		const actions = [
 			{
-				name: 'Números Activos',
+				name: 'Números Telefónicos',
 				icon: (
 					<PhoneCallOutline
 						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
@@ -34,9 +34,9 @@ const ActionProvider = ({ children }) => {
 				),
 			},
 			{
-				name: 'Números Bloqueados',
+				name: 'Gestión de Anexos',
 				icon: (
-					<PhoneOffOutline
+					<NotebookFill
 						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
 							selectedAction === 1 ? 'text-white' : 'text-zinc-800'
 						}`}

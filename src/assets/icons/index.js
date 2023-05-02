@@ -11,6 +11,7 @@ export { default as IntercomFill } from './IntercomFill';
 export { default as KeyFill } from './KeyFill';
 export { default as LabFill } from './LabFill';
 export { default as ManagementOutline } from './ManagementOutline';
+export { default as NotebookFill } from './NotebookFill';
 export { default as PadlockFill } from './PadlockFill';
 export { default as PhoneCallOutline } from './PhoneCallOutline';
 export { default as PhoneOffOutline } from './PhoneOffOutline';

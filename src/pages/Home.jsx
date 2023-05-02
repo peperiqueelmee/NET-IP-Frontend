@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
-import { Actions, ActiveNumberFilter, BlockNumberFilter, ModalLogout, Users, ModalCreateEmployee } from '../components';
+import { Actions, ModalLogout, Users, ModalCreateEmployee, Phones } from '../components';
 
 const Home = () => {
 	const token = localStorage.getItem('token');
@@ -53,9 +53,8 @@ const Home = () => {
 				{/*  Actions */}
 				<div className='block'>
 					<Actions />
-					<ActiveNumberFilter />
-					<BlockNumberFilter />
 					<Users />
+					<Phones />
 				</div>
 			</div>
 
