@@ -177,11 +177,12 @@ const ModalCreateEmployee = () => {
 													label='R.U.T'
 													type='text'
 													placeholder='10123456-3'
-													errorMessage='Por favor ingresa el RUT.'
+													errorMessage='RUT y/o formato incorrecto.'
 													value={rut}
 													onChange={setRut}
 													tooltip={true}
 													infoTooltip={'El formato de rut debe ser 12345678-9'}
+													validateRut={true}
 													icon={
 														<IdCardFill className={'text-slate-600 text-sm sm:text-base'} />
 													}
@@ -217,13 +218,14 @@ const ModalCreateEmployee = () => {
 											</div>
 											<div className='w-full'>
 												<InputWithValidation
-													label='Password'
+													label='Contraseña'
 													type='password'
 													placeholder='Contraseña'
-													errorMessage='Por favor ingresa la contraseña.'
+													errorMessage='La contraseña no cumple con el formato de seguridad.'
 													value={password}
 													onChange={setPassword}
 													tooltip={true}
+													validatePassword={true}
 													infoTooltip={
 														'El formato de contraseña debe ser 6-10 caracteres, contener al menos: 1 mayúscula, 1 minúscula, 1 número.'
 													}

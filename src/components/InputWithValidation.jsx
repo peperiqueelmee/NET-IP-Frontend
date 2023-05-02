@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CheckCircleFill, CloseCircleFill, EyeFill, EyeFillInvisible } from '../assets/icons';
-import { inputHasError } from '../utils/utils';
+import { isInputInvalid } from '../utils/utils';
 import InfoTooltip from './InfoTooltip';
 
 const InputWithValidationTest = ({
@@ -15,6 +15,8 @@ const InputWithValidationTest = ({
 	error,
 	tooltip = false,
 	infoTooltip,
+	validateRut = false,
+	validatePassword = false,
 }) => {
 	const [typeInput, setTypeInput] = useState(type);
 	const [successInput, setSuccessInput] = useState(false);
@@ -27,13 +29,13 @@ const InputWithValidationTest = ({
 
 	const handleBlur = (e) => {
 		const input = e.target;
-		setErrorInput(inputHasError(input));
-		setSuccessInput(!inputHasError(input));
+		setErrorInput(isInputInvalid(input, validateRut, validatePassword));
+		setSuccessInput(!isInputInvalid(input, validateRut, validatePassword));
 	};
 	const handleChange = (e) => {
 		const input = e.target;
-		setErrorInput(inputHasError(input));
-		setSuccessInput(!inputHasError(input));
+		setErrorInput(isInputInvalid(input, validateRut, validatePassword));
+		setSuccessInput(!isInputInvalid(input, validateRut, validatePassword));
 	};
 	const handleFocus = () => {
 		setErrorInput(false);
@@ -54,7 +56,7 @@ const InputWithValidationTest = ({
 						<span className='text-red-500'>*</span>
 					</label>
 					{tooltip && (
-						<div style={{marginTop : '-6px'}}>
+						<div style={{ marginTop: '-6px' }}>
 							<InfoTooltip info={infoTooltip} />
 						</div>
 					)}
