@@ -13,7 +13,7 @@ const PhonesResultsCards = ({ phones }) => {
 								{/* Content */}
 								<div className='flex flex-col gap-1 tracking-wide w-full ml-3 mt-2'>
 									<div className='flex w-full'>
-										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Número Telefónico:</div>
+										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Nº Telefónico:</div>
 										<div className='w-1/2'>+{phone.phone_number}</div>
 									</div>
 									<div className='flex w-full'>
