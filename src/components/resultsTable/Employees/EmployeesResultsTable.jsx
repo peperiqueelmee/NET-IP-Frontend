@@ -34,7 +34,7 @@ const EmployeeResultsTable = ({ employees }) => {
 								<th
 									scope='col'
 									className='px-6 py-1'>
-									Username
+									Usuario
 								</th>
 								<th
 									scope='col'

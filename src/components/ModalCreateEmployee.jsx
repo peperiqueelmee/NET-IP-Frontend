@@ -177,7 +177,7 @@ const ModalCreateEmployee = () => {
 													label='R.U.T'
 													type='text'
 													placeholder='10123456-3'
-													errorMessage='RUT y/o formato incorrecto.'
+													errorMessage='Formato de RUT incorrecto.'
 													value={rut}
 													onChange={setRut}
 													tooltip={true}
@@ -205,7 +205,7 @@ const ModalCreateEmployee = () => {
 										<div className='md:flex gap-4 block w-full justify-center'>
 											<div className='w-full'>
 												<InputWithValidation
-													label='Username'
+													label='Usuario'
 													type='text'
 													placeholder='JcBodoque'
 													errorMessage='Por favor ingresa el nombre de usuario.'

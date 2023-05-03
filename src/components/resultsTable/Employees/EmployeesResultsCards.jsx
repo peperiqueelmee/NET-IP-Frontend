@@ -29,7 +29,7 @@ const EmployeesResultsCardsResponsive = ({ employees }) => {
 										<div className='w-1/2'>{employee.email}</div>
 									</div>
 									<div className='flex w-full'>
-										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Username:</div>
+										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Usuario:</div>
 										<div className='w-1/2'>{employee.username}</div>
 									</div>
 									<div className='flex w-full'>

@@ -20,18 +20,18 @@ const Home = () => {
 	return (
 		<div className='h-screen  home-page overflow-y-auto'>
 			<div className={`container mx-auto px-6 md:px-10 `}>
-				<div className='flex items-center justify-between pt-10 flex-col md:flex-row'>
+				<div className='flex items-center justify-between pt-10 flex-col lg:flex-row'>
 					<p className='text-white font-semibold tracking-wider text-sm md:text-xl xl:text-2xl text-shadow focus-in-expand'>
 						Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
 						<span className='text-slate-900'>IP</span>
 					</p>
 
 					{/* Buttons: Username, Help, Sing off */}
-					<div className='sm:flex gap-3 flex-row md:flex-col lg:flex-row mt-6 md:mt-0 hidden'>
+					<div className='sm:flex gap-3 flex-row lg:flex-row mt-6 lg:mt-0 hidden'>
 						<div className='border-2 border-lime-500 px-4 py-1 rounded-full text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
 							<div className='flex items-center gap-1'>
 								<UserFill className='text-xs lg:text-sm text-lime-400' />
-								<span className='flex w-full justify-center'>{username}@usuario</span>
+								<span className='flex w-full justify-center'>{username}</span>
 							</div>
 						</div>
 						<div className='border-2 border-lime-500 px-4 py-1 rounded-full text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
@@ -64,7 +64,7 @@ const Home = () => {
 				<div className='flex justify-between items-center h-12'>
 					<div className='flex flex-col justify-center items-center cursor-pointer'>
 						<UserFill className='text-base  text-white' />
-						<span className='text-xs text-slate-200'>{username}@usuario</span>
+						<span className='text-xs text-slate-200'>{username}</span>
 					</div>
 					<div className='flex flex-col justify-center items-center cursor-pointer'>
 						<HelpBuoyFill className='text-base  text-white' />
