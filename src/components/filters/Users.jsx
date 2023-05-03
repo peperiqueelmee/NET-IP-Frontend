@@ -148,7 +148,7 @@ const Users = () => {
 						</div>
 						{/* Search by rut */}
 						<div className='border border-lime-400 rounded-lg flex flex-col items-center justify-evenly py-2 px-4 text-xs xl:text-sm gap-y-1 font-medium'>
-							<div className='flex items-center gap-3'>
+							<div className='flex items-center gap-1'>
 								<div className='text-lime-400'>Búsqueda por RUT</div>
 								<div style={{ marginTop: '3px' }}>
 									<InfoTooltip info={'El formato de rut debe ser 12345678-9'} />

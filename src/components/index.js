@@ -11,4 +11,5 @@ export { default as Phones } from './filters/Phones';
 export { default as PhonesResultsCards } from './resultsTable/Phones/PhonesResultsCards';
 export { default as PhonesResultsTable } from './resultsTable/Phones/PhonesResultsTable';
 export { default as Spinner } from './Spinner';
+export { default as Title } from './Title';
 export { default as Users } from './filters/Users';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserFill } from '../assets/icons';
-import { InputWithValidation, Spinner, InformativeMessage } from '../components';
+import { InformativeMessage, InputWithValidation, Spinner, Title } from '../components';
 import axiosClient from '../config/axios';
 import { RESPONSE_SERVER } from '../utils/utils';
 
@@ -54,10 +54,7 @@ const RecoverPassword = () => {
 		<>
 			<div className='flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 login-page overflow-y-auto'>
 				{/* Title */}
-				<h1 className='text-white font-semibold tracking-wider md:text-2xl lg:text-3xl mb-16 text-shadow'>
-					Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
-					<span className='text-slate-900'>IP</span>
-				</h1>
+				<Title />
 				{/* Success or error message */}
 				{IsUsernameInvalid !== null ? (
 					<div className='w-full mb-5 sm:max-w-md'>

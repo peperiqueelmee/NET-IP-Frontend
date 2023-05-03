@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { InformativeMessage, InputWithValidation, Spinner, Title } from '../components';
 import { PadlockFill, UserFill } from '../assets/icons';
-import { InformativeMessage, InputWithValidation, Spinner } from '../components';
-import axiosClient from '../config/axios';
 import { RESPONSE_SERVER } from '../utils/utils';
-import Logo from '../assets/Logo/Logo';
+import axiosClient from '../config/axios';
 
 const Register = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -64,20 +63,7 @@ const Register = () => {
 		<>
 			<div className='flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 login-page overflow-y-auto'>
 				{/* Tittle */}
-				<div className='text-white font-semibold tracking-wider text-lg md:text-xl xl:text-2xl text-shadow flex gap-2 items-center flex-col sm:flex-row mb-5'>
-					<Logo className={'sm:w-9 xl:w-10 hidden sm:block'} />
-					<div className='flex gap-1 flex-col items-center sm:flex-row'>
-						<div className='flex gap-2'>
-							<div className='block sm:hidden'>
-								<Logo className={'w-7'} />
-							</div>
-							<div>Sistema de Gestión de Anexos</div>
-						</div>
-						<div className='flex gap-2 items-center'>
-							<span className='text-lime-400'>NET</span> <span className='text-slate-900'>IP</span>
-						</div>
-					</div>
-				</div>
+				<Title />
 				{/* Error message */}
 				{IsInvalidCredentials && (
 					<div className='w-full mb-5 sm:max-w-md'>

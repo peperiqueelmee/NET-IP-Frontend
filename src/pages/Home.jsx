@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
-
 import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
-import { Actions, ModalLogout, Users, ModalCreateEmployee, Phones } from '../components';
-import Logo from '../assets/Logo/Logo';
+import { Actions, ModalCreateEmployee, ModalLogout, Phones, Title, Users } from '../components';
 
 const Home = () => {
 	const token = localStorage.getItem('token');
@@ -23,23 +21,9 @@ const Home = () => {
 			<div className={`container mx-auto px-6 md:px-10 `}>
 				<div className='flex items-center justify-between pt-10 flex-col lg:flex-row'>
 					{/* Tittle */}
-					<div className='text-white font-semibold tracking-wider text-lg md:text-xl xl:text-2xl text-shadow focus-in-expand flex gap-2 items-center flex-col sm:flex-row'>
-						<Logo className={'sm:w-9 xl:w-10 hidden sm:block'} />
-						<div className='flex gap-1 flex-col items-center sm:flex-row'>
-							<div className='flex gap-2'>
-								<div className='block sm:hidden'>
-									<Logo className={'w-7'} />
-								</div>
-								<div>Sistema de Gestión de Anexos</div>
-							</div>
-							<div className='flex gap-2 items-center'>
-								<span className='text-lime-400'>NET</span> <span className='text-slate-900'>IP</span>
-							</div>
-						</div>
-					</div>
-
+					<Title titleIsExpand={true} />
 					{/* Buttons: Username, Help, Sing off */}
-					<div className='sm:flex gap-3 flex-row lg:flex-row mt-6 lg:mt-0 hidden'>
+					<div className='sm:flex gap-3 flex-row lg:flex-row mt-6 mb-6 lg:mt-0 hidden'>
 						<div className='border-2 border-lime-500 px-4 py-1 rounded-full text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
 							<div className='flex items-center gap-1'>
 								<UserFill className='text-xs lg:text-sm text-lime-400' />

@@ -177,7 +177,7 @@ const ModalCreateEmployee = () => {
 													label='R.U.T'
 													type='text'
 													placeholder='10123456-3'
-													errorMessage='Formato de RUT incorrecto.'
+													errorMessage='Formato de RUT incorrecta y/o inválido.'
 													value={rut}
 													onChange={setRut}
 													tooltip={true}
