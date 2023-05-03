@@ -44,7 +44,7 @@ const ActionProvider = ({ children }) => {
 				),
 			},
 			{
-				name: 'Gestión Troncales Telefónicos',
+				name: 'Gestión Troncales',
 				icon: (
 					<ManagementOutline
 						className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${

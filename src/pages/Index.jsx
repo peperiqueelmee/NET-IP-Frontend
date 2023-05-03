@@ -64,7 +64,7 @@ const Register = () => {
 		<>
 			<div className='flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 login-page overflow-y-auto'>
 				{/* Tittle */}
-				<div className='text-white font-semibold tracking-wider text-lg md:text-xl xl:text-2xl text-shadow focus-in-expand flex gap-2 items-center flex-col sm:flex-row mb-5'>
+				<div className='text-white font-semibold tracking-wider text-lg md:text-xl xl:text-2xl text-shadow flex gap-2 items-center flex-col sm:flex-row mb-5'>
 					<Logo className={'sm:w-9 xl:w-10 hidden sm:block'} />
 					<div className='flex gap-1 flex-col items-center sm:flex-row'>
 						<div className='flex gap-2'>
