@@ -49,8 +49,8 @@ const Home = () => {
 				{/*  Actions */}
 				<div className='block'>
 					<Actions />
-					<Users />
 					<Phones />
+					<Users />
 				</div>
 			</div>
 

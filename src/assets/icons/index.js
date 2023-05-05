@@ -7,6 +7,7 @@ export { default as EyeFill } from './EyeFill';
 export { default as EyeFillInvisible } from './EyeFillInvisible';
 export { default as HelpBuoyFill } from './HelpBuoyFill';
 export { default as IdCardFill } from './IdCardFill';
+export { default as InfoFill } from './InfoFill';
 export { default as IntercomFill } from './IntercomFill';
 export { default as KeyFill } from './KeyFill';
 export { default as LabFill } from './LabFill';

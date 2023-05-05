@@ -29,7 +29,7 @@ const InfoTooltip = ({ info }) => {
 						open={open}
 						title={info}>
 						<div onClick={handleTooltipOpen}>
-							<QuestionCircleOutline className={'text-sm sm:text-base text-sky-600'} />
+							<QuestionCircleOutline className={'text-xs sm:text-sm text-sky-600'} />
 						</div>
 					</Tooltip>
 				</div>

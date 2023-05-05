@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { CheckCircleFill, CloseCircleFill, EyeFill, EyeFillInvisible } from '../assets/icons';
+import { CheckCircleFill, CloseCircleFill, EyeFill, EyeFillInvisible, InfoFill } from '../assets/icons';
 import { isInputInvalid } from '../utils/utils';
 import InfoTooltip from './InfoTooltip';
 
@@ -111,7 +111,11 @@ const InputWithValidationTest = ({
 					</div>
 				</div>
 				{/* Error message */}
-				<div className={`text-xs text-red-500 ml-1  ${errorInput ? 'visible' : 'invisible'}`}>
+				<div
+					className={`text-xs text-red-500 ml-1  
+								${errorInput ? 'visible' : 'invisible'} 
+								flex items-center gap-1`}>
+					<InfoFill />
 					{errorMessage}
 				</div>
 			</div>

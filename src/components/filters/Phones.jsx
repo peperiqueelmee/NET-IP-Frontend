@@ -68,7 +68,7 @@ const Phones = () => {
 			<Grow
 				in={selectedAction === 0}
 				timeout={500}>
-				<div className={`pb-14 ${selectedAction === 0 ? 'block' : 'hidden'} `}>
+				<div className={`pb-14 ${selectedAction === 0 ? 'block' : 'hidden'}`}>
 					{/* Container */}
 					<div
 						className='bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950 
@@ -134,7 +134,7 @@ const Phones = () => {
 							<form
 								onSubmit={handleListPhoneByNumber}
 								className='flex items-center text-xs xl:text-sm'>
-								<div className='text-white mr-1'>+56</div>
+								<div className='text-zinc-200 mr-1'>+56</div>
 								<input
 									value={phone}
 									onChange={(e) => setPhone(e.target.value)}

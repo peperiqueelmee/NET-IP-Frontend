@@ -1,7 +1,9 @@
 const PhonesResultsTable = ({ phones }) => {
 	return (
 		<>
-			<div className='hidden lg:block relative overflow-x-auto shadow-md'>
+			<div
+				className=' lg:block relative overflow-y-auto shadow-md'
+				style={{ height: '70vh' }}>
 				{phones && phones.length > 0 ? (
 					<table className='w-full text-center text-gray-500'>
 						<thead className='text-xs text-gray-700 bg-gray-200 border-b-2 border-gray-300'>
