@@ -24,19 +24,31 @@ const Home = () => {
 					<Title titleIsExpand={true} />
 					{/* Buttons: Username, Help, Sing off */}
 					<div className='sm:flex gap-3 flex-row lg:flex-row mt-6 mb-6 lg:mt-0 hidden'>
-						<div className='border-2 border-lime-500 px-4 py-1 rounded-full text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
+						<div
+							className='border-2 border-lime-500 px-4 py-1 rounded-full text-gray-200 
+									   bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 cursor-pointer
+									   hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 
+									   text-xs md:text-sm tracking-wide shadow-md'>
 							<div className='flex items-center gap-1'>
 								<UserFill className='text-xs lg:text-sm text-lime-400' />
 								<span className='flex w-full justify-center'>{username}</span>
 							</div>
 						</div>
-						<div className='border-2 border-lime-500 px-4 py-1 rounded-full text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
+						<div
+							className='border-2 border-lime-500 px-4 py-1 rounded-full text-gray-200 
+									   bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 cursor-pointer
+									   hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 
+									   text-xs md:text-sm tracking-wide shadow-md'>
 							<div className='flex items-center gap-1'>
 								<HelpBuoyFill className='text-xs lg:text-sm text-lime-400' />
 								<span className='flex w-full justify-center'>Ayuda</span>
 							</div>
 						</div>
-						<div className='border-2 border-lime-500 px-4 py-1 rounded-full text-white bg-gradient-to-r from-zinc-600 to-zinc-700 cursor-pointer text-xs md:text-sm tracking-wide shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:to-zinc-800'>
+						<div
+							className='border-2 border-lime-500 px-4 py-1 rounded-full text-gray-200 
+									   bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 cursor-pointer
+									   hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 
+									   text-xs md:text-sm tracking-wide shadow-md'>
 							<div
 								className='flex items-center gap-1'
 								onClick={logout}>

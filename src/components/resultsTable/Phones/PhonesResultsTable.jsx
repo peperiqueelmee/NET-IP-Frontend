@@ -45,9 +45,7 @@ const PhonesResultsTable = ({ phones }) => {
 							{phones.map((phone, index) => (
 								<tr
 									key={phone.id}
-									className={`${
-										index % 2 !== 0 ? 'bg-gray-100' : 'bg-white'
-									} border-b text-xs lg:text-sm text-center`}>
+									className={`odd:bg-white even:bg-gray-100 border-b text-xs lg:text-sm text-center`}>
 									<td className='px-2 py-4'>{index + 1}</td>
 									<td className='px-6 py-4 border-x'>+{phone.phone_number}</td>
 									<td className='px-6 py-4 border-x'>{phone.client.fullName}</td>
