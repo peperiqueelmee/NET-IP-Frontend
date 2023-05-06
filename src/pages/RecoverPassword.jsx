@@ -94,7 +94,7 @@ const RecoverPassword = () => {
 								className='w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg 
                                            text-sm px-5 py-2.5 text-center
 										   bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 hover:bg-gradient-to-r hover:from-lime-500 hover:via-lime-600 hover:to-lime-700
-                                           transition-colors duration-150 cursor-pointer disabled:cursor-default mt-6 disabled:bg-gray-400'>
+                                           cursor-pointer disabled:cursor-default mt-6 disabled:from-gray-400 disabled:via-gray-500 disabled:to-gray-600'>
 								{isLoading ? <Spinner /> : 'Recuperar Contraseña'}
 							</button>
 						</form>
