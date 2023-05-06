@@ -2,7 +2,7 @@ const EmployeeResultsTable = ({ employees }) => {
 	return (
 		<>
 			<div
-				className=' lg:block relative overflow-y-auto shadow-md'
+				className='hidden lg:block relative overflow-y-auto shadow-md'
 				style={{ height: '70vh' }}>
 				{employees && employees.length > 0 ? (
 					<table className='w-full text-center text-gray-500'>

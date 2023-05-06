@@ -5,9 +5,13 @@ const PhonesResultsCards = ({ phones }) => {
 		<>
 			<div className='lg:hidden block'>
 				{phones && phones.length > 0 ? (
-					<div style={{ height: '50vh', overflowY: 'scroll' }}>
+					<div
+						className='overflow-y-auto'
+						style={{ height: '50vh' }}>
 						{phones.map((phone, index) => (
-							<div className='flex bg-gradient-to-r from-gray-50 to-slate-100 mt-2 text-xs rounded-lg py-2 px-2 shadow-2xl gap-5 border-2 border-lime-100 relative'>
+							<div
+								key={phone.id}
+								className='flex bg-gradient-to-r from-gray-50 to-slate-100 mt-2 text-xs rounded-lg py-2 px-2 shadow-2xl gap-5 border-2 border-lime-100 relative'>
 								{/*  Badge */}
 								<Badge index={index + 1} />
 								{/* Content */}

@@ -26,7 +26,7 @@ const Phones = () => {
 	const handleListAllPhones = async () => {
 		setLoading(true);
 		try {
-			const url = '/phone';
+			const url = `/phone`;
 			const { data } = await axiosClient(url);
 			setPhones(data.data);
 			setLoading(false);
