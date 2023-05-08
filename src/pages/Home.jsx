@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
-import { Actions, ModalCreateEmployee, ModalLogout, Phones, Title, Users } from '../components';
+import { Actions, ModalCreateEmployee, ModalLogout, Phones, Title, Users, ModalEditEmployee } from '../components';
 
 const Home = () => {
 	const token = localStorage.getItem('token');
@@ -86,8 +86,10 @@ const Home = () => {
 					</div>
 				</div>
 			</div>
+			{/* Modals */}
 			<ModalLogout />
 			<ModalCreateEmployee />
+			<ModalEditEmployee />
 		</div>
 	);
 };

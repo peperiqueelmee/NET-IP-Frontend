@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { EmailFill, IdCardFill, LabFill, PadlockFill, UserFill, UserSecretFill } from '../../assets/icons';
+import { EmailFill, IdCardFill, LabFill, PadlockFill, UserFill, UserSecretFill, PencilFill } from '../../assets/icons';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { RESPONSE_SERVER } from '../../utils/utils';
 import axiosClient from '../../config/axios';
 
-const ModalCreateEmployee = () => {
+const ModalEditEmployee = () => {
 	const [isLoading, setIsLoading] = useState(null);
 	// Data form
 	const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
@@ -20,7 +20,6 @@ const ModalCreateEmployee = () => {
 	const [password, setPassword] = useState('');
 	const [role, setRole] = useState(null);
 	// Validations
-	const formIsFull = names && lastnames && rut && email && username && password && role;
 	const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
 	//  Toggle modal
 	const [open, setOpen] = useState(false);
@@ -107,7 +106,7 @@ const ModalCreateEmployee = () => {
 	return (
 		<div>
 			<button
-				id='createEmployee'
+				id='editEmployee'
 				className='text-xs sm:text-base text-white'
 				onClick={() => handleToggleModal(false)}></button>
 			{open && (
@@ -129,8 +128,8 @@ const ModalCreateEmployee = () => {
 							<>
 								{/* Title */}
 								<div className='flex items-center gap-2 mt-2'>
-									<h2 className='text-xl md:text-2xl font-bold text-slate-700'>Crear Trabajador</h2>
-									<LabFill className='text-slate-700 text-lg md:ext-xl' />
+									<h2 className='text-xl md:text-2xl font-bold text-slate-700'>Editar Trabajador</h2>
+									<PencilFill className='text-slate-700 text-lg md:ext-xl' />
 								</div>
 								<form
 									className='w-full px-10 py-4 mt-2'
@@ -141,7 +140,6 @@ const ModalCreateEmployee = () => {
 											<div className='w-full'>
 												<InputWithValidation
 													label='Nombre(s)'
-													required={true}
 													type='text'
 													placeholder='Juan Carlos'
 													errorMessage='Por favor ingresa el/los nombre(s).'
@@ -157,7 +155,6 @@ const ModalCreateEmployee = () => {
 											<div className='w-full'>
 												<InputWithValidation
 													label='Apellido(s)'
-													required={true}
 													type='text'
 													placeholder='Bodoque Bodoque'
 													errorMessage='Por favor ingresa el/los apellido(s).'
@@ -175,7 +172,6 @@ const ModalCreateEmployee = () => {
 											<div className='w-full'>
 												<InputWithValidation
 													label='R.U.T'
-													required={true}
 													type='text'
 													placeholder='10123456-3'
 													errorMessage='Formato de RUT incorrecta y/o inválido.'
@@ -192,7 +188,6 @@ const ModalCreateEmployee = () => {
 											<div className='w-full'>
 												<InputWithValidation
 													label='E-Mail'
-													required={true}
 													type='email'
 													placeholder='juancarlosbodoque@correo.cl'
 													errorMessage='Por favor ingresa un correo válido.'
@@ -208,7 +203,6 @@ const ModalCreateEmployee = () => {
 											<div className='w-full'>
 												<InputWithValidation
 													label='Usuario'
-													required={true}
 													type='text'
 													placeholder='JcBodoque'
 													errorMessage='Por favor ingresa el nombre de usuario.'
@@ -222,7 +216,6 @@ const ModalCreateEmployee = () => {
 											<div className='w-full'>
 												<InputWithValidation
 													label='Contraseña'
-													required={true}
 													type='password'
 													placeholder='Contraseña'
 													errorMessage='La contraseña no cumple con el formato de seguridad.'
@@ -241,17 +234,29 @@ const ModalCreateEmployee = () => {
 												/>
 											</div>
 										</div>
-										<div className='mt-2'>
-											<label className='block mb-2 text-xs sm:text-sm font-medium text-slate-600'>
-												Permisos
-												<span className='text-red-500'>*</span>
-											</label>
-											<InputAutocomplete
-												options={roles.map((role) => role.description)}
-												onSelect={handleRoleSelect}
-												placeholder='Seleccionar permisos'
-												value={roleSelected}
-											/>
+										<div className='md:flex gap-4 block w-full justify-center'>
+											<div className='w-full'>
+												<label className='block mb-2 text-xs sm:text-sm font-medium text-slate-600'>
+													Permisos
+												</label>
+												<InputAutocomplete
+													options={roles.map((role) => role.description)}
+													onSelect={handleRoleSelect}
+													placeholder='Seleccionar permisos'
+													value={roleSelected}
+												/>
+											</div>
+											<div className='w-full'>
+												<label className='block mb-2 text-xs sm:text-sm font-medium text-slate-600'>
+													Estado
+												</label>
+												<InputAutocomplete
+													options={roles.map((role) => role.description)}
+													onSelect={handleRoleSelect}
+													placeholder='Seleccionar permisos'
+													value={roleSelected}
+												/>
+											</div>
 										</div>
 									</div>
 									{/* Error message */}
@@ -275,7 +280,7 @@ const ModalCreateEmployee = () => {
 										</button>
 										<button
 											type='submit'
-											disabled={!formIsFull || isLoading}
+											disabled={isLoading}
 											className='bg-pink-600 hover:bg-pink-700 transition-colors duration-300
                                          			   text-slate-100 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border
 										               border-pink-700 font-medium disabled:bg-gray-400 disabled:border-gray-500 w-20'>
@@ -303,4 +308,4 @@ const ModalCreateEmployee = () => {
 	);
 };
 
-export default ModalCreateEmployee;
+export default ModalEditEmployee;

@@ -69,10 +69,7 @@ const Register = () => {
 					<div className='w-full mb-5 sm:max-w-md'>
 						<InformativeMessage
 							message={messageError}
-							border={'border-red-500'}
-							background={'bg-red-800'}
-							text={'text-red-500'}
-							textHover={'hover:text-red-700'}
+							hasError={messageError.length > 0}
 						/>
 					</div>
 				)}
@@ -88,6 +85,7 @@ const Register = () => {
 							onSubmit={handleSubmit}>
 							<InputWithValidation
 								label='Usuario'
+								required={true}
 								type='text'
 								placeholder='Tu usuario'
 								errorMessage='Por favor ingresa tu nombre de usuario.'
@@ -98,6 +96,7 @@ const Register = () => {
 							/>
 							<InputWithValidation
 								label='Contraseña'
+								required={true}
 								type='password'
 								placeholder='Tu contraseña'
 								errorMessage='Por favor ingresa tu contraseña.'

@@ -60,10 +60,8 @@ const RecoverPassword = () => {
 					<div className='w-full mb-5 sm:max-w-md'>
 						<InformativeMessage
 							message={message}
-							border={IsUsernameInvalid ? 'border-red-500' : 'border-blue-500'}
-							background={IsUsernameInvalid ? 'bg-red-800' : 'bg-blue-500'}
-							text={IsUsernameInvalid ? 'text-red-500' : 'text-blue-500'}
-							textHover={IsUsernameInvalid ? 'hover:text-red-700' : 'hover:text-blue-700'}
+							hasError={IsUsernameInvalid}
+							hasSuccessful={!IsUsernameInvalid}
 						/>
 					</div>
 				) : null}
@@ -79,6 +77,7 @@ const RecoverPassword = () => {
 							onSubmit={handleSubmit}>
 							<InputWithValidation
 								label='Usuario'
+								required={true}
 								type='text'
 								placeholder='Tu usuario'
 								errorMessage='Por favor ingresa tu nombre de usuario.'

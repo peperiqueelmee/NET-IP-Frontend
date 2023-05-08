@@ -90,18 +90,9 @@ const ChangePassword = () => {
 				<div className='w-full mb-5 sm:max-w-md'>
 					<InformativeMessage
 						message={message}
-						border={
-							hasError ? 'border-red-500' : passwordWasChanged ? 'border-blue-500' : 'border-green-500'
-						}
-						background={hasError ? 'bg-red-800' : passwordWasChanged ? 'bg-blue-500' : 'bg-green-400'}
-						text={hasError ? 'text-red-500' : passwordWasChanged ? 'text-blue-500' : 'text-green-500'}
-						textHover={
-							hasError
-								? 'hover:text-red-700'
-								: passwordWasChanged
-								? 'hover:text-blue-700'
-								: 'hover:text-green-700'
-						}
+						hasError={hasError}
+						hasSuccessful={passwordWasChanged}
+						hasInfo={!hasError && !passwordWasChanged}
 					/>
 				</div>
 				{/*  Form */}
@@ -116,6 +107,7 @@ const ChangePassword = () => {
 							onSubmit={handleSubmit}>
 							<InputWithValidation
 								label='Nueva contraseña'
+								required={true}
 								type='password'
 								placeholder='Tu contraseña nueva'
 								errorMessage='Por favor ingresa tu contraseña nueva.'
@@ -125,6 +117,7 @@ const ChangePassword = () => {
 							/>
 							<InputWithValidation
 								label='Repetir nueva contraseña'
+								required={true}
 								type='password'
 								placeholder='Repite tu contraseña nueva'
 								errorMessage='Por favor repite tu contraseña nueva.'

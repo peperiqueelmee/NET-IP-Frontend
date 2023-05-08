@@ -14,6 +14,7 @@ export { default as LabFill } from './LabFill';
 export { default as ManagementOutline } from './ManagementOutline';
 export { default as NotebookFill } from './NotebookFill';
 export { default as PadlockFill } from './PadlockFill';
+export { default as PencilFill } from './PencilFill';
 export { default as PhoneCallOutline } from './PhoneCallOutline';
 export { default as PhoneOffOutline } from './PhoneOffOutline';
 export { default as QuestionCircleOutline } from './QuestionCircleOutline';

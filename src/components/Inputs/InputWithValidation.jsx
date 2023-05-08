@@ -6,6 +6,7 @@ import { InfoTooltip } from '../index.js';
 
 const InputWithValidationTest = ({
 	label,
+	required,
 	icon,
 	type,
 	value,
@@ -13,7 +14,7 @@ const InputWithValidationTest = ({
 	errorMessage,
 	onChange,
 	error,
-	tooltip = false,
+	tooltip,
 	infoTooltip,
 	validateRut = false,
 	validatePassword = false,
@@ -53,7 +54,7 @@ const InputWithValidationTest = ({
 				<div className='flex items-center gap-1'>
 					<label className='block mb-2 text-xs sm:text-sm font-medium text-slate-600'>
 						{label}
-						<span className='text-red-500'>*</span>
+						{required && <span className='text-red-500'>*</span>}
 					</label>
 					{tooltip && (
 						<div style={{ marginTop: '-6px' }}>
