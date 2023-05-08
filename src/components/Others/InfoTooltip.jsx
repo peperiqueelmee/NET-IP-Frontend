@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
-import { QuestionCircleOutline } from '../assets/icons';
+import { QuestionCircleOutline } from '../../assets/icons';
 
 const InfoTooltip = ({ info }) => {
 	const [open, setOpen] = useState(false);

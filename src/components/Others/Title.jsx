@@ -1,4 +1,4 @@
-import Logo from '../assets/Logo/Logo';
+import Logo from '../../assets/Logo/Logo';
 
 const Title = ({ titleIsExpand = false }) => {
 	return (

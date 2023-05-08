@@ -4,7 +4,7 @@ import { SearchFill } from '../../assets/icons';
 import { Spinner, PhonesResultsTable, PhonesResultsCards } from '../index.js';
 import { useAction } from '../../hooks';
 import axiosClient from '../../config/axios';
-import InfoTooltip from '../InfoTooltip';
+import InfoTooltip from '../Others/InfoTooltip';
 
 const Phones = () => {
 	const { selectedAction } = useAction();
