@@ -65,7 +65,7 @@ const InputWithValidationTest = ({
 				<input
 					type={typeInput}
 					className={`mt-2 border focus:outline-none text-gray-900 text-xs sm:text-sm rounded-md 
-								w-full pl-10  p-2.5 shadow focus:shadow-md bg-slate-200 
+								w-full ${type === 'password' ? 'pl-10 pr-20' : 'px-10'}  py-2.5 shadow focus:shadow-md bg-slate-200 
 								${errorInput ? 'border-red-500' : ''} ${successInput ? 'border-emerald-500' : ''} 
 								${!errorInput & !successInput ? 'focus:border-sky-500' : ''}`}
 					value={value}
