@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CheckCircleFill, CloseCircleFill, EyeFill, EyeFillInvisible, InfoFill } from '../../assets/icons';
 import { isInputInvalid } from '../../utils/utils';
-import InfoTooltip from '../Others/InfoTooltip';
+import { InfoTooltip } from '../index.js';
 
 const InputWithValidationTest = ({
 	label,

@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
 import Grow from '@mui/material/Grow';
+import { useEffect, useState } from 'react';
 import { SearchFill } from '../../assets/icons';
-import { Spinner, PhonesResultsTable, PhonesResultsCards } from '../index.js';
-import { useAction } from '../../hooks';
 import axiosClient from '../../config/axios';
-import InfoTooltip from '../Others/InfoTooltip';
+import { useAction } from '../../hooks';
+import { InfoTooltip, PhonesResultsCards, PhonesResultsTable, Spinner } from '../index.js';
 
 const Phones = () => {
 	const { selectedAction } = useAction();
