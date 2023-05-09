@@ -15,10 +15,15 @@ const ActionContext = createContext();
 
 const ActionProvider = ({ children }) => {
 	const [selectedAction, setSelectedAction] = useState(0);
+	const [selectedActionUsers, setSelectActionUsers] = useState(null);
 	const mobileScreen = useMediaQuery({ maxWidth: 1024 });
 
 	const handleActionSelect = (index) => {
 		setSelectedAction(index);
+	};
+
+	const handleActionSelectUsers = (index) => {
+		setSelectActionUsers(index);
 	};
 
 	const getActions = (sizeIconLarge, sizeIconSmall) => {
@@ -104,6 +109,8 @@ const ActionProvider = ({ children }) => {
 				selectedAction,
 				handleActionSelect,
 				getActions,
+				handleActionSelectUsers,
+				selectedActionUsers,
 			}}>
 			{children}
 		</ActionContext.Provider>

@@ -3,9 +3,11 @@ import { EmailFill, IdCardFill, LabFill, PadlockFill, UserFill, UserSecretFill }
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { RESPONSE_SERVER } from '../../utils/utils';
 import axiosClient from '../../config/axios';
+import { useAction } from '../../hooks';
 
 const ModalCreateEmployee = () => {
 	const [isLoading, setIsLoading] = useState(null);
+	const { handleActionSelectUsers } = useAction();
 	// Data form
 	const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
 	const [roleSelected, setRoleSelected] = useState('');
@@ -102,6 +104,7 @@ const ModalCreateEmployee = () => {
 		setRole(null);
 		setRoleSelected('');
 		setUserHasBeenCreated(null);
+		handleActionSelectUsers(null);
 	};
 
 	return (

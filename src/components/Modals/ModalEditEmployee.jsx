@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { EmailFill, IdCardFill, PadlockFill, PencilFill, UserFill, UserSecretFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
-import { useEmployee } from '../../hooks';
+import { useEmployee, useAction } from '../../hooks';
 import { RESPONSE_SERVER } from '../../utils/utils';
 
 const ModalEditEmployee = () => {
 	const [isLoading, setIsLoading] = useState(null);
+	const { selectedActionUsers } = useAction();
 	// Data form
-	const { employee } = useEmployee();
+	const { employee, getEmployees } = useEmployee();
 	const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
 	const [statuses, setStatuses] = useState(() => JSON.parse(localStorage.getItem('statuses')) || []);
 	const [roleSelected, setRoleSelected] = useState('');
@@ -99,7 +100,7 @@ const ModalEditEmployee = () => {
 		setMessage('');
 		e.preventDefault();
 		try {
-			// Update employee
+			// Update employee.
 			const url = `/employee/update/${employee.id}`;
 			const employeeData = {
 				names,
@@ -115,6 +116,23 @@ const ModalEditEmployee = () => {
 			setIsLoading(null);
 			setMessage('¡El usuario ha sido editado exitosamente!');
 			setUserHasBeenCreated(true);
+
+			// Refresh data employee.
+			let urlEmployee;
+			if (selectedActionUsers === 2) {
+				urlEmployee = '/employee/employees';
+			}
+			if (selectedActionUsers === 3) {
+				urlEmployee = '/employee/employees/status/1';
+			}
+			if (selectedActionUsers === 4) {
+				urlEmployee = '/employee/employees/status/2';
+			}
+			if (selectedActionUsers === 5) {
+				urlEmployee = `/employee/employees/${rut}`;
+			}
+			const { data } = await axiosClient(urlEmployee);
+			getEmployees(data.data);
 		} catch (error) {
 			setIsLoading(null);
 			setUserHasBeenCreated(false);

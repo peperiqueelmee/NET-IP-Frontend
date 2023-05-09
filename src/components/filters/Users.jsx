@@ -1,39 +1,38 @@
-import { useState, useEffect } from 'react';
 import Grow from '@mui/material/Grow';
+import { useEffect, useState } from 'react';
 import { SearchFill } from '../../assets/icons';
-import { Spinner, EmployeesResultsTable, EmployeesResultsCards } from '../index.js';
-import { useAction } from '../../hooks';
 import axiosClient from '../../config/axios';
+import { useAction, useEmployee } from '../../hooks';
 import InfoTooltip from '../Others/InfoTooltip';
+import { EmployeesResultsCards, EmployeesResultsTable, Spinner } from '../index.js';
 
 const Users = () => {
-	const { selectedAction } = useAction();
-	const [selectedButton, setSelectedButton] = useState('');
+	const { getEmployees, employees } = useEmployee();
+	const { selectedAction, selectedActionUsers, handleActionSelectUsers } = useAction();
 	const [isLoading, setLoading] = useState(null);
-	const [employees, setEmployees] = useState(null);
 	const [rut, setRut] = useState('');
 
 	// Clear options selected.
 	useEffect(() => {
-		setSelectedButton('');
-		setEmployees(null);
+		handleActionSelectUsers(null);
+		getEmployees(null);
 		setRut('');
 	}, [selectedAction]);
 	// Interaction with modal.
 	const modalCreateEmployee = () => {
-		setEmployees(null);
+		getEmployees(null);
 		document.getElementById('createEmployee').click();
 	};
 	// Handles
-	const handleButtonClick = (buttonName) => {
-		setSelectedButton(buttonName);
+	const handleButtonClick = (index) => {
+		handleActionSelectUsers(index);
 	};
 	const handleListAllEmployees = async () => {
 		setLoading(true);
 		try {
 			const url = '/employee/employees';
 			const { data } = await axiosClient(url);
-			setEmployees(data.data);
+			getEmployees(data.data);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
@@ -46,11 +45,11 @@ const Users = () => {
 		try {
 			const url = `/employee/employees/${rut}`;
 			const { data } = await axiosClient(url);
-			setEmployees(data.data);
+			getEmployees(data.data);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
-			setEmployees('');
+			getEmployees('');
 			console.log(error);
 		}
 	};
@@ -59,11 +58,11 @@ const Users = () => {
 		try {
 			const url = `/employee/employees/status/${status}`;
 			const { data } = await axiosClient(url);
-			setEmployees(data.data);
+			getEmployees(data.data);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
-			setEmployees('');
+			getEmployees('');
 			console.log(error);
 		}
 	};
@@ -84,15 +83,11 @@ const Users = () => {
 							<button
 								onClick={() => {
 									modalCreateEmployee();
-									handleButtonClick('button1');
+									handleButtonClick(1);
 								}}
 								className={`bg-gray-200 rounded-2xl px-4 py-1 
 								            text-xs xl:text-sm shadow hover:shadow-lime-400 w-9/12 sm:w-6/12 lg:w-32
-											${
-												selectedButton === 'button1'
-													? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-													: 'text-zinc-700'
-											}`}>
+											${selectedActionUsers === 1 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
 								Crear Usuario
 							</button>
 						</div>
@@ -103,12 +98,12 @@ const Users = () => {
 								<button
 									onClick={() => {
 										handleListAllEmployees();
-										handleButtonClick('button2');
+										handleButtonClick(2);
 									}}
 									className={`bg-gray-200 rounded-2xl px-4 py-1
 											    text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
 												${
-													selectedButton === 'button2'
+													selectedActionUsers === 2
 														? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
 														: 'text-zinc-700 '
 												}`}>
@@ -118,29 +113,21 @@ const Users = () => {
 									<button
 										onClick={() => {
 											handleListEmployeesByStatus(1);
-											handleButtonClick('button3');
+											handleButtonClick(3);
 										}}
 										className={`bg-gray-200 rounded-2xl px-4 py-1 
 													text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
-													${
-														selectedButton === 'button3'
-															? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-															: 'text-zinc-700'
-													}`}>
+													${selectedActionUsers === 3 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
 										Activos
 									</button>
 									<button
 										onClick={() => {
 											handleListEmployeesByStatus(2);
-											handleButtonClick('button4');
+											handleButtonClick(4);
 										}}
 										className={`bg-gray-200 rounded-2xl px-4 py-1 
 													text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
-													${
-														selectedButton === 'button4'
-															? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-															: 'text-zinc-700'
-													}`}>
+													${selectedActionUsers === 4 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
 										Inactivos
 									</button>
 								</div>
@@ -160,7 +147,7 @@ const Users = () => {
 								<input
 									value={rut}
 									onChange={(e) => setRut(e.target.value)}
-									onClick={() => handleButtonClick('button5')}
+									onClick={() => handleButtonClick(5)}
 									className='rounded-l-2xl pl-4 text-xs xl:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500'
 									type='text'
 									placeholder='Ingresa RUT de usuario'
@@ -169,15 +156,11 @@ const Users = () => {
 									type='submit'
 									onClick={() => {
 										handleListEmployeeByRut();
-										handleButtonClick('button5');
+										handleButtonClick(5);
 									}}
 									className={`bg-gray-200 rounded-r-2xl h-6 w-9 flex items-center justify-center cursor-pointer 
 												shadow hover:shadow-lime-400 
-												${
-													selectedButton === 'button5'
-														? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-														: 'text-zinc-700'
-												}`}>
+												${selectedActionUsers === 5 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
 									<SearchFill />
 								</button>
 							</form>
