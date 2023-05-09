@@ -39,7 +39,7 @@ const RecoverPassword = () => {
 			setIsLoading(false);
 
 			if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
-				setMessage('Usuario no registrado.');
+				setMessage(error.response.data.message);
 				return;
 			}
 			setMessage('Error de servidor. Reintentar.');

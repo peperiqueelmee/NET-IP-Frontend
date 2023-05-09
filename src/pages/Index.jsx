@@ -48,7 +48,7 @@ const Register = () => {
 			setIsLoading(false);
 
 			if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
-				setMessageError('Usuario o contraseña incorrecta.');
+				setMessageError(error.response.data.message);
 				return;
 			}
 			setMessageError('Error de servidor. Reintentar.');

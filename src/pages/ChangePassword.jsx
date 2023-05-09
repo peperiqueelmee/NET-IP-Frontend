@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { CheckCircleFill, PadlockFill } from '../assets/icons';
 import { InformativeMessage, InputWithValidation, Spinner } from '../components';
 import axiosClient from '../config/axios';
+import { RESPONSE_SERVER } from '../utils/utils';
 
 const ChangePassword = () => {
 	const params = useParams();
@@ -39,7 +40,11 @@ const ChangePassword = () => {
 				setMessage(`Hola ${employeeName}, cambia tu contraseña aquí.`);
 			} catch (error) {
 				setHasError(true);
-				setMessage(`Enlace invalido.`);
+				if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
+					setMessage(error.response.data.message);
+					return;
+				}
+				setMessage('Error de servidor. Reintentar.');
 			}
 		};
 		checkToken();
