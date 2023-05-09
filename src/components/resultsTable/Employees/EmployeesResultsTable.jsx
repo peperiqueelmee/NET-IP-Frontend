@@ -1,6 +1,8 @@
+import { Tooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css';
 import { PencilFill } from '../../../assets/icons';
-import { useEmployee } from '../../../hooks';
 import axiosClient from '../../../config/axios';
+import { useEmployee } from '../../../hooks';
 
 const EmployeeResultsTable = ({ employees }) => {
 	const { handleEmployeeSelect } = useEmployee();
@@ -102,7 +104,10 @@ const EmployeeResultsTable = ({ employees }) => {
 									{/* Pencil */}
 									<td className='px-2 py-2 border-x'>
 										<div className='flex justify-center gap-2'>
-											<div onClick={(e) => modalEditEmployee(e, employee.rut)}>
+											<div
+												data-tooltip-id='tooltip'
+												data-tooltip-delay-show={100}
+												onClick={(e) => modalEditEmployee(e, employee.rut)}>
 												<PencilFill
 													className={'text-sm xl:text-base text-blue-800 cursor-pointer'}
 												/>
@@ -119,6 +124,13 @@ const EmployeeResultsTable = ({ employees }) => {
 					</div>
 				)}
 			</div>
+			<Tooltip
+				className='text-xs'
+				id='tooltip'
+				place='bottom'
+				variant='info'
+				content='Editar'
+			/>
 		</>
 	);
 };
