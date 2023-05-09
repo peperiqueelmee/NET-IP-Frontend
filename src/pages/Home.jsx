@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
-import { Actions, ModalCreateEmployee, ModalLogout, Phones, Title, Users, ModalEditEmployee } from '../components';
+import { Actions, ModalCreateEmployee, ModalEditEmployee, ModalLogout, Phones, Title, Users } from '../components';
 
 const Home = () => {
 	const token = localStorage.getItem('token');
 	const username = localStorage.getItem('username');
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!token) {

@@ -1,8 +1,25 @@
 import { PencilFill } from '../../../assets/icons';
+import { useEmployee } from '../../../hooks';
+import axiosClient from '../../../config/axios';
 
 const EmployeeResultsTable = ({ employees }) => {
-	const modalCreateEmployee = () => {
+	const { handleEmployeeSelect } = useEmployee();
+
+	const modalEditEmployee = async (e, rutEmployee) => {
+		e.preventDefault();
+		const employee = await getEmployee(rutEmployee);
+		handleEmployeeSelect(employee);
 		document.getElementById('editEmployee').click();
+	};
+
+	const getEmployee = async (rutEmployee) => {
+		try {
+			const url = `/employee/employees/${rutEmployee}`;
+			const { data } = await axiosClient(url);
+			return data.data[0];
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
@@ -82,9 +99,10 @@ const EmployeeResultsTable = ({ employees }) => {
 										${employee.status_id === 1 ? 'text-emerald-500' : 'text-red-600'}`}>
 										{employee.status.description}
 									</td>
+									{/* Pencil */}
 									<td className='px-2 py-2 border-x'>
 										<div className='flex justify-center gap-2'>
-											<div onClick={modalCreateEmployee}>
+											<div onClick={(e) => modalEditEmployee(e, employee.rut)}>
 												<PencilFill
 													className={'text-sm xl:text-base text-blue-800 cursor-pointer'}
 												/>

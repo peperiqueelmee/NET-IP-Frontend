@@ -1,6 +1,27 @@
+import { PencilFill } from '../../../assets/icons';
+import axiosClient from '../../../config/axios';
+import { useEmployee } from '../../../hooks';
 import { Badge } from '../../index.js';
 
 const EmployeesResultsCardsResponsive = ({ employees }) => {
+	const { handleEmployeeSelect } = useEmployee();
+
+	const modalEditEmployee = async (e, rutEmployee) => {
+		e.preventDefault();
+		const employee = await getEmployee(rutEmployee);
+		handleEmployeeSelect(employee);
+		document.getElementById('editEmployee').click();
+	};
+
+	const getEmployee = async (rutEmployee) => {
+		try {
+			const url = `/employee/employees/${rutEmployee}`;
+			const { data } = await axiosClient(url);
+			return data.data[0];
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<>
 			<div className='lg:hidden block'>
@@ -11,7 +32,7 @@ const EmployeesResultsCardsResponsive = ({ employees }) => {
 						{employees.map((employee, index) => (
 							<div
 								key={employee.id}
-								className='flex bg-gradient-to-r from-gray-50 to-slate-100 mt-2 text-xs rounded-lg py-2 px-2 shadow-2xl gap-5 border-2 border-lime-100 relative'>
+								className='flex flex-col bg-gradient-to-r from-gray-50 to-slate-100 mt-2 text-xs rounded-lg py-2 px-2 shadow-2xl gap-5 border-2 border-lime-100 relative'>
 								{/*  Badge */}
 								<Badge index={index + 1} />
 								{/* Content */}
@@ -52,6 +73,15 @@ const EmployeesResultsCardsResponsive = ({ employees }) => {
 											{employee.status.description}
 										</div>
 									</div>
+								</div>
+								<div className='flex justify-center'>
+									<button
+										onClick={(e) => modalEditEmployee(e, employee.rut)}
+										className='bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600
+												   hover:bg-gradient-to-r hover:from-blue-500 hover:via-blue-600 hover:to-blue-700	
+												 text-slate-200 rounded-xl w-5/12 py-1 font-bold text-xs shadow-sm shadow-blue-400 border border-blue-300'>
+										Editar
+									</button>
 								</div>
 							</div>
 						))}

@@ -10,33 +10,33 @@ const PhonesResultsTable = ({ phones }) => {
 							<tr>
 								<th
 									scope='col'
-									className='px-3 py-1'>
+									className='px-1 py-1'>
 									Nº
 								</th>
 								<th
 									scope='col'
-									className='px-6 py-1'>
+									className='px-5 py-1'>
 									Número Telefónico
 								</th>
 								<th
 									scope='col'
-									className='px-6 py-1'>
+									className='px-5 py-1'>
 									Cliente
 								</th>
 								<th
 									scope='col'
-									className='px-6 py-1'>
+									className='px-5 py-1'>
 									RUT
 								</th>
 								<th
 									scope='col'
-									className='px-6 py-1'>
+									className='px-5 py-1'>
 									Dirección
 								</th>
 
 								<th
 									scope='col'
-									className='px-6 py-1'>
+									className='px-5 py-1'>
 									Estado
 								</th>
 							</tr>
@@ -46,11 +46,11 @@ const PhonesResultsTable = ({ phones }) => {
 								<tr
 									key={phone.id}
 									className={`odd:bg-white even:bg-gray-100 border-b text-xs lg:text-sm text-center`}>
-									<td className='px-2 py-4'>{index + 1}</td>
-									<td className='px-6 py-4 border-x'>+{phone.phone_number}</td>
-									<td className='px-6 py-4 border-x'>{phone.client.fullName}</td>
-									<td className='px-6 py-4 border-x'>{phone.client.rut}</td>
-									<td className={`px-6 py-4 border-x font-semibold`}>{phone.client.address}</td>
+									<td className='px-2'>{index + 1}</td>
+									<td className='px-5 border-x'>+{phone.phone_number}</td>
+									<td className='px-5 border-x'>{phone.client.fullName}</td>
+									<td className='px-1 border-x'>{phone.client.rut}</td>
+									<td className={`px-6 border-x`}>{phone.client.address}</td>
 									<td
 										className={`px-4 py-4 border-x font-medium 
 										${phone.status_id === 1 ? 'text-emerald-500' : 'text-red-600'}`}>

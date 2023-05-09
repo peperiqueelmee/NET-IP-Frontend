@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
-import { EmailFill, IdCardFill, LabFill, PadlockFill, UserFill, UserSecretFill, PencilFill } from '../../assets/icons';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
-import { RESPONSE_SERVER } from '../../utils/utils';
+import { EmailFill, IdCardFill, PadlockFill, PencilFill, UserFill, UserSecretFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
+import { useEmployee } from '../../hooks';
+import { RESPONSE_SERVER } from '../../utils/utils';
 
 const ModalEditEmployee = () => {
 	const [isLoading, setIsLoading] = useState(null);
 	// Data form
+	const { employee } = useEmployee();
 	const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
+	const [statuses, setStatuses] = useState(() => JSON.parse(localStorage.getItem('statuses')) || []);
 	const [roleSelected, setRoleSelected] = useState('');
+	const [statusSelected, setStatusSelected] = useState('');
 	// Messages
 	const [message, setMessage] = useState('');
 	// Employee data
@@ -19,14 +23,15 @@ const ModalEditEmployee = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [role, setRole] = useState(null);
+	const [status, setStatus] = useState(null);
 	// Validations
 	const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
 	//  Toggle modal
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
-		// Get roles
-		async function getRoles() {
+		async function fetchData() {
+			// Get roles
 			if (!roles.length) {
 				try {
 					const url = '/role';
@@ -37,14 +42,38 @@ const ModalEditEmployee = () => {
 					console.log(error);
 				}
 			}
+			// Get status
+			if (!statuses.length) {
+				try {
+					const url = '/status/employee';
+					const { data } = await axiosClient.get(url);
+					localStorage.setItem('statuses', JSON.stringify(data.data));
+					setStatuses(data.data);
+				} catch (error) {
+					console.log(error);
+				}
+			}
 		}
-		getRoles();
+		fetchData();
 	}, []);
+
+	useEffect(() => {
+		if (employee) {
+			setNames(employee.names);
+			setLastnames(employee.lastnames);
+			setRut(employee.rut);
+			setEmail(employee.email);
+			setUsername(employee.username);
+			setRoleSelected(employee.role.description);
+			setRole(employee.role_id);
+			setStatusSelected(employee.status.description);
+			setStatus(employee.status_id);
+		}
+	}, [employee]);
 
 	const handleToggleModal = (shouldClose) => {
 		setUserHasBeenCreated(null);
 		setOpen(!shouldClose);
-		clearForm();
 	};
 	const handleRoleSelect = (roleSelected) => {
 		setRoleSelected(roleSelected);
@@ -55,26 +84,36 @@ const ModalEditEmployee = () => {
 		}
 		setRole(selectedObject.id);
 	};
+	const handleStatusSelect = (statusSelected) => {
+		setStatusSelected(statusSelected);
+		const selectedObject = statuses.find(({ description }) => description === statusSelected);
+		if (!selectedObject) {
+			setRole(null);
+			return;
+		}
+		setStatus(selectedObject.id);
+	};
 	const handleSubmit = async (e) => {
 		setIsLoading(true);
 		setUserHasBeenCreated(null);
 		setMessage('');
 		e.preventDefault();
 		try {
-			// Create employee
-			const url = '/employee';
+			// Update employee
+			const url = `/employee/update/${employee.id}`;
 			const employeeData = {
-				rut,
 				names,
 				lastnames,
-				role_id: role,
+				rut,
+				email,
 				username,
 				emp_password: password,
-				email,
+				role_id: role,
+				status_id: status,
 			};
-			await axiosClient.post(url, employeeData);
+			await axiosClient.put(url, employeeData);
 			setIsLoading(null);
-			setMessage('¡El usuario ha sido creado exitosamente!');
+			setMessage('¡El usuario ha sido editado exitosamente!');
 			setUserHasBeenCreated(true);
 		} catch (error) {
 			setIsLoading(null);
@@ -88,18 +127,6 @@ const ModalEditEmployee = () => {
 	};
 
 	const removeErrorMessage = () => {
-		setUserHasBeenCreated(null);
-	};
-	const clearForm = async () => {
-		setMessage('');
-		setNames('');
-		setLastnames('');
-		setRut('');
-		setEmail('');
-		setUsername('');
-		setPassword('');
-		setRole(null);
-		setRoleSelected('');
 		setUserHasBeenCreated(null);
 	};
 
@@ -251,10 +278,10 @@ const ModalEditEmployee = () => {
 													Estado
 												</label>
 												<InputAutocomplete
-													options={roles.map((role) => role.description)}
-													onSelect={handleRoleSelect}
+													options={statuses.map((status) => status.description)}
+													onSelect={handleStatusSelect}
 													placeholder='Seleccionar permisos'
-													value={roleSelected}
+													value={statusSelected}
 												/>
 											</div>
 										</div>

@@ -279,7 +279,7 @@ const ModalCreateEmployee = () => {
 											className='bg-pink-600 hover:bg-pink-700 transition-colors duration-300
                                          			   text-slate-100 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border
 										               border-pink-700 font-medium disabled:bg-gray-400 disabled:border-gray-500 w-20'>
-											Guardar
+											Crear
 										</button>
 									</div>
 								</form>

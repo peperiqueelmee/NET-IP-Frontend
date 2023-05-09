@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ActionProvider } from "./context/ActionProvider";
+import { EmployeeProvider } from "./context/EmployeeProvider";
 
 import ChangePassword from "./pages/ChangePassword";
 import Home from "./pages/Home";
@@ -15,7 +16,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route index element={<Index />} />
-                <Route path="home" element={<ActionProvider><Home /></ActionProvider>} />
+                <Route path="home" element={<EmployeeProvider><ActionProvider><Home /></ActionProvider></EmployeeProvider>} />
                 <Route path="test" element={<Test />} />
                 <Route path="recuperar-contrasena" element={<RecoverPassword />} />
                 <Route path="cambiar-contrasena/:token" element={<ChangePassword />} />
