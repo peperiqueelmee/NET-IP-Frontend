@@ -4,7 +4,7 @@ const Title = ({ titleIsExpand = false }) => {
 	return (
 		<>
 			<div
-				className={`mb-6 text-white font-semibold tracking-wider text-lg md:text-xl xl:text-2xl text-shadow  
+				className={`mb-6 title text-white font-black tracking-wider text-lg md:text-xl xl:text-2xl text-shadow  
 						${titleIsExpand ? 'focus-in-expand' : ''} flex gap-2 items-center flex-col sm:flex-row`}>
 				<Logo className={'sm:w-9 xl:w-10 hidden sm:block'} />
 				<div className='flex gap-1 flex-col items-center sm:flex-row'>
