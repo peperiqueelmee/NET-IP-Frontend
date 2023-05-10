@@ -1,13 +1,24 @@
+import { usePhone } from '../../../hooks';
 import { Badge } from '../../index.js';
 
 const PhonesResultsCards = ({ phones }) => {
+	const { page, updatePage, hasMore } = usePhone();
+
+	const handleScroll = () => {
+		const element = document.getElementById('phone-card');
+		if (hasMore && Math.ceil(element.scrollTop) + element.clientHeight >= element.scrollHeight) {
+			updatePage(page + 1);
+		}
+	};
 	return (
 		<>
 			<div className='lg:hidden block'>
 				{phones && phones.length > 0 ? (
 					<div
 						className='overflow-y-auto'
-						style={{ height: '50vh' }}>
+						style={{ height: '50vh' }}
+						onScroll={handleScroll}
+						id='phone-card'>
 						{phones.map((phone, index) => (
 							<div
 								key={phone.id}

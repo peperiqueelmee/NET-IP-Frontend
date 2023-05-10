@@ -1,8 +1,21 @@
+import { usePhone } from '../../../hooks';
+
 const PhonesResultsTable = ({ phones }) => {
+	const { page, updatePage, hasMore } = usePhone();
+
+	const handleScroll = () => {
+		const element = document.getElementById('phone-table');
+		if (hasMore && Math.ceil(element.scrollTop) + element.clientHeight >= element.scrollHeight) {
+			updatePage(page + 1);
+		}
+	};
+
 	return (
 		<>
 			<div
 				className='hidden lg:block relative overflow-y-auto shadow-md'
+				onScroll={handleScroll}
+				id='phone-table'
 				style={{ height: '70vh' }}>
 				{phones && phones.length > 0 ? (
 					<table className='w-full text-center text-gray-500'>

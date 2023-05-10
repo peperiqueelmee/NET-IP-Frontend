@@ -2,25 +2,46 @@ import Grow from '@mui/material/Grow';
 import { useEffect, useState } from 'react';
 import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
-import { useAction } from '../../hooks';
+import { useAction, usePhone } from '../../hooks';
 import { InfoTooltip, PhonesResultsCards, PhonesResultsTable, Spinner } from '../index.js';
 
 const Phones = () => {
-	const { selectedAction } = useAction();
-	const [selectedButton, setSelectedButton] = useState('');
-	const [isLoading, setLoading] = useState(null);
-	const [phones, setPhones] = useState(null);
+	const { page, updatePage, updateHasMore } = usePhone();
+	const { selectedAction, selectedActionPhones, handleActionSelectPhones } = useAction();
+	const [phones, setPhones] = useState([]);
 	const [phone, setPhone] = useState('');
+	const [isLoading, setLoading] = useState(null);
 
-	// Clear options selected.
 	useEffect(() => {
-		setSelectedButton('');
-		setPhones(null);
-		setPhone('');
+		handleSelectedActionPhones();
+	}, [page]);
+	useEffect(() => {
+		resetPhones();
 	}, [selectedAction]);
-	// Handles
-	const handleButtonClick = (buttonName) => {
-		setSelectedButton(buttonName);
+	useEffect(() => {
+		if (selectedActionPhones === 1 || selectedActionPhones === 2 || selectedActionPhones === 3) {
+			cleanPaginationPhones();
+		}
+	}, [selectedActionPhones]);
+
+	// Handles.
+	const handleSelectedActionPhones = async () => {
+		switch (selectedActionPhones) {
+			case 1:
+				await getAllPhones();
+				break;
+			case 2:
+				await getPhonesByStatus(1);
+				break;
+			case 3:
+				await getPhonesByStatus(3);
+				break;
+			default:
+				break;
+		}
+	};
+	const handleButtonClick = (index) => {
+		handleActionSelectPhones(index);
 	};
 	const handleListAllPhones = async () => {
 		setLoading(true);
@@ -31,7 +52,6 @@ const Phones = () => {
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
-			console.log(error);
 		}
 	};
 	const handleListPhoneByNumber = async (e) => {
@@ -45,7 +65,6 @@ const Phones = () => {
 		} catch (error) {
 			setLoading(false);
 			setPhones('');
-			console.log(error);
 		}
 	};
 	const handleLisPhonesByStatus = async (status) => {
@@ -58,8 +77,42 @@ const Phones = () => {
 		} catch (error) {
 			setLoading(false);
 			setPhones('');
-			console.log(error);
 		}
+	};
+
+	// Pagination.
+	const getAllPhones = async () => {
+		try {
+			const url = `/phone?page=${page}`;
+			const { data } = await axiosClient(url);
+			setPhones([...phones, ...data.data]);
+		} catch (error) {
+			updateHasMore(false);
+		}
+	};
+	const getPhonesByStatus = async (status) => {
+		try {
+			const url = `/phone/status/${status}?page=${page}`;
+			const { data } = await axiosClient(url);
+			setPhones([...phones, ...data.data]);
+			setLoading(false);
+		} catch (error) {
+			updateHasMore(false);
+		}
+	};
+
+	// Functions.
+	const resetPhones = () => {
+		handleActionSelectPhones(null);
+		setPhones(null);
+		setPhone('');
+		updateHasMore(true);
+		updatePage(1);
+	};
+	const cleanPaginationPhones = () => {
+		updatePage(1);
+		updateHasMore(true);
+		setPhones([]);
 	};
 
 	return (
@@ -79,12 +132,12 @@ const Phones = () => {
 								<button
 									onClick={() => {
 										handleListAllPhones();
-										handleButtonClick('button1');
+										handleButtonClick(1);
 									}}
 									className={`bg-gray-200 rounded-2xl px-4 py-1
 														text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
 														${
-															selectedButton === 'button1'
+															selectedActionPhones === 1
 																? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
 																: 'text-zinc-700 '
 														}`}>
@@ -94,12 +147,12 @@ const Phones = () => {
 									<button
 										onClick={() => {
 											handleLisPhonesByStatus(1);
-											handleButtonClick('button2');
+											handleButtonClick(2);
 										}}
 										className={`bg-gray-200 rounded-2xl px-4 py-1 
 															text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
 															${
-																selectedButton === 'button2'
+																selectedActionPhones === 2
 																	? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
 																	: 'text-zinc-700 '
 															}`}>
@@ -108,12 +161,12 @@ const Phones = () => {
 									<button
 										onClick={() => {
 											handleLisPhonesByStatus(3);
-											handleButtonClick('button3');
+											handleButtonClick(3);
 										}}
 										className={`bg-gray-200 rounded-2xl px-4 py-1 
 															text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
 															${
-																selectedButton === 'button3'
+																selectedActionPhones === 3
 																	? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
 																	: 'text-zinc-700'
 															}`}>
@@ -137,7 +190,7 @@ const Phones = () => {
 								<input
 									value={phone}
 									onChange={(e) => setPhone(e.target.value)}
-									onClick={() => handleButtonClick('button4')}
+									onClick={() => handleButtonClick(4)}
 									className='rounded-l-2xl pl-4 text-xs xl:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500'
 									type='text'
 									placeholder='Teléfono de cliente'
@@ -146,12 +199,12 @@ const Phones = () => {
 									type='submit'
 									onClick={() => {
 										handleListPhoneByNumber();
-										handleButtonClick('button4');
+										handleButtonClick(4);
 									}}
 									className={`bg-gray-200 rounded-r-2xl h-6 w-9 flex items-center justify-center cursor-pointer 
 												shadow hover:shadow-lime-400 
 												${
-													selectedButton === 'button4'
+													selectedActionPhones === 4
 														? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
 														: 'text-zinc-700'
 												}`}>
