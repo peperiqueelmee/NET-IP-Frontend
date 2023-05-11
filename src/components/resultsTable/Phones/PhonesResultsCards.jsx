@@ -1,18 +1,27 @@
 import { usePhone } from '../../../hooks';
 import { Badge } from '../../index.js';
 
-const PhonesResultsCards = ({ phones }) => {
+const PhonesResultsCards = ({ phones, totalResults }) => {
 	const { page, updatePage, hasMore } = usePhone();
 
 	const handleScroll = () => {
 		const element = document.getElementById('phone-card');
-		if (hasMore && Math.ceil(element.scrollTop) + element.clientHeight >= element.scrollHeight) {
-			updatePage(page + 1);
+		const tolerance = 1;
+
+		if (hasMore && element.scrollHeight <= element.offsetHeight + element.scrollTop + tolerance) {
+			setTimeout(() => {
+				updatePage(page + 1);
+			}, 50);
 		}
 	};
 	return (
 		<>
 			<div className='lg:hidden block'>
+				<div className='text-slate-200 bg-stone-950 text-xs text-center py-1 bg-opacity-70 tracking-wide font-medium rounded-b-md'>
+					Mostrando <span className='font-bold text-blue-400'>{phones.length}</span> de{' '}
+					<span className='font-bold text-blue-500 '>{totalResults}</span>{' '}
+					{phones.length === 1 ? 'resultado' : 'resultados'}.
+				</div>
 				{phones && phones.length > 0 ? (
 					<div
 						className='overflow-y-auto'
@@ -22,7 +31,7 @@ const PhonesResultsCards = ({ phones }) => {
 						{phones.map((phone, index) => (
 							<div
 								key={phone.id}
-								className='flex bg-gradient-to-r from-gray-50 to-slate-100 mt-2 text-xs rounded-lg py-2 px-2 shadow-2xl gap-5 border-2 border-lime-100 relative'>
+								className='flex bg-gradient-to-r from-gray-50 to-slate-100 mt-2 text-xs rounded-lg py-2 px-2 shadow-2xl gap-5 border-2 border-lime-100 relative opacity-90'>
 								{/*  Badge */}
 								<Badge index={index + 1} />
 								{/* Content */}

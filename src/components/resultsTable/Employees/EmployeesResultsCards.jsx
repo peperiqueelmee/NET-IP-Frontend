@@ -1,9 +1,8 @@
-import { PencilFill } from '../../../assets/icons';
 import axiosClient from '../../../config/axios';
 import { useEmployee } from '../../../hooks';
 import { Badge } from '../../index.js';
 
-const EmployeesResultsCardsResponsive = ({ employees }) => {
+const EmployeesResultsCardsResponsive = ({ employees, totalResults }) => {
 	const { handleEmployeeSelect } = useEmployee();
 
 	const modalEditEmployee = async (e, rutEmployee) => {
@@ -25,6 +24,11 @@ const EmployeesResultsCardsResponsive = ({ employees }) => {
 	return (
 		<>
 			<div className='lg:hidden block'>
+				<div className='text-slate-200 bg-stone-950 text-xs text-center py-1 bg-opacity-70 tracking-wide font-medium rounded-b-md'>
+					Mostrando <span className='font-bold text-blue-400'>{employees.length}</span> de{' '}
+					<span className='font-bold text-blue-500 '>{totalResults}</span>{' '}
+					{employees.length === 1 ? 'resultado' : 'resultados'}.
+				</div>
 				{employees && employees.length > 0 ? (
 					<div
 						className='overflow-y-auto'

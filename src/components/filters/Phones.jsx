@@ -11,6 +11,7 @@ const Phones = () => {
 	const [phones, setPhones] = useState([]);
 	const [phone, setPhone] = useState('');
 	const [isLoading, setLoading] = useState(null);
+	const [totalPhones, setTotalPhones] = useState(null);
 
 	useEffect(() => {
 		handleSelectedActionPhones();
@@ -49,18 +50,23 @@ const Phones = () => {
 			const url = `/phone`;
 			const { data } = await axiosClient(url);
 			setPhones(data.data);
+			setTotalPhones(data.total);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
 		}
 	};
 	const handleListPhoneByNumber = async (e) => {
+		if (!e) {
+			return;
+		}
 		e.preventDefault();
 		setLoading(true);
 		try {
 			const url = `/phone/56${phone}`;
 			const { data } = await axiosClient(url);
 			setPhones(data.data);
+			setTotalPhones(data.total);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
@@ -73,6 +79,7 @@ const Phones = () => {
 			const url = `/phone/status/${status}`;
 			const { data } = await axiosClient(url);
 			setPhones(data.data);
+			setTotalPhones(data.total);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
@@ -82,20 +89,28 @@ const Phones = () => {
 
 	// Pagination.
 	const getAllPhones = async () => {
+		if (phones.length === totalPhones) {
+			return updateHasMore(false);
+		}
 		try {
 			const url = `/phone?page=${page}`;
 			const { data } = await axiosClient(url);
 			setPhones([...phones, ...data.data]);
+			if (phones.length === totalPhones) {
+				updateHasMore(false);
+			}
 		} catch (error) {
 			updateHasMore(false);
 		}
 	};
 	const getPhonesByStatus = async (status) => {
+		if (phones.length === totalPhones) {
+			return updateHasMore(false);
+		}
 		try {
 			const url = `/phone/status/${status}?page=${page}`;
 			const { data } = await axiosClient(url);
 			setPhones([...phones, ...data.data]);
-			setLoading(false);
 		} catch (error) {
 			updateHasMore(false);
 		}
@@ -230,8 +245,18 @@ const Phones = () => {
 						</div>
 					)}
 					{/* Results employees table */}
-					{phones !== null && isLoading === false && <PhonesResultsTable phones={phones} />}
-					{phones !== null && isLoading === false && <PhonesResultsCards phones={phones} />}
+					{phones !== null && isLoading === false && (
+						<PhonesResultsTable
+							phones={phones}
+							totalResults={totalPhones}
+						/>
+					)}
+					{phones !== null && isLoading === false && (
+						<PhonesResultsCards
+							phones={phones}
+							totalResults={totalPhones}
+						/>
+					)}
 				</div>
 			</Grow>
 		</>

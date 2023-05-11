@@ -11,6 +11,7 @@ const Users = () => {
 	const { selectedAction, selectedActionUsers, handleActionSelectUsers } = useAction();
 	const [isLoading, setLoading] = useState(null);
 	const [rut, setRut] = useState('');
+	const [totalEmployees, setTotalEmployees] = useState(null);
 
 	// Clear options selected.
 	useEffect(() => {
@@ -33,24 +34,27 @@ const Users = () => {
 			const url = '/employee/employees';
 			const { data } = await axiosClient(url);
 			getEmployees(data.data);
+			setTotalEmployees(data.total);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
-			console.log(error);
 		}
 	};
 	const handleListEmployeeByRut = async (e) => {
+		if (!e) {
+			return;
+		}
 		e.preventDefault();
 		setLoading(true);
 		try {
 			const url = `/employee/employees/${rut}`;
 			const { data } = await axiosClient(url);
 			getEmployees(data.data);
+			setTotalEmployees(data.total);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
 			getEmployees('');
-			console.log(error);
 		}
 	};
 	const handleListEmployeesByStatus = async (status) => {
@@ -59,11 +63,11 @@ const Users = () => {
 			const url = `/employee/employees/status/${status}`;
 			const { data } = await axiosClient(url);
 			getEmployees(data.data);
+			setTotalEmployees(data.total);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
 			getEmployees('');
-			console.log(error);
 		}
 	};
 
@@ -173,8 +177,18 @@ const Users = () => {
 						</div>
 					)}
 					{/* Results employees table */}
-					{employees !== null && isLoading === false && <EmployeesResultsTable employees={employees} />}
-					{employees !== null && isLoading === false && <EmployeesResultsCards employees={employees} />}
+					{employees !== null && isLoading === false && (
+						<EmployeesResultsTable
+							employees={employees}
+							totalResults={totalEmployees}
+						/>
+					)}
+					{employees !== null && isLoading === false && (
+						<EmployeesResultsCards
+							employees={employees}
+							totalResults={totalEmployees}
+						/>
+					)}
 				</div>
 			</Grow>
 		</>
