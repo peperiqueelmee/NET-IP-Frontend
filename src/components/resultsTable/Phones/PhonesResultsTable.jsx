@@ -17,7 +17,7 @@ const PhonesResultsTable = ({ phones, totalResults }) => {
 	return (
 		<>
 			<div
-				className='hidden lg:block relative overflow-y-auto shadow-md'
+				className='hidden lg:block relative overflow-y-auto shadow-md flip-in-hor-top '
 				onScroll={handleScroll}
 				id='phone-table'
 				style={{ height: '70vh' }}>
@@ -63,7 +63,7 @@ const PhonesResultsTable = ({ phones, totalResults }) => {
 								{phones.map((phone, index) => (
 									<tr
 										key={phone.id}
-										className={`odd:bg-white even:bg-slate-100 border-b text-xs lg:text-sm text-center`}>
+										className={`odd:bg-white even:bg-slate-100 border-b text-xs xl:text-sm text-center`}>
 										<td className='px-2'>{index + 1}</td>
 										<td className='px-5 border-x'>+{phone.phone_number}</td>
 										<td className='px-5 border-x'>{phone.client.fullName}</td>

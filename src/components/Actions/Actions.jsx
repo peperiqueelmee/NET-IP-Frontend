@@ -9,7 +9,7 @@ const Actions = () => {
 	return (
 		<>
 			<div
-				className='bg-gradient-to-r from-zinc-100 via-gray-100 to-stone-200 pt-3 pb-4 mt-10 w-full border-2
+				className='lg:pl-40 xl:pl-0 bg-gradient-to-r from-zinc-100 via-gray-100 to-stone-200 pt-3 pb-4 mt-10 w-full border-2
 			             border-t-lime-500 border-l-lime-500 border-r-lime-500 rounded-t-2xl overflow-x-auto'
 				style={{ width: '100%' }}>
 				{/* Actions*/}
