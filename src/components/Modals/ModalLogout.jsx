@@ -23,7 +23,7 @@ const ModalLogout = () => {
 				onClick={() => handleToggleModal(false)}></button>
 			{open && (
 				<div
-					className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'
+					className='fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center'
 					onClick={() => handleToggleModal(true)}>
 					<div className='bg-white rounded-lg w-96 p-4 flex flex-col items-center border border-lime-400 bg-opacity-90 mx-2'>
 						<h2 className='text-base font-medium mb-4'>¿Estás seguro de cerrar sesión?</h2>
