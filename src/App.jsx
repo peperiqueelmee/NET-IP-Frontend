@@ -12,6 +12,7 @@ import RecoverPassword from './pages/RecoverPassword';
 import ServerError from './pages/ServerError';
 import Test from './pages/Test';
 
+
 function App() {
 	return (
 		<BrowserRouter>
@@ -34,7 +35,11 @@ function App() {
 				/>
 				<Route
 					path='test'
-					element={<Test />}
+					element={
+						<ActionProvider>
+							<Test />
+						</ActionProvider>
+					}
 				/>
 				<Route
 					path='recuperar-contrasena'

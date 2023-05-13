@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 /* Wallpapers */
 .login-page {
 	background-image: url('./assets/wallpaper/FondoLoginLogo.jpg');

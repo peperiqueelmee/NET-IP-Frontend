@@ -1,4 +1,11 @@
+import { useMediaQuery } from 'react-responsive';
+import { FreeMode, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { useAction } from '../../hooks';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/pagination';
 
 const Actions = () => {
 	const { selectedAction, handleActionSelect, getActions } = useAction();
@@ -6,41 +13,66 @@ const Actions = () => {
 	const mobileScreenSizeIcon = 'text-2xl';
 	const actions = getActions(sizeIcon, mobileScreenSizeIcon);
 
+	const breakpoints = [
+		{ max: 1279, slides: 6 },
+		{ max: 1023, slides: 5 },
+		{ max: 767, slides: 4 },
+		{ max: 531, slides: 3 },
+		{ max: 431, slides: 2 },
+		{ max: 331, slides: 1 },
+	];
+
+	const slidesPreview = breakpoints.reduce(
+		(slides, { max, slides: slidesForBreakpoint }) =>
+			useMediaQuery({ query: `(max-width: ${max}px)` }) ? slidesForBreakpoint : slides,
+		actions.length
+	);
+
 	return (
 		<>
 			<div
-				className='lg:pl-40 xl:pl-0 bg-gradient-to-r from-zinc-100 via-gray-100 to-stone-200 pt-3 pb-4 mt-10 w-full border-2
-			             border-t-lime-500 border-l-lime-500 border-r-lime-500 rounded-t-2xl overflow-x-auto'
-				style={{ width: '100%' }}>
-				{/* Actions*/}
-				<div className='flex lg:justify-center justify-start lg:px-0 px-3 lg:gap-6 md:gap-4 sm:gap-2 gap-1'>
-					{actions.map(({ name, icon }, index) => (
-						/*  Container */
-						<div
-							id={name}
-							key={name}
-							className={`flex-shrink-0 shadow-md cursor-pointer bg-zinc-50 rounded-2xl lg:w-28 lg:h-24 w-24 h-20 
-							            transition duration-300 ease-in-out flex flex-col items-center  mr-4 px-1 py-0.5
+				className='mt-10 h-36 w-full rounded-t-2xl border-2 border-l-lime-500 border-r-lime-500 border-t-lime-500 bg-gradient-to-r from-zinc-100 via-gray-100
+			             to-stone-200 pl-4 pr-0 pt-3 lg:h-40 xl:h-32'>
+				<div className='h-full w-full'>
+					<Swiper
+						slidesPerView={slidesPreview}
+						spaceBetween={-60}
+						freeMode={true}
+						pagination={{
+							clickable: true,
+						}}
+						modules={[FreeMode, Pagination]}
+						justifyContent='center'>
+						{actions.map(({ name, icon }, index) => (
+							<SwiperSlide>
+								{/*  Container */}
+								<div
+									id={name}
+									key={name}
+									className={`mr-4 flex h-20 w-24 flex-shrink-0 cursor-pointer flex-col items-center rounded-2xl 
+							            bg-zinc-50 px-1 py-0.5 shadow-md transition duration-300  ease-in-out lg:h-24 lg:w-28
 										${
 											selectedAction === index
-												? 'shadow-lime-600 shadow-lg border border-lime-600 bg-gradient-to-r from-lime-500 to-lime-600'
-												: 'hover:shadow-md hover:shadow-lime-500 bg-gradient-to-r from-zinc-50 to-zinc-200 border border-zinc-50'
+												? 'border border-lime-600 bg-gradient-to-r from-lime-500 to-lime-600 shadow-lg shadow-lime-600'
+												: 'border border-zinc-50 bg-gradient-to-r from-zinc-50 to-zinc-200 hover:shadow-md hover:shadow-lime-500'
 										}`}
-							onClick={() => handleActionSelect(index)}>
-							{/* Icon */}
-							<div className='py-2'>{icon}</div>
+									onClick={() => handleActionSelect(index)}>
+									{/* Icon */}
+									<div className='py-2'>{icon}</div>
 
-							{/*  Text */}
-							<div className={`text-center flex`}>
-								<span
-									className={`font-medium tracking-tighter lg:text-sm text-xs  ${
-										selectedAction === index ? 'text-white' : 'text-zinc-800'
-									}`}>
-									{name}
-								</span>
-							</div>
-						</div>
-					))}
+									{/*  Text */}
+									<div className={`flex text-center`}>
+										<span
+											className={`text-xs font-medium tracking-tighter lg:text-sm  ${
+												selectedAction === index ? 'text-white' : 'text-zinc-800'
+											}`}>
+											{name}
+										</span>
+									</div>
+								</div>
+							</SwiperSlide>
+						))}
+					</Swiper>
 				</div>
 			</div>
 		</>
