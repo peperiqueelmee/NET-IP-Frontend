@@ -23,75 +23,77 @@ const EmployeesResultsCardsResponsive = ({ employees, totalResults }) => {
 	};
 	return (
 		<>
-			<div className='lg:hidden block'>
-				<div className='text-slate-200 bg-stone-950 text-xs text-center py-1 bg-opacity-70 tracking-wide font-medium rounded-b-md'>
-					Mostrando <span className='font-bold text-blue-400'>{employees.length}</span> de{' '}
-					<span className='font-bold text-blue-500 '>{totalResults}</span>{' '}
-					{employees.length === 1 ? 'resultado' : 'resultados'}.
-				</div>
+			<div className='block lg:hidden'>
 				{employees && employees.length > 0 ? (
-					<div
-						className='overflow-y-auto'
-						style={{ height: '50vh' }}>
-						{employees.map((employee, index) => (
-							<div
-								key={employee.id}
-								className='flex flex-col bg-gradient-to-r from-gray-50 to-slate-100 mt-2 text-xs rounded-lg py-2 px-2 shadow-2xl gap-5 border-2 border-lime-100 relative'>
-								{/*  Badge */}
-								<Badge index={index + 1} />
-								{/* Content */}
-								<div className='flex flex-col gap-1 tracking-wide w-full ml-3 mt-2'>
-									<div className='flex w-full'>
-										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Nombre(s):</div>
-										<div className='w-1/2'>{employee.names}</div>
-									</div>
-									<div className='flex w-full'>
-										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Apellido(s):</div>
-										<div className='w-1/2'>{employee.lastnames}</div>
-									</div>
-									<div className='flex w-full'>
-										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>RUT:</div>
-										<div className='w-1/2'>{employee.rut}</div>
-									</div>
-									<div className='flex w-full'>
-										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Email:</div>
-										<div className='w-1/2'>{employee.email}</div>
-									</div>
-									<div className='flex w-full'>
-										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Usuario:</div>
-										<div className='w-1/2'>{employee.username}</div>
-									</div>
-									<div className='flex w-full'>
-										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Cargo:</div>
-										<div
-											className={`w-1/2 font-semibold
-													${employee.role_id === 1 ? 'text-blue-950 italic' : ''}`}>
-											{employee.role.description}
+					<>
+						<div className='rounded-b-md bg-stone-950 bg-opacity-70 py-1 text-center text-xs font-medium tracking-wide text-slate-200'>
+							Mostrando <span className='font-bold text-blue-400'>{employees.length}</span> de{' '}
+							<span className='font-bold text-blue-500 '>{totalResults}</span>{' '}
+							{employees.length === 1 ? 'resultado' : 'resultados'}.
+						</div>
+						<div
+							className='overflow-y-auto'
+							style={{ height: '50vh' }}>
+							{employees.map((employee, index) => (
+								<div
+									key={employee.id}
+									className='relative mt-2 flex flex-col gap-5 rounded-lg border-2 border-lime-100 bg-gradient-to-r from-gray-50 to-slate-100 px-2 py-2 text-xs shadow-2xl'>
+									{/*  Badge */}
+									<Badge index={index + 1} />
+									{/* Content */}
+									<div className='ml-3 mt-2 flex w-full flex-col gap-1 tracking-wide'>
+										<div className='flex w-full'>
+											<div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Nombre(s):</div>
+											<div className='w-1/2'>{employee.names}</div>
 										</div>
-									</div>
-									<div className='flex w-full'>
-										<div className='w-1/3 sm:w-1/2 font-bold text-gray-700'>Estado:</div>
-										<div
-											className={`font-medium text-emerald-600 w-1/2
+										<div className='flex w-full'>
+											<div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Apellido(s):</div>
+											<div className='w-1/2'>{employee.lastnames}</div>
+										</div>
+										<div className='flex w-full'>
+											<div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>RUT:</div>
+											<div className='w-1/2'>{employee.rut}</div>
+										</div>
+										<div className='flex w-full'>
+											<div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Email:</div>
+											<div className='w-1/2'>{employee.email}</div>
+										</div>
+										<div className='flex w-full'>
+											<div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Usuario:</div>
+											<div className='w-1/2'>{employee.username}</div>
+										</div>
+										<div className='flex w-full'>
+											<div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Cargo:</div>
+											<div
+												className={`w-1/2 font-semibold
+													${employee.role_id === 1 ? 'italic text-blue-950' : ''}`}>
+												{employee.role.description}
+											</div>
+										</div>
+										<div className='flex w-full'>
+											<div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Estado:</div>
+											<div
+												className={`w-1/2 font-medium text-emerald-600
 													${employee.status_id === 1 ? 'text-emerald-500' : 'text-red-600'}`}>
-											{employee.status.description}
+												{employee.status.description}
+											</div>
 										</div>
 									</div>
+									<div className='flex justify-center'>
+										<button
+											onClick={(e) => modalEditEmployee(e, employee.rut)}
+											className='w-5/12 rounded-xl border border-blue-300
+												   bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600	
+												 py-1 text-xs font-bold text-slate-200 shadow-sm shadow-blue-400 hover:bg-gradient-to-r hover:from-blue-500 hover:via-blue-600 hover:to-blue-700'>
+											Editar
+										</button>
+									</div>
 								</div>
-								<div className='flex justify-center'>
-									<button
-										onClick={(e) => modalEditEmployee(e, employee.rut)}
-										className='bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600
-												   hover:bg-gradient-to-r hover:from-blue-500 hover:via-blue-600 hover:to-blue-700	
-												 text-slate-200 rounded-xl w-5/12 py-1 font-bold text-xs shadow-sm shadow-blue-400 border border-blue-300'>
-										Editar
-									</button>
-								</div>
-							</div>
-						))}
-					</div>
+							))}
+						</div>
+					</>
 				) : (
-					<div className='flex justify-center text-red-500 bg-stone-950 font-medium bg-opacity-70 text-xs tracking-wide'>
+					<div className='flex justify-center bg-stone-950 bg-opacity-70 text-xs font-medium tracking-wide text-red-500'>
 						<p>No se encontraron resultados.</p>
 					</div>
 				)}
