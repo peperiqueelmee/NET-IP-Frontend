@@ -9,6 +9,7 @@ const InputAutocomplete = ({ value, options, onSelect, placeholder, disabled = f
 	return (
 		<>
 			<Autocomplete
+				style={{ fontSize: '46px' }}
 				disabled={disabled}
 				value={value}
 				onChange={(event, newValue) => {
@@ -39,6 +40,10 @@ const InputAutocomplete = ({ value, options, onSelect, placeholder, disabled = f
 							cursor: disabled ? 'default' : 'pointer',
 						},
 					},
+					'& .MuiInputBase-input': {
+						fontSize: '14px',
+						color: '#111827',
+					},
 				}}
 				renderInput={(params) => (
 					<TextField
@@ -49,7 +54,7 @@ const InputAutocomplete = ({ value, options, onSelect, placeholder, disabled = f
 							...params.InputProps,
 							disableUnderline: true,
 							classes: {
-								root: 'pl-6 p-2 shadow-sm',
+								root: 'pl-4 p-2 shadow-sm',
 							},
 						}}
 					/>

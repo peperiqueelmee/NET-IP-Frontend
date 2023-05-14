@@ -17,3 +17,21 @@
 .text-shadow {
 	text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
 }
+
+/* Autocomplete input */
+.MuiAutocomplete-listbox {
+	color: rgb(17 24 39);
+	font-size: 14px;
+}
+@media (min-width: 640px) {
+	.MuiAutocomplete-listbox {
+		font-size: 14px;
+	}
+	.MuiAutocomplete-noOptions {
+		font-size: 14px;
+	}
+}
+.MuiAutocomplete-noOptions {
+	font-size: 12px;
+	color: rgb(17 24 39);
+}
