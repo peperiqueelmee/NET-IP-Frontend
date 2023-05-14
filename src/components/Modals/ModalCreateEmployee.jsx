@@ -116,7 +116,7 @@ const ModalCreateEmployee = () => {
 			{open && (
 				<div className='fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center overflow-x-auto sm:px-20 lg:px-40 xl:px-72 px-0'>
 					<div
-						className={`bg-slate-200 rounded-lg py-5 w-full sm:w-11/12 lg:w-10/12  2xl:w-8/12  flex flex-col items-center bg-opacity-90 overflow-auto mt-44 sm:mt-52 lg:mt-10 mb-5 mx-5`}>
+						className={`bg-slate-200 rounded-lg py-5 w-full sm:w-11/12 lg:w-10/12  2xl:w-8/12  flex flex-col items-center bg-opacity-90 overflow-auto mt-60 sm:mt-52 lg:mt-10 mb-5 mx-5`}>
 						{/* Success or error message */}
 						{userHasBeenCreated != null ? (
 							<div className='w-full px-3 flex justify-center'>

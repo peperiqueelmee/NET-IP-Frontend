@@ -147,12 +147,12 @@ const Users = () => {
 							</div>
 							<form
 								onSubmit={handleListEmployeeByRut}
-								className='flex items-center'>
+								className='flex items-center w-9/12 sm:w-6/12 lg:w-auto'>
 								<input
 									value={rut}
 									onChange={(e) => setRut(e.target.value)}
 									onClick={() => handleButtonClick(5)}
-									className='rounded-l-2xl pl-4 text-xs xl:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500'
+									className='rounded-l-2xl pl-4 text-xs xl:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500 w-full'
 									type='text'
 									placeholder='Ingresa RUT de usuario'
 								/>

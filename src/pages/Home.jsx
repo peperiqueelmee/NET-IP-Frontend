@@ -41,7 +41,7 @@ const Home = () => {
 
 	return (
 		<div className='home-page  h-screen overflow-y-auto'>
-			<div className={`container mx-auto px-6 md:px-10 `}>
+			<div className={`container mx-auto px-3 sm:px-6 md:px-10 `}>
 				<div className='flex flex-col items-center justify-between pt-10 lg:flex-row'>
 					{/* Tittle */}
 					<Title titleIsExpand={true} />
@@ -51,10 +51,9 @@ const Home = () => {
 							className='cursor-pointer rounded-full border-2 border-lime-500 bg-gradient-to-r from-zinc-600 
 									   via-zinc-700 to-zinc-800 px-4 py-1 text-xs
 									   tracking-wide text-gray-200 shadow-md hover:bg-gradient-to-r 
-									   hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'>
-							<div
-								className='flex items-center gap-1'
-								onClick={(e) => modalEditEmployee(e, userRut)}>
+									   hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'
+							onClick={(e) => modalEditEmployee(e, userRut)}>
+							<div className='flex items-center gap-1'>
 								<UserFill className='text-xs text-lime-400 lg:text-sm' />
 								<span className='flex w-full justify-center'>{username}</span>
 							</div>
@@ -73,10 +72,9 @@ const Home = () => {
 							className='cursor-pointer rounded-full border-2 border-lime-500 bg-gradient-to-r from-zinc-600 
 									   via-zinc-700 to-zinc-800 px-4 py-1 text-xs
 									   tracking-wide text-gray-200 shadow-md hover:bg-gradient-to-r 
-									   hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'>
-							<div
-								className='flex items-center gap-1'
-								onClick={modalLogout}>
+									   hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'
+							onClick={modalLogout}>
+							<div className='flex items-center gap-1'>
 								<ExitDoorFill className='text-xs text-lime-400 lg:text-sm' />
 								<span className='flex w-full justify-center'>Cerrar sesión</span>
 							</div>

@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { EmailFill, IdCardFill, PadlockFill, PencilFill, UserFill, UserSecretFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
-import { useEmployee, useAction } from '../../hooks';
+import { useAction, useEmployee } from '../../hooks';
 import { RESPONSE_SERVER } from '../../utils/utils';
 
 const ModalEditEmployee = () => {
+	// Data init
+	const userRut = localStorage.getItem('rut');
 	const [isLoading, setIsLoading] = useState(null);
 	const { selectedActionUsers } = useAction();
 	// Data form
@@ -152,15 +154,15 @@ const ModalEditEmployee = () => {
 		<div>
 			<button
 				id='editEmployee'
-				className='text-xs sm:text-base text-white'
+				className='text-xs text-white sm:text-base'
 				onClick={() => handleToggleModal(false)}></button>
 			{open && (
-				<div className='fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center overflow-x-auto sm:px-20 lg:px-40 xl:px-72 px-0'>
+				<div className='fixed inset-0 z-10 flex items-center justify-center overflow-x-auto bg-black bg-opacity-50 px-0 sm:px-20 lg:px-40 xl:px-72'>
 					<div
-						className={`bg-slate-200 rounded-lg py-5 w-full sm:w-11/12 lg:w-10/12  2xl:w-8/12  flex flex-col items-center bg-opacity-90 overflow-auto mt-44 sm:mt-52 lg:mt-10 mb-5 mx-5`}>
+						className={`mx-5 mb-5 mt-60 flex w-full flex-col  items-center  overflow-auto rounded-lg bg-slate-200 bg-opacity-90 py-5 sm:mt-52 sm:w-11/12 lg:mt-10 lg:w-10/12 2xl:w-8/12`}>
 						{/* Success or error message */}
 						{userHasBeenCreated != null ? (
-							<div className='w-full px-3 flex justify-center'>
+							<div className='flex w-full justify-center px-3'>
 								<InformativeMessage
 									message={message}
 									hasError={!userHasBeenCreated}
@@ -172,16 +174,16 @@ const ModalEditEmployee = () => {
 						{!userHasBeenCreated ? (
 							<>
 								{/* Title */}
-								<div className='flex items-center gap-2 mt-2'>
-									<h2 className='text-xl md:text-2xl font-bold text-slate-700'>Editar Trabajador</h2>
-									<PencilFill className='text-slate-700 text-lg md:ext-xl' />
+								<div className='mt-2 flex items-center gap-2'>
+									<h2 className='text-xl font-bold text-slate-700 md:text-2xl'>Editar Trabajador</h2>
+									<PencilFill className='md:ext-xl text-lg text-slate-700' />
 								</div>
 								<form
-									className='w-full px-10 py-4 mt-2'
+									className='mt-2 w-full px-10 py-4'
 									onClick={removeErrorMessage}
 									onSubmit={handleSubmit}>
 									<div className='flex flex-col'>
-										<div className='md:flex gap-4 block w-full justify-center'>
+										<div className='block w-full justify-center gap-4 md:flex'>
 											<div className='w-full'>
 												<InputWithValidation
 													label='Nombre(s)'
@@ -192,7 +194,7 @@ const ModalEditEmployee = () => {
 													onChange={setNames}
 													icon={
 														<UserSecretFill
-															className={'text-slate-600 text-sm sm:text-base'}
+															className={'text-sm text-slate-600 sm:text-base'}
 														/>
 													}
 												/>
@@ -207,13 +209,13 @@ const ModalEditEmployee = () => {
 													onChange={setLastnames}
 													icon={
 														<UserSecretFill
-															className={'text-slate-600 text-sm sm:text-base'}
+															className={'text-sm text-slate-600 sm:text-base'}
 														/>
 													}
 												/>
 											</div>
 										</div>
-										<div className='md:flex gap-4 block w-full justify-center'>
+										<div className='block w-full justify-center gap-4 md:flex'>
 											<div className='w-full'>
 												<InputWithValidation
 													label='R.U.T'
@@ -226,7 +228,7 @@ const ModalEditEmployee = () => {
 													infoTooltip={'El formato de rut debe ser 12345678-9'}
 													validateRut={true}
 													icon={
-														<IdCardFill className={'text-slate-600 text-sm sm:text-base'} />
+														<IdCardFill className={'text-sm text-slate-600 sm:text-base'} />
 													}
 												/>
 											</div>
@@ -239,12 +241,12 @@ const ModalEditEmployee = () => {
 													value={email}
 													onChange={setEmail}
 													icon={
-														<EmailFill className={'text-slate-600 text-sm sm:text-base'} />
+														<EmailFill className={'text-sm text-slate-600 sm:text-base'} />
 													}
 												/>
 											</div>
 										</div>
-										<div className='md:flex gap-4 block w-full justify-center'>
+										<div className='block w-full justify-center gap-4 md:flex'>
 											<div className='w-full'>
 												<InputWithValidation
 													label='Usuario'
@@ -254,7 +256,7 @@ const ModalEditEmployee = () => {
 													value={username}
 													onChange={setUsername}
 													icon={
-														<UserFill className={'text-slate-600 text-sm sm:text-base'} />
+														<UserFill className={'text-sm text-slate-600 sm:text-base'} />
 													}
 												/>
 											</div>
@@ -273,15 +275,18 @@ const ModalEditEmployee = () => {
 													}
 													icon={
 														<PadlockFill
-															className={'text-slate-600 text-sm sm:text-base'}
+															className={'text-sm text-slate-600 sm:text-base'}
 														/>
 													}
 												/>
 											</div>
 										</div>
-										<div className='md:flex gap-4 block w-full justify-center'>
+										<div
+											className={`${
+												userRut === rut ? 'hidden' : 'block md:flex md:justify-center'
+											} w-full  gap-4`}>
 											<div className='w-full'>
-												<label className='block mb-2 text-xs sm:text-sm font-medium text-slate-600'>
+												<label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
 													Permisos
 												</label>
 												<InputAutocomplete
@@ -292,7 +297,7 @@ const ModalEditEmployee = () => {
 												/>
 											</div>
 											<div className='w-full'>
-												<label className='block mb-2 text-xs sm:text-sm font-medium text-slate-600'>
+												<label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
 													Estado
 												</label>
 												<InputAutocomplete
@@ -307,7 +312,7 @@ const ModalEditEmployee = () => {
 									{/* Error message */}
 									{userHasBeenCreated != null ? (
 										<div
-											className={`text-red-600 font-medium text-xs text-center mt-4 block md:hidden`}>
+											className={`mt-4 block text-center text-xs font-medium text-red-600 md:hidden`}>
 											{message}
 										</div>
 									) : null}
@@ -316,19 +321,19 @@ const ModalEditEmployee = () => {
 											<Spinner />
 										</div>
 									)}
-									<div className='flex space-x-4 mt-8 justify-center'>
+									<div className='mt-8 flex justify-center space-x-4'>
 										<button
-											className='bg-slate-200 hover:bg-slate-300 transition-colors duration-300
-                                         text-gray-900 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border border-gray-300 font-medium w-20'
+											className='w-20 rounded-lg border border-gray-300
+                                         bg-slate-200 px-2 py-1 text-xs font-medium text-gray-900 transition-colors duration-300 hover:bg-slate-300 sm:text-sm md:text-base'
 											onClick={() => handleToggleModal(true)}>
 											Cancelar
 										</button>
 										<button
 											type='submit'
 											disabled={isLoading}
-											className='bg-pink-600 hover:bg-pink-700 transition-colors duration-300
-                                         			   text-slate-100 rounded-lg px-2 py-1 text-xs sm:text-sm md:text-base border
-										               border-pink-700 font-medium disabled:bg-gray-400 disabled:border-gray-500 w-20'>
+											className='w-20 rounded-lg border border-pink-700
+                                         			   bg-pink-600 px-2 py-1 text-xs font-medium text-slate-100 transition-colors duration-300
+										               hover:bg-pink-700 disabled:border-gray-500 disabled:bg-gray-400 sm:text-sm md:text-base'>
 											Guardar
 										</button>
 									</div>
@@ -336,9 +341,9 @@ const ModalEditEmployee = () => {
 							</>
 						) : (
 							<div
-								className='flex justify-center mt-5 text-xs sm:text-sm
-									  text-slate-700 hover:text-slate-950 font-medium
-									  transition-colors duration-700'>
+								className='mt-5 flex justify-center text-xs font-medium
+									  text-slate-700 transition-colors duration-700
+									  hover:text-slate-950 sm:text-sm'>
 								<button
 									onClick={() => handleToggleModal(true)}
 									className='animated-text-underline cursor-pointer'>

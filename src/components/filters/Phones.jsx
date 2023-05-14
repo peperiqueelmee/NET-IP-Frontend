@@ -200,13 +200,13 @@ const Phones = () => {
 							</div>
 							<form
 								onSubmit={handleListPhoneByNumber}
-								className='flex items-center text-xs xl:text-sm'>
+								className='flex items-center text-xs xl:text-sm w-9/12 sm:w-6/12 lg:w-auto'>
 								<div className='text-zinc-200 mr-1'>+56</div>
 								<input
 									value={phone}
 									onChange={(e) => setPhone(e.target.value)}
 									onClick={() => handleButtonClick(4)}
-									className='rounded-l-2xl pl-4 text-xs xl:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500'
+									className='rounded-l-2xl pl-4 text-xs xl:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500 w-full'
 									type='text'
 									placeholder='Teléfono de cliente'
 								/>
