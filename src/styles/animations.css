@@ -154,8 +154,8 @@
 
 /*    Animation pulsate-fwd    */
 .pulsate-fwd {
-	-webkit-animation: pulsate-fwd 3s ease-in-out infinite both;
-	animation: pulsate-fwd 3s ease-in-out infinite both;
+	-webkit-animation: pulsate-fwd 1.8s ease-in-out infinite both;
+	animation: pulsate-fwd 1.8s ease-in-out infinite both;
 }
 @-webkit-keyframes pulsate-fwd {
 	0% {

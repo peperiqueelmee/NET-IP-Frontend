@@ -31,9 +31,9 @@ const ModalGenerateReport = () => {
 				<div className='fixed inset-0 z-10 flex items-center justify-center overflow-x-auto bg-black bg-opacity-50 px-0 sm:px-20 lg:px-40 xl:px-72'>
 					<div className='w-72 rounded-lg border border-lime-400 bg-slate-200 bg-opacity-90 py-5 sm:mt-52 xl:w-80 '>
 						<div className='flex justify-center gap-20'>
-							<h2 className='text-center font-bold text-slate-700'>Generar Reporte</h2>
+							<h2 className='text-center text-slate-700'>Generar reporte</h2>
 							<button
-								className='cursor-pointer font-bold text-slate-700 transition-colors duration-300 hover:text-slate-900'
+								className='cursor-pointer font-semibold text-slate-700 transition-colors duration-300 hover:text-slate-900'
 								onClick={handleToggleModal}>
 								X
 							</button>

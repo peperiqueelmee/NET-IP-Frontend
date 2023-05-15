@@ -20,6 +20,7 @@ const InfoTooltip = ({ info }) => {
 				<div className='cursor-pointer'>
 					<Tooltip
 						arrow
+						placement='top'
 						TransitionComponent={Zoom}
 						TransitionProps={{ timeout: 600 }}
 						PopperProps={{
