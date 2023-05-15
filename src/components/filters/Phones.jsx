@@ -1,6 +1,4 @@
 import Grow from '@mui/material/Grow';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import { useEffect, useState } from 'react';
 import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
@@ -90,10 +88,8 @@ const Phones = () => {
 			setPhones('');
 		}
 	};
-	const handleGeneratePDF = () => {
-		const doc = new jsPDF();
-		autoTable(doc, { html: '#phone-table' });
-		doc.save('teléfonos-usuarios.pdf');
+	const handleGenerateReport = () => {
+		document.getElementById('generate-report').click();
 	};
 
 	// Pagination.
@@ -241,12 +237,12 @@ const Phones = () => {
 							<div className='text-lime-400'>Generación de Reportes</div>
 							<button
 								disabled={!thereAreUserPhones}
-								onClick={handleGeneratePDF}
-								className={`w-9/12 rounded-2xl bg-gradient-to-r from-red-400
-								            via-red-500 to-red-600 px-4 py-1 text-xs text-zinc-200 
-											shadow hover:shadow-red-400 disabled:from-gray-400  disabled:via-gray-500 
-											disabled:to-gray-600 disabled:shadow-none sm:w-6/12
-											lg:w-40  xl:text-sm`}>
+								onClick={handleGenerateReport}
+								className={`${thereAreUserPhones ? 'pulsate-fwd' : ''} w-9/12 rounded-2xl bg-gradient-to-r
+								            from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
+											text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
+											disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
+											sm:w-6/12  lg:w-40 xl:text-sm`}>
 								Generar Reporte
 							</button>
 						</div>

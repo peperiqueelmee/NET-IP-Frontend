@@ -7,6 +7,7 @@ export { default as InputAutocomplete } from './Inputs/InputAutoComplete';
 export { default as InputWithValidation } from './Inputs/InputWithValidation';
 export { default as ModalCreateEmployee } from './Modals/ModalCreateEmployee';
 export { default as ModalEditEmployee } from './Modals/ModalEditEmployee';
+export { default as ModalGenerateReport } from './Modals/ModalGenerateReport';
 export { default as ModalLogout } from './Modals/ModalLogout';
 export { default as Phones } from './filters/Phones';
 export { default as PhonesResultsCards } from './resultsTable/Phones/PhonesResultsCards';

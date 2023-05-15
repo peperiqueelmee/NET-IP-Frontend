@@ -1,9 +1,18 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
-import { Actions, ModalCreateEmployee, ModalEditEmployee, ModalLogout, Phones, Title, Users } from '../components';
-import { useEmployee } from '../hooks';
+import {
+	Actions,
+	ModalCreateEmployee,
+	ModalEditEmployee,
+	ModalGenerateReport,
+	ModalLogout,
+	Phones,
+	Title,
+	Users,
+} from '../components';
 import axiosClient from '../config/axios';
+import { useEmployee } from '../hooks';
 
 const Home = () => {
 	const { handleEmployeeSelect } = useEmployee();
@@ -115,6 +124,7 @@ const Home = () => {
 			<ModalLogout />
 			<ModalCreateEmployee />
 			<ModalEditEmployee />
+			<ModalGenerateReport />
 		</div>
 	);
 };
