@@ -29,7 +29,7 @@ const ModalGenerateReport = () => {
 				onClick={() => handleToggleModal(false)}></button>
 			{open && (
 				<div className='fixed inset-0 z-10 flex items-center justify-center overflow-x-auto bg-black bg-opacity-50 px-0 sm:px-20 lg:px-40 xl:px-72'>
-					<div className='w-72 xl:w-80 rounded-lg bg-slate-200 bg-opacity-90 py-5 sm:mt-52'>
+					<div className='w-72 rounded-lg border border-lime-400 bg-slate-200 bg-opacity-90 py-5 sm:mt-52 xl:w-80 '>
 						<div className='flex justify-center gap-20'>
 							<h2 className='text-center font-bold text-slate-700'>Generar Reporte</h2>
 							<button
