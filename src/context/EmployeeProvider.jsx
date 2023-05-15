@@ -5,22 +5,17 @@ const EmployeeContext = createContext();
 const EmployeeProvider = ({ children }) => {
 	const [employee, setEmployee] = useState(null);
 	const [employees, setEmployees] = useState(null);
-
-	const handleEmployeeSelect = (employee) => {
-		setEmployee(employee);
-	};
-
-	const getEmployees = (employees) => {
-		setEmployees(employees);
-	};
+	const [totalEmployees, setTotalEmployees] = useState(null);
 
 	return (
 		<EmployeeContext.Provider
 			value={{
-				handleEmployeeSelect,
+				setEmployee,
 				employee,
-				getEmployees,
 				employees,
+				setEmployees,
+				totalEmployees,
+				setTotalEmployees,
 			}}>
 			{children}
 		</EmployeeContext.Provider>

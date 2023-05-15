@@ -7,21 +7,20 @@ import InfoTooltip from '../Others/InfoTooltip';
 import { EmployeesResultsCards, EmployeesResultsTable, Spinner } from '../index.js';
 
 const Users = () => {
-	const { getEmployees, employees } = useEmployee();
+	const { setEmployees, employees, totalEmployees, setTotalEmployees } = useEmployee();
 	const { selectedAction, selectedActionUsers, handleActionSelectUsers } = useAction();
 	const [isLoading, setLoading] = useState(null);
 	const [rut, setRut] = useState('');
-	const [totalEmployees, setTotalEmployees] = useState(null);
 
 	// Clear options selected.
 	useEffect(() => {
 		handleActionSelectUsers(null);
-		getEmployees(null);
+		setEmployees(null);
 		setRut('');
 	}, [selectedAction]);
 	// Interaction with modal.
 	const modalCreateEmployee = () => {
-		getEmployees(null);
+		setEmployees(null);
 		document.getElementById('createEmployee').click();
 	};
 	// Handles
@@ -33,7 +32,7 @@ const Users = () => {
 		try {
 			const url = '/employee/employees';
 			const { data } = await axiosClient(url);
-			getEmployees(data.data);
+			setEmployees(data.data);
 			setTotalEmployees(data.total);
 			setLoading(false);
 		} catch (error) {
@@ -49,12 +48,12 @@ const Users = () => {
 		try {
 			const url = `/employee/employees/${rut}`;
 			const { data } = await axiosClient(url);
-			getEmployees(data.data);
+			setEmployees(data.data);
 			setTotalEmployees(data.total);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
-			getEmployees('');
+			setEmployees('');
 		}
 	};
 	const handleListEmployeesByStatus = async (status) => {
@@ -62,12 +61,12 @@ const Users = () => {
 		try {
 			const url = `/employee/employees/status/${status}`;
 			const { data } = await axiosClient(url);
-			getEmployees(data.data);
+			setEmployees(data.data);
 			setTotalEmployees(data.total);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
-			getEmployees('');
+			setEmployees('');
 		}
 	};
 
@@ -79,33 +78,33 @@ const Users = () => {
 				<div className={`pb-14 ${selectedAction === 5 ? 'block' : 'hidden'} `}>
 					{/* Container */}
 					<div
-						className='bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950 
-									w-full opacity-90 rounded-none flex justify-center py-1.5 px-1 gap-1 lg:gap-5 flex-col lg:flex-row'>
+						className='flex w-full flex-col justify-center 
+									gap-1 rounded-none bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950 px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
 						{/* User Management */}
-						<div className='border border-lime-400 rounded-lg flex flex-col items-center justify-evenly py-2 px-4 text-xs xl:text-sm gap-y-1 font-medium'>
+						<div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
 							<div className='text-lime-400'>Gestión cuentas de usuario</div>
 							<button
 								onClick={() => {
 									modalCreateEmployee();
 									handleButtonClick(1);
 								}}
-								className={`bg-gray-200 rounded-2xl px-4 py-1 
-								            text-xs xl:text-sm shadow hover:shadow-lime-400 w-9/12 sm:w-6/12 lg:w-32
+								className={`w-9/12 rounded-2xl bg-gray-200 px-4 
+								            py-1 text-xs shadow hover:shadow-lime-400 sm:w-6/12 lg:w-32 xl:text-sm
 											${selectedActionUsers === 1 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
 								Crear Usuario
 							</button>
 						</div>
 						{/* List of user accounts */}
-						<div className='border border-lime-400 rounded-lg flex flex-col items-center justify-evenly py-2 px-4 text-xs xl:text-sm gap-y-1 font-medium'>
+						<div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
 							<div className='text-lime-400'>Listado cuentas de usuario</div>
-							<div className='flex gap-2 flex-col lg:flex-row w-9/12 sm:w-6/12 lg:w-auto'>
+							<div className='flex w-9/12 flex-col gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
 								<button
 									onClick={() => {
 										handleListAllEmployees();
 										handleButtonClick(2);
 									}}
-									className={`bg-gray-200 rounded-2xl px-4 py-1
-											    text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
+									className={`w-full rounded-2xl bg-gray-200 px-4
+											    py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 												${
 													selectedActionUsers === 2
 														? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
@@ -119,8 +118,8 @@ const Users = () => {
 											handleListEmployeesByStatus(1);
 											handleButtonClick(3);
 										}}
-										className={`bg-gray-200 rounded-2xl px-4 py-1 
-													text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
+										className={`w-full rounded-2xl bg-gray-200 px-4 
+													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 													${selectedActionUsers === 3 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
 										Activos
 									</button>
@@ -129,8 +128,8 @@ const Users = () => {
 											handleListEmployeesByStatus(2);
 											handleButtonClick(4);
 										}}
-										className={`bg-gray-200 rounded-2xl px-4 py-1 
-													text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
+										className={`w-full rounded-2xl bg-gray-200 px-4 
+													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 													${selectedActionUsers === 4 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
 										Inactivos
 									</button>
@@ -138,7 +137,7 @@ const Users = () => {
 							</div>
 						</div>
 						{/* Search by rut */}
-						<div className='border border-lime-400 rounded-lg flex flex-col items-center justify-evenly py-2 px-4 text-xs xl:text-sm gap-y-1 font-medium'>
+						<div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
 							<div className='flex items-center gap-1'>
 								<div className='text-lime-400'>Búsqueda por RUT</div>
 								<div style={{ marginTop: '3px' }}>
@@ -147,12 +146,12 @@ const Users = () => {
 							</div>
 							<form
 								onSubmit={handleListEmployeeByRut}
-								className='flex items-center w-9/12 sm:w-6/12 lg:w-auto'>
+								className='flex w-9/12 items-center sm:w-6/12 lg:w-auto'>
 								<input
 									value={rut}
 									onChange={(e) => setRut(e.target.value)}
 									onClick={() => handleButtonClick(5)}
-									className='rounded-l-2xl pl-4 text-xs xl:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500 w-full'
+									className='h-6 w-full rounded-l-2xl pl-4 text-xs text-zinc-500 outline-none focus:border focus:border-lime-400 xl:text-sm'
 									type='text'
 									placeholder='Ingresa RUT de usuario'
 								/>
@@ -162,7 +161,7 @@ const Users = () => {
 										handleListEmployeeByRut();
 										handleButtonClick(5);
 									}}
-									className={`bg-gray-200 rounded-r-2xl h-6 w-9 flex items-center justify-center cursor-pointer 
+									className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 
 												shadow hover:shadow-lime-400 
 												${selectedActionUsers === 5 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
 									<SearchFill />
@@ -172,7 +171,7 @@ const Users = () => {
 					</div>
 					{/* Spinner */}
 					{isLoading && (
-						<div className='bg-black h-12 flex items-center justify-center opacity-70'>
+						<div className='flex h-12 items-center justify-center bg-black opacity-70'>
 							<Spinner />
 						</div>
 					)}

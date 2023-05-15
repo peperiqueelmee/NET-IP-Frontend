@@ -5,12 +5,12 @@ import axiosClient from '../../../config/axios';
 import { useEmployee } from '../../../hooks';
 
 const EmployeeResultsTable = ({ employees, totalResults }) => {
-	const { handleEmployeeSelect } = useEmployee();
+	const { setEmployee } = useEmployee();
 
 	const modalEditEmployee = async (e, rutEmployee) => {
 		e.preventDefault();
 		const employee = await getEmployee(rutEmployee);
-		handleEmployeeSelect(employee);
+		setEmployee(employee);
 		document.getElementById('editEmployee').click();
 	};
 
@@ -27,12 +27,12 @@ const EmployeeResultsTable = ({ employees, totalResults }) => {
 	return (
 		<>
 			<div
-				className='hidden lg:block relative overflow-y-auto shadow-md flip-in-hor-top'
+				className='flip-in-hor-top relative hidden overflow-y-auto shadow-md lg:block'
 				style={{ height: '70vh' }}>
 				{employees && employees.length > 0 ? (
 					<div>
 						<table className='w-full text-center text-gray-500'>
-							<thead className='text-xs text-gray-700 bg-gradient-to-r from-gray-200 via-zinc-200 to-neutral-200 border-b-2 border-zinc-300 sticky top-0 opacity-95'>
+							<thead className='sticky top-0 border-b-2 border-zinc-300 bg-gradient-to-r from-gray-200 via-zinc-200 to-neutral-200 text-xs text-gray-700 opacity-95'>
 								<tr>
 									<th
 										scope='col'
@@ -85,33 +85,31 @@ const EmployeeResultsTable = ({ employees, totalResults }) => {
 								{employees.map((employee, index) => (
 									<tr
 										key={employee.id}
-										className={`odd:bg-white even:bg-slate-100 border-b text-xs xl:text-sm text-center`}>
+										className={`border-b text-center text-xs odd:bg-white even:bg-slate-100 xl:text-sm`}>
 										<td className='px-2'>{index + 1}</td>
-										<td className='px-5 border-x'>{employee.names}</td>
-										<td className='px-5 border-x'>{employee.lastnames}</td>
-										<td className='px-1 border-x'>{employee.rut}</td>
-										<td className='px-4 border-x'>{employee.email}</td>
-										<td className='px-4 border-x'>{employee.username}</td>
+										<td className='border-x px-5'>{employee.names}</td>
+										<td className='border-x px-5'>{employee.lastnames}</td>
+										<td className='border-x px-1'>{employee.rut}</td>
+										<td className='border-x px-4'>{employee.email}</td>
+										<td className='border-x px-4'>{employee.username}</td>
 										<td
-											className={`px-6 py-4 border-x font-semibold
-										${employee.role_id === 1 ? 'text-blue-950 italic' : ''}`}>
+											className={`border-x px-6 py-4 font-semibold
+										${employee.role_id === 1 ? 'italic text-blue-950' : ''}`}>
 											{employee.role.description}
 										</td>
 										<td
-											className={`px-4 py-4 border-x font-medium 
+											className={`border-x px-4 py-4 font-medium 
 										${employee.status_id === 1 ? 'text-emerald-500' : 'text-red-600'}`}>
 											{employee.status.description}
 										</td>
 										{/* Pencil */}
-										<td className='px-2 py-2 border-x'>
+										<td className='border-x px-2 py-2'>
 											<div className='flex justify-center gap-2'>
 												<div
 													data-tooltip-id='tooltip'
 													data-tooltip-delay-show={100}
 													onClick={(e) => modalEditEmployee(e, employee.rut)}>
-													<PencilFill
-														className={'text-sm xl:text-base text-blue-800 cursor-pointer'}
-													/>
+													<PencilFill className={'cursor-pointer text-sm text-blue-800 xl:text-base'} />
 												</div>
 											</div>
 										</td>
@@ -119,14 +117,14 @@ const EmployeeResultsTable = ({ employees, totalResults }) => {
 								))}
 							</tbody>
 						</table>
-						<div className='text-slate-200 bg-stone-950 text-sm text-center py-1 bg-opacity-70 tracking-wide font-medium sticky bottom-0'>
+						<div className='sticky bottom-0 bg-stone-950 bg-opacity-70 py-1 text-center text-sm font-medium tracking-wide text-slate-200'>
 							Mostrando <span className='font-bold text-blue-400'>{employees.length}</span> de{' '}
 							<span className='font-bold text-blue-500 '>{totalResults}</span>{' '}
 							{employees.length === 1 ? 'resultado' : 'resultados'}.
 						</div>
 					</div>
 				) : (
-					<div className='flex justify-center text-red-500 bg-stone-950 font-medium bg-opacity-70 text-sm tracking-wide'>
+					<div className='flex justify-center bg-stone-950 bg-opacity-70 text-sm font-medium tracking-wide text-red-500'>
 						<p>No se encontraron resultados.</p>
 					</div>
 				)}

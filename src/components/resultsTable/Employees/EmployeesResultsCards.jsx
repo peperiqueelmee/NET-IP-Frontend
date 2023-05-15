@@ -3,12 +3,12 @@ import { useEmployee } from '../../../hooks';
 import { Badge } from '../../index.js';
 
 const EmployeesResultsCardsResponsive = ({ employees, totalResults }) => {
-	const { handleEmployeeSelect } = useEmployee();
+	const { setEmployee } = useEmployee();
 
 	const modalEditEmployee = async (e, rutEmployee) => {
 		e.preventDefault();
 		const employee = await getEmployee(rutEmployee);
-		handleEmployeeSelect(employee);
+		setEmployee(employee);
 		document.getElementById('editEmployee').click();
 	};
 

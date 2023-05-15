@@ -11,7 +11,7 @@ const ModalEditEmployee = () => {
 	const [isLoading, setIsLoading] = useState(null);
 	const { selectedActionUsers } = useAction();
 	// Data form
-	const { employee, getEmployees } = useEmployee();
+	const { employee, setEmployees, setTotalEmployees } = useEmployee();
 	const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
 	const [statuses, setStatuses] = useState(() => JSON.parse(localStorage.getItem('statuses')) || []);
 	const [roleSelected, setRoleSelected] = useState('');
@@ -134,7 +134,8 @@ const ModalEditEmployee = () => {
 				urlEmployee = `/employee/employees/${rut}`;
 			}
 			const { data } = await axiosClient(urlEmployee);
-			getEmployees(data.data);
+			setEmployees(data.data);
+			setTotalEmployees(data.total);
 		} catch (error) {
 			setIsLoading(null);
 			setUserHasBeenCreated(false);
@@ -192,11 +193,7 @@ const ModalEditEmployee = () => {
 													errorMessage='Por favor ingresa el/los nombre(s).'
 													value={names}
 													onChange={setNames}
-													icon={
-														<UserSecretFill
-															className={'text-sm text-slate-600 sm:text-base'}
-														/>
-													}
+													icon={<UserSecretFill className={'text-sm text-slate-600 sm:text-base'} />}
 												/>
 											</div>
 											<div className='w-full'>
@@ -207,11 +204,7 @@ const ModalEditEmployee = () => {
 													errorMessage='Por favor ingresa el/los apellido(s).'
 													value={lastnames}
 													onChange={setLastnames}
-													icon={
-														<UserSecretFill
-															className={'text-sm text-slate-600 sm:text-base'}
-														/>
-													}
+													icon={<UserSecretFill className={'text-sm text-slate-600 sm:text-base'} />}
 												/>
 											</div>
 										</div>
@@ -227,9 +220,7 @@ const ModalEditEmployee = () => {
 													tooltip={true}
 													infoTooltip={'El formato de rut debe ser 12345678-9'}
 													validateRut={true}
-													icon={
-														<IdCardFill className={'text-sm text-slate-600 sm:text-base'} />
-													}
+													icon={<IdCardFill className={'text-sm text-slate-600 sm:text-base'} />}
 												/>
 											</div>
 											<div className='w-full'>
@@ -240,9 +231,7 @@ const ModalEditEmployee = () => {
 													errorMessage='Por favor ingresa un correo válido.'
 													value={email}
 													onChange={setEmail}
-													icon={
-														<EmailFill className={'text-sm text-slate-600 sm:text-base'} />
-													}
+													icon={<EmailFill className={'text-sm text-slate-600 sm:text-base'} />}
 												/>
 											</div>
 										</div>
@@ -255,9 +244,7 @@ const ModalEditEmployee = () => {
 													errorMessage='Por favor ingresa el nombre de usuario.'
 													value={username}
 													onChange={setUsername}
-													icon={
-														<UserFill className={'text-sm text-slate-600 sm:text-base'} />
-													}
+													icon={<UserFill className={'text-sm text-slate-600 sm:text-base'} />}
 												/>
 											</div>
 											<div className='w-full'>
@@ -273,22 +260,13 @@ const ModalEditEmployee = () => {
 													infoTooltip={
 														'El formato de contraseña debe ser 6-10 caracteres, contener al menos: 1 mayúscula, 1 minúscula, 1 número.'
 													}
-													icon={
-														<PadlockFill
-															className={'text-sm text-slate-600 sm:text-base'}
-														/>
-													}
+													icon={<PadlockFill className={'text-sm text-slate-600 sm:text-base'} />}
 												/>
 											</div>
 										</div>
-										<div
-											className={`${
-												userRut === rut ? 'hidden' : 'block md:flex md:justify-center'
-											} w-full  gap-4`}>
+										<div className={`${userRut === rut ? 'hidden' : 'block md:flex md:justify-center'} w-full  gap-4`}>
 											<div className='w-full'>
-												<label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
-													Permisos
-												</label>
+												<label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>Permisos</label>
 												<InputAutocomplete
 													options={roles.map((role) => role.description)}
 													onSelect={handleRoleSelect}
@@ -297,9 +275,7 @@ const ModalEditEmployee = () => {
 												/>
 											</div>
 											<div className='w-full'>
-												<label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
-													Estado
-												</label>
+												<label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>Estado</label>
 												<InputAutocomplete
 													options={statuses.map((status) => status.description)}
 													onSelect={handleStatusSelect}
@@ -311,10 +287,7 @@ const ModalEditEmployee = () => {
 									</div>
 									{/* Error message */}
 									{userHasBeenCreated != null ? (
-										<div
-											className={`mt-4 block text-center text-xs font-medium text-red-600 md:hidden`}>
-											{message}
-										</div>
+										<div className={`mt-4 block text-center text-xs font-medium text-red-600 md:hidden`}>{message}</div>
 									) : null}
 									{isLoading && (
 										<div className='mt-4'>

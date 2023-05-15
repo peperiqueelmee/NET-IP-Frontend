@@ -15,7 +15,7 @@ import axiosClient from '../config/axios';
 import { useEmployee } from '../hooks';
 
 const Home = () => {
-	const { handleEmployeeSelect } = useEmployee();
+	const { setEmployee } = useEmployee();
 
 	const token = localStorage.getItem('token');
 	const username = localStorage.getItem('username');
@@ -45,7 +45,7 @@ const Home = () => {
 	const modalEditEmployee = async (e, rutEmployee) => {
 		e.preventDefault();
 		const employee = await getEmployee(rutEmployee);
-		handleEmployeeSelect(employee);
+		setEmployee(employee);
 		document.getElementById('editEmployee').click();
 	};
 	const blockBackButton = () => {
