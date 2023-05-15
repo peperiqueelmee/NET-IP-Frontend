@@ -1,4 +1,6 @@
 import Grow from '@mui/material/Grow';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { useEffect, useState } from 'react';
 import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
@@ -12,6 +14,8 @@ const Phones = () => {
 	const [phone, setPhone] = useState('');
 	const [isLoading, setLoading] = useState(null);
 	const [totalPhones, setTotalPhones] = useState(null);
+
+	const thereAreUserPhones = Array.isArray(phones) && phones.length > 0;
 
 	useEffect(() => {
 		handleSelectedActionPhones();
@@ -86,6 +90,11 @@ const Phones = () => {
 			setPhones('');
 		}
 	};
+	const handleGeneratePDF = () => {
+		const doc = new jsPDF();
+		autoTable(doc, { html: '#phone-table' });
+		doc.save('teléfonos-usuarios.pdf');
+	};
 
 	// Pagination.
 	const getAllPhones = async () => {
@@ -138,19 +147,19 @@ const Phones = () => {
 				<div className={`pb-14 ${selectedAction === 0 ? 'block' : 'hidden'}`}>
 					{/* Container */}
 					<div
-						className='bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950 
-									w-full opacity-90 rounded-none flex justify-center py-1.5 px-1 gap-1 lg:gap-5 flex-col lg:flex-row'>
+						className='flex w-full flex-col justify-center 
+									gap-1 rounded-none bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950 px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
 						{/* List of user accounts */}
-						<div className='border border-lime-400 rounded-lg flex flex-col items-center justify-evenly py-2 px-4 text-xs xl:text-sm gap-y-1 font-medium'>
+						<div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
 							<div className='text-lime-400'>Listado de números telefónicos</div>
-							<div className='flex gap-2 flex-col lg:flex-row w-9/12 sm:w-6/12 lg:w-auto'>
+							<div className='flex w-9/12 flex-col gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
 								<button
 									onClick={() => {
 										handleListAllPhones();
 										handleButtonClick(1);
 									}}
-									className={`bg-gray-200 rounded-2xl px-4 py-1
-														text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
+									className={`w-full rounded-2xl bg-gray-200 px-4
+														py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 														${
 															selectedActionPhones === 1
 																? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
@@ -164,8 +173,8 @@ const Phones = () => {
 											handleLisPhonesByStatus(1);
 											handleButtonClick(2);
 										}}
-										className={`bg-gray-200 rounded-2xl px-4 py-1 
-															text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
+										className={`w-full rounded-2xl bg-gray-200 px-4 
+															py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 															${
 																selectedActionPhones === 2
 																	? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
@@ -178,8 +187,8 @@ const Phones = () => {
 											handleLisPhonesByStatus(3);
 											handleButtonClick(3);
 										}}
-										className={`bg-gray-200 rounded-2xl px-4 py-1 
-															text-xs xl:text-sm shadow hover:shadow-lime-400 w-full lg:w-32
+										className={`w-full rounded-2xl bg-gray-200 px-4 
+															py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 															${
 																selectedActionPhones === 3
 																	? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
@@ -191,7 +200,7 @@ const Phones = () => {
 							</div>
 						</div>
 						{/* Search by Phone */}
-						<div className='border border-lime-400 rounded-lg flex flex-col items-center justify-evenly py-2 px-4 text-xs xl:text-sm gap-y-1 font-medium'>
+						<div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
 							<div className='flex items-center gap-1'>
 								<div className='text-lime-400'>Búsqueda por Número</div>
 								<div style={{ marginTop: '3px' }}>
@@ -200,13 +209,13 @@ const Phones = () => {
 							</div>
 							<form
 								onSubmit={handleListPhoneByNumber}
-								className='flex items-center text-xs xl:text-sm w-9/12 sm:w-6/12 lg:w-auto'>
-								<div className='text-zinc-200 mr-1'>+56</div>
+								className='flex w-9/12 items-center text-xs sm:w-6/12 lg:w-auto xl:text-sm'>
+								<div className='mr-1 text-zinc-200'>+56</div>
 								<input
 									value={phone}
 									onChange={(e) => setPhone(e.target.value)}
 									onClick={() => handleButtonClick(4)}
-									className='rounded-l-2xl pl-4 text-xs xl:text-sm h-6 outline-none focus:border focus:border-lime-400 text-zinc-500 w-full'
+									className='h-6 w-full rounded-l-2xl pl-4 text-xs text-zinc-500 outline-none focus:border focus:border-lime-400 xl:text-sm'
 									type='text'
 									placeholder='Teléfono de cliente'
 								/>
@@ -216,7 +225,7 @@ const Phones = () => {
 										handleListPhoneByNumber();
 										handleButtonClick(4);
 									}}
-									className={`bg-gray-200 rounded-r-2xl h-6 w-9 flex items-center justify-center cursor-pointer 
+									className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 
 												shadow hover:shadow-lime-400 
 												${
 													selectedActionPhones === 4
@@ -228,19 +237,23 @@ const Phones = () => {
 							</form>
 						</div>
 						{/* User Management */}
-						<div className='border border-lime-400 rounded-lg flex flex-col items-center justify-evenly py-2 px-4 text-xs xl:text-sm gap-y-1 font-medium'>
+						<div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
 							<div className='text-lime-400'>Generación de Reportes</div>
 							<button
-								className={`bg-gray-200 text-zinc-200 rounded-2xl px-4 py-1 
-								            text-xs xl:text-sm shadow hover:shadow-red-400 w-9/12 sm:w-6/12 lg:w-40
-										    bg-gradient-to-r from-red-400 via-red-500 to-red-600`}>
+								disabled={!thereAreUserPhones}
+								onClick={handleGeneratePDF}
+								className={`w-9/12 rounded-2xl bg-gradient-to-r from-red-400
+								            via-red-500 to-red-600 px-4 py-1 text-xs text-zinc-200 
+											shadow hover:shadow-red-400 disabled:from-gray-400  disabled:via-gray-500 
+											disabled:to-gray-600 disabled:shadow-none sm:w-6/12
+											lg:w-40  xl:text-sm`}>
 								Generar Reporte
 							</button>
 						</div>
 					</div>
 					{/* Spinner */}
 					{isLoading && (
-						<div className='bg-black h-12 flex items-center justify-center opacity-70'>
+						<div className='flex h-12 items-center justify-center bg-black opacity-70'>
 							<Spinner />
 						</div>
 					)}
