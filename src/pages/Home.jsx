@@ -24,6 +24,7 @@ const Home = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		window.addEventListener('popstate', blockBackButton);
 		if (!token) {
 			navigate('/');
 		}
@@ -46,6 +47,10 @@ const Home = () => {
 		const employee = await getEmployee(rutEmployee);
 		handleEmployeeSelect(employee);
 		document.getElementById('editEmployee').click();
+	};
+	const blockBackButton = () => {
+		navigate('/home');
+		modalLogout();
 	};
 
 	return (
