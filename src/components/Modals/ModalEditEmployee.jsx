@@ -120,19 +120,7 @@ const ModalEditEmployee = () => {
 			setUserHasBeenCreated(true);
 
 			// Refresh data employee.
-			let urlEmployee;
-			if (selectedActionUsers === 2) {
-				urlEmployee = '/employee/employees';
-			}
-			if (selectedActionUsers === 3) {
-				urlEmployee = '/employee/employees/status/1';
-			}
-			if (selectedActionUsers === 4) {
-				urlEmployee = '/employee/employees/status/2';
-			}
-			if (selectedActionUsers === 5) {
-				urlEmployee = `/employee/employees/${rut}`;
-			}
+			const urlEmployee = getUrlEmployee();
 			const { data } = await axiosClient(urlEmployee);
 			setEmployees(data.data);
 			setTotalEmployees(data.total);
@@ -149,6 +137,27 @@ const ModalEditEmployee = () => {
 
 	const removeErrorMessage = () => {
 		setUserHasBeenCreated(null);
+	};
+	const getUrlEmployee = (selectedActionUsers, rut) => {
+		let urlEmployee;
+		switch (selectedActionUsers) {
+			case 2:
+				urlEmployee = '/employee/employees';
+				break;
+			case 3:
+				urlEmployee = '/employee/employees/status/1';
+				break;
+			case 4:
+				urlEmployee = '/employee/employees/status/2';
+				break;
+			case 5:
+				urlEmployee = `/employee/employees/${rut}`;
+				break;
+			default:
+				urlEmployee = '/employee/employees';
+				break;
+		}
+		return urlEmployee;
 	};
 
 	return (

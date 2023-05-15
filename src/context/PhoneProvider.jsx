@@ -6,21 +6,13 @@ const PhonesProvider = ({ children }) => {
 	const [page, setPage] = useState(1);
 	const [hasMore, setHasMore] = useState(true);
 
-	const updatePage = (page) => {
-		setPage(page);
-	};
-
-	const updateHasMore = (state) => {
-		setHasMore(state);
-	};
-
 	return (
 		<PhonesContext.Provider
 			value={{
 				page,
-				updatePage,
+				setPage,
 				hasMore,
-				updateHasMore,
+				setHasMore,
 			}}>
 			{children}
 		</PhonesContext.Provider>

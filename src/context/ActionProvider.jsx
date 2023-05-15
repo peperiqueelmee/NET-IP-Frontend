@@ -19,17 +19,6 @@ const ActionProvider = ({ children }) => {
 	const [selectedActionPhones, setSelectActionPhones] = useState(null);
 	const mobileScreen = useMediaQuery({ maxWidth: 1024 });
 
-	const handleActionSelect = (index) => {
-		setSelectedAction(index);
-	};
-
-	const handleActionSelectUsers = (index) => {
-		setSelectActionUsers(index);
-	};
-	const handleActionSelectPhones = (index) => {
-		setSelectActionPhones(index);
-	};
-
 	const getActions = (sizeIconLarge, sizeIconSmall) => {
 		const actions = [
 			{
@@ -111,11 +100,11 @@ const ActionProvider = ({ children }) => {
 		<ActionContext.Provider
 			value={{
 				selectedAction,
-				handleActionSelect,
+				setSelectedAction,
 				getActions,
-				handleActionSelectUsers,
+				setSelectActionUsers,
 				selectedActionUsers,
-				handleActionSelectPhones,
+				setSelectActionPhones,
 				selectedActionPhones,
 			}}>
 			{children}

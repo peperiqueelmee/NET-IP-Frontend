@@ -2,7 +2,7 @@ import { usePhone } from '../../../hooks';
 import { Badge } from '../../index.js';
 
 const PhonesResultsCards = ({ phones, totalResults }) => {
-	const { page, updatePage, hasMore } = usePhone();
+	const { page, setPage, hasMore } = usePhone();
 
 	const handleScroll = () => {
 		const element = document.getElementById('phone-card');
@@ -10,7 +10,7 @@ const PhonesResultsCards = ({ phones, totalResults }) => {
 
 		if (hasMore && element.scrollHeight <= element.offsetHeight + element.scrollTop + tolerance) {
 			setTimeout(() => {
-				updatePage(page + 1);
+				setPage(page + 1);
 			}, 50);
 		}
 	};
@@ -38,9 +38,7 @@ const PhonesResultsCards = ({ phones, totalResults }) => {
 									{/* Content */}
 									<div className='ml-3 mt-2 flex w-full flex-col gap-1 tracking-wide'>
 										<div className='flex w-full'>
-											<div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>
-												Nro. Telefónico:
-											</div>
+											<div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Nro. Telefónico:</div>
 											<div className='w-1/2'>+{phone.phone_number}</div>
 										</div>
 										<div className='flex w-full'>

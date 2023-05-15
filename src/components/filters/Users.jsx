@@ -8,13 +8,13 @@ import { EmployeesResultsCards, EmployeesResultsTable, Spinner } from '../index.
 
 const Users = () => {
 	const { setEmployees, employees, totalEmployees, setTotalEmployees } = useEmployee();
-	const { selectedAction, selectedActionUsers, handleActionSelectUsers } = useAction();
+	const { selectedAction, selectedActionUsers, setSelectActionUsers } = useAction();
 	const [isLoading, setLoading] = useState(null);
 	const [rut, setRut] = useState('');
 
 	// Clear options selected.
 	useEffect(() => {
-		handleActionSelectUsers(null);
+		setSelectActionUsers(null);
 		setEmployees(null);
 		setRut('');
 	}, [selectedAction]);
@@ -25,7 +25,7 @@ const Users = () => {
 	};
 	// Handles
 	const handleButtonClick = (index) => {
-		handleActionSelectUsers(index);
+		setSelectActionUsers(index);
 	};
 	const handleListAllEmployees = async () => {
 		setLoading(true);

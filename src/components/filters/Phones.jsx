@@ -6,13 +6,12 @@ import { useAction, usePhone } from '../../hooks';
 import { InfoTooltip, PhonesResultsCards, PhonesResultsTable, Spinner } from '../index.js';
 
 const Phones = () => {
-	const { page, updatePage, updateHasMore } = usePhone();
-	const { selectedAction, selectedActionPhones, handleActionSelectPhones } = useAction();
+	const { page, setPage, setHasMore } = usePhone();
+	const { selectedAction, selectedActionPhones, setSelectActionPhones } = useAction();
 	const [phones, setPhones] = useState([]);
 	const [phone, setPhone] = useState('');
 	const [isLoading, setLoading] = useState(null);
 	const [totalPhones, setTotalPhones] = useState(null);
-
 	const thereAreUserPhones = Array.isArray(phones) && phones.length > 0;
 
 	useEffect(() => {
@@ -44,7 +43,7 @@ const Phones = () => {
 		}
 	};
 	const handleButtonClick = (index) => {
-		handleActionSelectPhones(index);
+		setSelectActionPhones(index);
 	};
 	const handleListAllPhones = async () => {
 		setLoading(true);
@@ -95,43 +94,43 @@ const Phones = () => {
 	// Pagination.
 	const getAllPhones = async () => {
 		if (phones.length === totalPhones) {
-			return updateHasMore(false);
+			return setHasMore(false);
 		}
 		try {
 			const url = `/phone?page=${page}`;
 			const { data } = await axiosClient(url);
 			setPhones([...phones, ...data.data]);
 			if (phones.length === totalPhones) {
-				updateHasMore(false);
+				setHasMore(false);
 			}
 		} catch (error) {
-			updateHasMore(false);
+			setHasMore(false);
 		}
 	};
 	const getPhonesByStatus = async (status) => {
 		if (phones.length === totalPhones) {
-			return updateHasMore(false);
+			return setHasMore(false);
 		}
 		try {
 			const url = `/phone/status/${status}?page=${page}`;
 			const { data } = await axiosClient(url);
 			setPhones([...phones, ...data.data]);
 		} catch (error) {
-			updateHasMore(false);
+			setHasMore(false);
 		}
 	};
 
 	// Functions.
 	const resetPhones = () => {
-		handleActionSelectPhones(null);
+		setSelectActionPhones(null);
 		setPhones(null);
 		setPhone('');
-		updateHasMore(true);
-		updatePage(1);
+		setHasMore(true);
+		setPage(1);
 	};
 	const cleanPaginationPhones = () => {
-		updatePage(1);
-		updateHasMore(true);
+		setPage(1);
+		setHasMore(true);
 		setPhones([]);
 	};
 

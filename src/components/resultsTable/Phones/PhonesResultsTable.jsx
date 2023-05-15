@@ -1,7 +1,7 @@
 import { usePhone } from '../../../hooks';
 
 const PhonesResultsTable = ({ phones, totalResults }) => {
-	const { page, updatePage, hasMore } = usePhone();
+	const { page, setPage, hasMore } = usePhone();
 
 	const handleScroll = () => {
 		const element = document.getElementById('div-phone-table');
@@ -9,7 +9,7 @@ const PhonesResultsTable = ({ phones, totalResults }) => {
 
 		if (hasMore && element.scrollHeight <= element.offsetHeight + element.scrollTop + tolerance) {
 			setTimeout(() => {
-				updatePage(page + 1);
+				setPage(page + 1);
 			}, 50);
 		}
 	};
