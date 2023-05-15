@@ -2,6 +2,7 @@ import { useMediaQuery } from 'react-responsive';
 import { FreeMode, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useAction } from '../../hooks';
+import { useId } from 'react';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -41,14 +42,11 @@ const Actions = () => {
 						pagination={{
 							clickable: true,
 						}}
-						modules={[FreeMode, Pagination]}
-						justifyContent='center'>
+						modules={[FreeMode, Pagination]}>
 						{actions.map(({ name, icon }, index) => (
-							<SwiperSlide>
+							<SwiperSlide key={useId()}>
 								{/*  Container */}
 								<div
-									id={name}
-									key={name}
 									className={`mr-4 flex h-20 w-24 flex-shrink-0 cursor-pointer flex-col items-center rounded-2xl 
 							            bg-zinc-50 px-1 py-0.5 shadow-md transition duration-300  ease-in-out lg:h-24 lg:w-28
 										${
