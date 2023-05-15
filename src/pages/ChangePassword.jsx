@@ -85,14 +85,14 @@ const ChangePassword = () => {
 
 	return (
 		<>
-			<div className='flex flex-col items-center justify-center h-screen px-6 mx-auto lg:py-0 login-page overflow-y-auto'>
+			<div className='login-page mx-auto flex h-screen flex-col items-center justify-center overflow-y-auto px-6 lg:py-0'>
 				{/*  Tittle */}
-				<p className='text-white font-semibold tracking-wider md:text-2xl lg:text-3xl mb-16 text-shadow'>
+				<p className='text-shadow mb-16 font-semibold tracking-wider text-white md:text-2xl lg:text-3xl'>
 					Sistema de Gestión de Anexos <span className='text-lime-400'>NET</span>{' '}
 					<span className='text-slate-900'>IP</span>
 				</p>
 				{/* Informative message, success or error */}
-				<div className='w-full mb-5 sm:max-w-md'>
+				<div className='mb-5 w-full sm:max-w-md'>
 					<InformativeMessage
 						message={message}
 						hasError={hasError}
@@ -101,24 +101,24 @@ const ChangePassword = () => {
 					/>
 				</div>
 				{/*  Form */}
-				<div className='opacity-90 w-full bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 rounded-2xl md:mt-0 sm:max-w-md xl:p-0 shadow-lime-600 shadow-md border-2 border-lime-500 flex'>
-					<div className='w-full p-6 sm:p-8 mx-auto my-auto'>
-						<h1
-							className={`text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl text-center`}>
+				<div className='flex w-full rounded-2xl border-2 border-lime-500 bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 opacity-90 shadow-md shadow-lime-600 sm:max-w-md md:mt-0 xl:p-0'>
+					<div className='mx-auto my-auto w-full p-6 sm:p-8'>
+						<h1 className={`text-center text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl`}>
 							Cambiar contraseña
 						</h1>
 						<form
 							className={`mt-8 ${hasError || passwordWasChanged ? 'hidden' : ''}`}
 							onSubmit={handleSubmit}>
 							<InputWithValidation
-								label='Nueva contraseña'
+								label='Contraseña'
 								required={true}
+								icon={<PadlockFill className={'text-sm text-slate-600 sm:text-base'} />}
 								type='password'
-								placeholder='Tu contraseña nueva'
-								errorMessage='Por favor ingresa tu contraseña nueva.'
 								value={password}
 								onChange={setPassword}
-								icon={<PadlockFill className='text-slate-600' />}
+								placeholder='Contraseña'
+								validationType={'password'}
+								errorMessage='La contraseña no cumple con el formato de seguridad.'
 							/>
 							<InputWithValidation
 								label='Repetir nueva contraseña'
@@ -131,47 +131,47 @@ const ChangePassword = () => {
 								icon={<PadlockFill className='text-slate-600' />}
 							/>
 							{/* Password requirements */}
-							<div className='sm:text-sm text-xs mt-3 text-gray-600 tracking-tight'>
+							<div className='mt-3 text-xs tracking-tight text-gray-600 sm:text-sm'>
 								<div className='font-semibold'>La contraseña debe:</div>
 								<div className='mt-1'>
-									<div className='flex gap-2 items-center'>
+									<div className='flex items-center gap-2'>
 										<CheckCircleFill
 											className={`${
 												meetCharacterLength ? 'text-emerald-500' : 'text-gray-400'
-											} w-3 h-3 sm:w-4 sm:h-4 transition-colors duration-700`}
+											} h-3 w-3 transition-colors duration-700 sm:h-4 sm:w-4`}
 										/>
 										<div>Tener entre 6 y 10 caracteres.</div>
 									</div>
-									<div className='flex gap-2 items-center'>
+									<div className='flex items-center gap-2'>
 										<CheckCircleFill
 											className={`${
 												meetsLowerCase ? 'text-emerald-500' : 'text-gray-400'
-											} w-3 h-3 sm:w-4 sm:h-4 transition-colors duration-700`}
+											} h-3 w-3 transition-colors duration-700 sm:h-4 sm:w-4`}
 										/>
 										<div>Contener al menos una minúscula.</div>
 									</div>
-									<div className='flex gap-2 items-center'>
+									<div className='flex items-center gap-2'>
 										<CheckCircleFill
 											className={`${
 												meetsUpperCase ? 'text-emerald-500' : 'text-gray-400'
-											} w-3 h-3 sm:w-4 sm:h-4 transition-colors duration-700`}
+											} h-3 w-3 transition-colors duration-700 sm:h-4 sm:w-4`}
 										/>
 										<div>Contener al menos una mayúscula.</div>
 									</div>
-									<div className='flex gap-2 items-center'>
+									<div className='flex items-center gap-2'>
 										<CheckCircleFill
 											className={`${
 												meetsNumber ? 'text-emerald-500' : 'text-gray-400'
-											} w-3 h-3 sm:w-4 sm:h-4 transition-colors duration-700`}
+											} h-3 w-3 transition-colors duration-700 sm:h-4 sm:w-4`}
 										/>
 										<div>Contener al menos un número.</div>
 									</div>
 								</div>
-								<div className='flex gap-2 items-center mt-2'>
+								<div className='mt-2 flex items-center gap-2'>
 									<CheckCircleFill
 										className={`${
 											meetsEqualsPassword ? 'text-emerald-500' : 'text-gray-400'
-										} w-3 h-3 sm:w-4 sm:h-4 transition-colors duration-700`}
+										} h-3 w-3 transition-colors duration-700 sm:h-4 sm:w-4`}
 									/>
 									<div>Las contraseñas deben coincidir.</div>
 								</div>
@@ -180,17 +180,17 @@ const ChangePassword = () => {
 							<button
 								disabled={!passwordMeetsAllCriteria || isLoading}
 								type='submit'
-								className='w-full text-white focus:ring-2 focus:outline-none font-medium rounded-lg 
-                                           text-sm px-5 py-2.5 text-center
-										   bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 hover:bg-gradient-to-r hover:from-lime-500 hover:via-lime-600 hover:to-lime-700
-                                           cursor-pointer disabled:cursor-default mt-6 disabled:from-gray-400 disabled:via-gray-500 disabled:to-gray-600'>
+								className='mt-6 w-full cursor-pointer rounded-lg bg-gradient-to-r from-lime-400 
+                                           via-lime-500 to-lime-600 px-5 py-2.5
+										   text-center text-sm font-medium text-white hover:bg-gradient-to-r hover:from-lime-500 hover:via-lime-600 hover:to-lime-700
+                                           focus:outline-none focus:ring-2 disabled:cursor-default disabled:from-gray-400 disabled:via-gray-500 disabled:to-gray-600'>
 								{isLoading ? <Spinner /> : 'Cambiar Contraseña'}
 							</button>
 						</form>
 						<div
-							className='flex justify-center mt-5 text-xs sm:text-sm
-									  text-slate-700 hover:text-slate-950 font-medium
-									  transition-colors duration-700'>
+							className='mt-5 flex justify-center text-xs font-medium
+									  text-slate-700 transition-colors duration-700
+									  hover:text-slate-950 sm:text-sm'>
 							<Link
 								to='/'
 								className='animated-text-underline cursor-pointer'>
@@ -200,7 +200,7 @@ const ChangePassword = () => {
 					</div>
 				</div>
 				{/* Footer */}
-				<div className='flex flex-col items-center mt-10 text-sm lg:text-base text-slate-100'>
+				<div className='mt-10 flex flex-col items-center text-sm text-slate-100 lg:text-base'>
 					<p>Diseñado por TeleSoluciones Ltda.</p>
 					<p>Viña del Mar, Chile 2023</p>
 				</div>

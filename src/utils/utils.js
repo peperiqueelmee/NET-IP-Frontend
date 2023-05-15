@@ -30,18 +30,23 @@ const ValidatePasswordStrength = (password) => {
 	return regex.test(password);
 };
 
-const isInputInvalid = (input, shouldValidateRut = false, shouldValidatePassword = false) => {
-	if (shouldValidatePassword) {
-		return !ValidatePasswordStrength(input.value);
+const isInputInvalid = (input, validationType) => {
+	let isValid;
+	switch (validationType) {
+		case 'password':
+			isValid = !ValidatePasswordStrength(input.value);
+			break;
+		case 'email':
+			isValid = !validateEmail(input.value);
+			break;
+		case 'rut':
+			isValid = !validateRut(input.value);
+			break;
+		default:
+			isValid = !input.value;
+			break;
 	}
-	if (input.type === 'email') {
-		return !validateEmail(input.value);
-	}
-	if (shouldValidateRut) {
-		return !validateRut(input.value);
-	}
-	const isEmpty = !input.value;
-	return isEmpty;
+	return isValid;
 };
 
 const RESPONSE_SERVER = {

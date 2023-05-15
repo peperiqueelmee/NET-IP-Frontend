@@ -9,7 +9,6 @@ const ModalEditEmployee = () => {
 	// Data init
 	const userRut = localStorage.getItem('rut');
 	const [isLoading, setIsLoading] = useState(null);
-	const { selectedActionUsers } = useAction();
 	// Data form
 	const { employee, setEmployees, setTotalEmployees } = useEmployee();
 	const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
@@ -197,23 +196,23 @@ const ModalEditEmployee = () => {
 											<div className='w-full'>
 												<InputWithValidation
 													label='Nombre(s)'
+													icon={<UserSecretFill className={'text-sm text-slate-600 sm:text-base'} />}
 													type='text'
-													placeholder='Juan Carlos'
-													errorMessage='Por favor ingresa el/los nombre(s).'
 													value={names}
 													onChange={setNames}
-													icon={<UserSecretFill className={'text-sm text-slate-600 sm:text-base'} />}
+													placeholder='Juan Carlos'
+													errorMessage='Por favor ingresa el/los nombre(s).'
 												/>
 											</div>
 											<div className='w-full'>
 												<InputWithValidation
 													label='Apellido(s)'
+													icon={<UserSecretFill className={'text-sm text-slate-600 sm:text-base'} />}
 													type='text'
-													placeholder='Bodoque Bodoque'
-													errorMessage='Por favor ingresa el/los apellido(s).'
 													value={lastnames}
 													onChange={setLastnames}
-													icon={<UserSecretFill className={'text-sm text-slate-600 sm:text-base'} />}
+													placeholder='Bodoque Bodoque'
+													errorMessage='Por favor ingresa el/los apellido(s).'
 												/>
 											</div>
 										</div>
@@ -221,26 +220,26 @@ const ModalEditEmployee = () => {
 											<div className='w-full'>
 												<InputWithValidation
 													label='R.U.T'
+													icon={<IdCardFill className={'text-sm text-slate-600 sm:text-base'} />}
 													type='text'
-													placeholder='10123456-3'
-													errorMessage='Formato de RUT incorrecta y/o inválido.'
 													value={rut}
 													onChange={setRut}
-													tooltip={true}
-													infoTooltip={'El formato de rut debe ser 12345678-9'}
-													validateRut={true}
-													icon={<IdCardFill className={'text-sm text-slate-600 sm:text-base'} />}
+													placeholder='10123456-3'
+													validationType={'rut'}
+													errorMessage='Formato de RUT incorrecta y/o inválido.'
+													tooltip={'El formato de rut debe ser 12345678-9'}
 												/>
 											</div>
 											<div className='w-full'>
 												<InputWithValidation
 													label='E-Mail'
+													icon={<EmailFill className={'text-sm text-slate-600 sm:text-base'} />}
 													type='email'
-													placeholder='juancarlosbodoque@correo.cl'
-													errorMessage='Por favor ingresa un correo válido.'
 													value={email}
 													onChange={setEmail}
-													icon={<EmailFill className={'text-sm text-slate-600 sm:text-base'} />}
+													placeholder='juancarlosbodoque@correo.cl'
+													validationType={'email'}
+													errorMessage='Por favor ingresa un correo válido.'
 												/>
 											</div>
 										</div>
@@ -248,32 +247,31 @@ const ModalEditEmployee = () => {
 											<div className='w-full'>
 												<InputWithValidation
 													label='Usuario'
+													icon={<UserFill className={'text-sm text-slate-600 sm:text-base'} />}
 													type='text'
-													placeholder='JcBodoque'
-													errorMessage='Por favor ingresa el nombre de usuario.'
 													value={username}
 													onChange={setUsername}
-													icon={<UserFill className={'text-sm text-slate-600 sm:text-base'} />}
+													placeholder='JcBodoque'
+													errorMessage='Por favor ingresa el nombre de usuario.'
 												/>
 											</div>
 											<div className='w-full'>
 												<InputWithValidation
 													label='Contraseña'
+													icon={<PadlockFill className={'text-sm text-slate-600 sm:text-base'} />}
 													type='password'
-													placeholder='Contraseña'
-													errorMessage='La contraseña no cumple con el formato de seguridad.'
 													value={password}
 													onChange={setPassword}
-													tooltip={true}
-													validatePassword={true}
-													infoTooltip={
+													placeholder='Contraseña'
+													validationType={'password'}
+													errorMessage='La contraseña no cumple con el formato de seguridad.'
+													tooltip={
 														'El formato de contraseña debe ser 6-10 caracteres, contener al menos: 1 mayúscula, 1 minúscula, 1 número.'
 													}
-													icon={<PadlockFill className={'text-sm text-slate-600 sm:text-base'} />}
 												/>
 											</div>
 										</div>
-										<div className={`${userRut === rut ? 'hidden' : 'block md:flex md:justify-center'} w-full  gap-4`}>
+										<div className={`${userRut === employee.rut ? 'hidden' : 'block md:flex md:justify-center'} w-full  gap-4`}>
 											<div className='w-full'>
 												<label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>Permisos</label>
 												<InputAutocomplete
