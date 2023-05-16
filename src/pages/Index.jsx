@@ -1,21 +1,20 @@
-import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { InformativeMessage, InputWithValidation, Spinner, Title } from '../components';
+import { Link, useNavigate } from 'react-router-dom';
 import { PadlockFill, UserFill } from '../assets/icons';
-import { RESPONSE_SERVER } from '../utils/utils';
+import { InformativeMessage, InputWithValidation, Spinner, Title } from '../components';
 import axiosClient from '../config/axios';
-import { Password } from '@mui/icons-material';
+import { RESPONSE_SERVER } from '../utils/utils';
 
 const Register = () => {
-  // User experience
+  // User experience.
   const [isLoading, setIsLoading] = useState(false);
   const [messageError, setMessageError] = useState('');
-  // Data user
+  // Data user.
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  // Event
+  // Event.
   const [submit, setSubmit] = useState(false);
-  // Validation
+  // Validation.
   const [IsInvalidCredentials, setIsInvalidCredentials] = useState(false);
 
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ const Register = () => {
     }
 
     try {
-      // Login
+      // Login.
       setIsLoading(true);
       const url = '/employee/login';
       const employeeData = {

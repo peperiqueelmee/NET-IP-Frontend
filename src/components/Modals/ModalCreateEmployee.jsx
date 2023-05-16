@@ -24,6 +24,12 @@ const ModalCreateEmployee = () => {
   // Validations.
   const formIsFull = names && lastnames && rut && email && username && password && role;
   const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
+  const [inputRutHasError, setInputRutHasError] = useState(false);
+  const [inputEmailHasError, setInputEmailHasError] = useState(false);
+  const [inputUsernameHasError, setInputUsernameHasError] = useState(false);
+  const [inputPasswordHasError, setInputPasswordHasError] = useState(false);
+  // Event.
+  const [submit, setSubmit] = useState(false);
   // Toggle modal.
   const [open, setOpen] = useState(false);
 
@@ -60,10 +66,9 @@ const ModalCreateEmployee = () => {
     setRole(selectedObject.id);
   };
   const handleSubmit = async (e) => {
-    setIsLoading(true);
-    setUserHasBeenCreated(null);
-    setMessage('');
     e.preventDefault();
+    actionsAfterSubmit();
+
     try {
       // Create employee.
       const url = '/employee';
@@ -84,19 +89,37 @@ const ModalCreateEmployee = () => {
       setIsLoading(null);
       setUserHasBeenCreated(false);
       if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
-        setMessage(error.response.data.message);
-        return;
+        const messageError = error.response.data.message;
+        const inputWithError = error.response.data.input;
+        setMessage(messageError);
+
+        return markInputWithError(inputWithError);
       }
       setMessage('Error de servidor. Reintentar.');
     }
   };
 
-  //Support functions.
+  // Support functions.
   const removeErrorMessage = () => {
     setUserHasBeenCreated(null);
   };
-  const clearForm = async () => {
+  const actionsAfterSubmit = () => {
+    // User experience.
+    setIsLoading(true);
     setMessage('');
+    // Validations.
+    setInputRutHasError(false);
+    setInputEmailHasError(false);
+    setInputUsernameHasError(false);
+    setInputPasswordHasError(false);
+    setUserHasBeenCreated(null);
+    // Event
+    setSubmit(true);
+  };
+  const clearForm = async () => {
+    // User Experience.
+    setMessage('');
+    // Data user.
     setNames('');
     setLastnames('');
     setRut('');
@@ -105,8 +128,31 @@ const ModalCreateEmployee = () => {
     setPassword('');
     setRole(null);
     setRoleSelected('');
+    // Validations.
     setUserHasBeenCreated(null);
     setSelectActionUsers(null);
+    setInputRutHasError(false);
+    setInputEmailHasError(false);
+    setInputUsernameHasError(false);
+    setInputPasswordHasError(false);
+  };
+  const markInputWithError = (inputType) => {
+    switch (inputType) {
+      case 'RUT':
+        setInputRutHasError(true);
+        break;
+      case 'Email':
+        setInputEmailHasError(true);
+        break;
+      case 'Username':
+        setInputUsernameHasError(true);
+        break;
+      case 'Password':
+        setInputPasswordHasError(true);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -179,6 +225,7 @@ const ModalCreateEmployee = () => {
                           onChange={setRut}
                           placeholder='10123456-3'
                           validationType={'rut'}
+                          error={submit && inputRutHasError ? true : false}
                           errorMessage='Formato de RUT incorrecta y/o inválido.'
                           tooltip={'El formato de rut debe ser 12345678-9'}
                         />
@@ -193,6 +240,7 @@ const ModalCreateEmployee = () => {
                           onChange={setEmail}
                           placeholder='juancarlosbodoque@correo.cl'
                           validationType={'email'}
+                          error={submit && inputEmailHasError ? true : false}
                           errorMessage='Por favor ingresa un correo válido.'
                         />
                       </div>
@@ -207,7 +255,8 @@ const ModalCreateEmployee = () => {
                           value={username}
                           onChange={setUsername}
                           placeholder='JcBodoque'
-                          errorMessage='Por favor ingresa el nombre de usuario.'
+                          error={submit && inputUsernameHasError ? true : false}
+                          errorMessage='Por favor ingresa un nombre de usuario valido.'
                         />
                       </div>
                       <div className='w-full'>
@@ -220,6 +269,7 @@ const ModalCreateEmployee = () => {
                           onChange={setPassword}
                           placeholder='Contraseña'
                           validationType={'password'}
+                          error={submit && inputPasswordHasError ? true : false}
                           errorMessage='La contraseña no cumple con el formato de seguridad.'
                           tooltip={
                             'El formato de contraseña debe ser 6-10 caracteres, contener al menos: 1 mayúscula, 1 minúscula, 1 número.'
@@ -252,7 +302,9 @@ const ModalCreateEmployee = () => {
                   <div className='mt-8 flex justify-center space-x-4'>
                     <button
                       className='w-20 rounded-lg border border-gray-300
-                                         bg-slate-200 px-2 py-1 text-xs font-medium text-gray-900 transition-colors duration-300 hover:bg-slate-300 sm:text-sm md:text-base'
+                               bg-slate-200 px-2 py-1 text-xs font-medium 
+                               text-gray-900 transition-colors duration-300 
+                               hover:bg-slate-300 sm:text-sm md:text-base'
                       onClick={() => handleToggleModal(true)}>
                       Cancelar
                     </button>
@@ -260,8 +312,8 @@ const ModalCreateEmployee = () => {
                       type='submit'
                       disabled={!formIsFull || isLoading}
                       className='w-20 rounded-lg border border-pink-700
-                                         			   bg-pink-600 px-2 py-1 text-xs font-medium text-slate-100 transition-colors duration-300
-										               hover:bg-pink-700 disabled:border-gray-500 disabled:bg-gray-400 sm:text-sm md:text-base'>
+                               bg-pink-600 px-2 py-1 text-xs font-medium text-slate-100 transition-colors duration-300
+										           hover:bg-pink-700 disabled:border-gray-500 disabled:bg-gray-400 sm:text-sm md:text-base'>
                       Crear
                     </button>
                   </div>
