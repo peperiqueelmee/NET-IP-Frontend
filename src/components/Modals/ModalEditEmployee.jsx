@@ -2,22 +2,19 @@ import { useEffect, useState } from 'react';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { EmailFill, IdCardFill, PadlockFill, PencilFill, UserFill, UserSecretFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
-import { useAction, useEmployee } from '../../hooks';
+import { useEmployee, useAction } from '../../hooks';
 import { RESPONSE_SERVER } from '../../utils/utils';
 
 const ModalEditEmployee = () => {
-  // Data init
-  const userRut = localStorage.getItem('rut');
+  // User experience.
   const [isLoading, setIsLoading] = useState(null);
-  // Data form
+  const [message, setMessage] = useState('');
+  const { selectedActionUsers } = useAction();
+  // Data form.
   const { employee, setEmployees, setTotalEmployees } = useEmployee();
   const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
   const [statuses, setStatuses] = useState(() => JSON.parse(localStorage.getItem('statuses')) || []);
-  const [roleSelected, setRoleSelected] = useState('');
-  const [statusSelected, setStatusSelected] = useState('');
-  // Messages
-  const [message, setMessage] = useState('');
-  // Employee data
+  // Data user.
   const [names, setNames] = useState('');
   const [lastnames, setLastnames] = useState('');
   const [rut, setRut] = useState('');
@@ -25,15 +22,18 @@ const ModalEditEmployee = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState(null);
+  const [roleSelected, setRoleSelected] = useState('');
   const [status, setStatus] = useState(null);
-  // Validations
+  const [statusSelected, setStatusSelected] = useState('');
+  // Validations.
   const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
-  //  Toggle modal
+  const userRut = localStorage.getItem('rut');
+  //  Toggle modal.
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
-      // Get roles
+      // Get roles.
       if (!roles.length) {
         try {
           const url = '/role';
@@ -44,7 +44,7 @@ const ModalEditEmployee = () => {
           console.log(error);
         }
       }
-      // Get status
+      // Get status.
       if (!statuses.length) {
         try {
           const url = '/status/employee';
@@ -61,18 +61,11 @@ const ModalEditEmployee = () => {
 
   useEffect(() => {
     if (employee) {
-      setNames(employee.names);
-      setLastnames(employee.lastnames);
-      setRut(employee.rut);
-      setEmail(employee.email);
-      setUsername(employee.username);
-      setRoleSelected(employee.role.description);
-      setRole(employee.role_id);
-      setStatusSelected(employee.status.description);
-      setStatus(employee.status_id);
+      return uploadEmployeeData(employee);
     }
   }, [employee]);
 
+  //Handles.
   const handleToggleModal = (shouldClose) => {
     setUserHasBeenCreated(null);
     setOpen(!shouldClose);
@@ -119,7 +112,7 @@ const ModalEditEmployee = () => {
       setUserHasBeenCreated(true);
 
       // Refresh data employee.
-      const urlEmployee = getUrlEmployee();
+      const urlEmployee = getUrlEmployee(selectedActionUsers, rut);
       const { data } = await axiosClient(urlEmployee);
       setEmployees(data.data);
       setTotalEmployees(data.total);
@@ -132,6 +125,19 @@ const ModalEditEmployee = () => {
       }
       setMessage('Error de servidor. Reintentar.');
     }
+  };
+
+  //Support functions.
+  const uploadEmployeeData = (employee) => {
+    setNames(employee.names);
+    setLastnames(employee.lastnames);
+    setRut(employee.rut);
+    setEmail(employee.email);
+    setUsername(employee.username);
+    setRoleSelected(employee.role.description);
+    setRole(employee.role_id);
+    setStatusSelected(employee.status.description);
+    setStatus(employee.status_id);
   };
 
   const removeErrorMessage = () => {
@@ -307,7 +313,8 @@ const ModalEditEmployee = () => {
                   <div className='mt-8 flex justify-center space-x-4'>
                     <button
                       className='w-20 rounded-lg border border-gray-300
-                                         bg-slate-200 px-2 py-1 text-xs font-medium text-gray-900 transition-colors duration-300 hover:bg-slate-300 sm:text-sm md:text-base'
+                               bg-slate-200 px-2 py-1 text-xs font-medium text-gray-900 transition-colors duration-300
+                               hover:bg-slate-300 sm:text-sm md:text-base'
                       onClick={() => handleToggleModal(true)}>
                       Cancelar
                     </button>
@@ -315,8 +322,8 @@ const ModalEditEmployee = () => {
                       type='submit'
                       disabled={isLoading}
                       className='w-20 rounded-lg border border-pink-700
-                                         			   bg-pink-600 px-2 py-1 text-xs font-medium text-slate-100 transition-colors duration-300
-										               hover:bg-pink-700 disabled:border-gray-500 disabled:bg-gray-400 sm:text-sm md:text-base'>
+                               bg-pink-600 px-2 py-1 text-xs font-medium text-slate-100 transition-colors duration-300
+										           hover:bg-pink-700 disabled:border-gray-500 disabled:bg-gray-400 sm:text-sm md:text-base'>
                       Guardar
                     </button>
                   </div>
@@ -325,8 +332,8 @@ const ModalEditEmployee = () => {
             ) : (
               <div
                 className='mt-5 flex justify-center text-xs font-medium
-									  text-slate-700 transition-colors duration-700
-									  hover:text-slate-950 sm:text-sm'>
+									       text-slate-700 transition-colors duration-700
+									       hover:text-slate-950 sm:text-sm'>
                 <button
                   onClick={() => handleToggleModal(true)}
                   className='animated-text-underline cursor-pointer'>

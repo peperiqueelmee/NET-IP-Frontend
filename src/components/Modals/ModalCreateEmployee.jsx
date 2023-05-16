@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
-import { EmailFill, IdCardFill, LabFill, PadlockFill, UserFill, UserSecretFill } from '../../assets/icons';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
-import { RESPONSE_SERVER } from '../../utils/utils';
+import { EmailFill, IdCardFill, LabFill, PadlockFill, UserFill, UserSecretFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction } from '../../hooks';
+import { RESPONSE_SERVER } from '../../utils/utils';
 
 const ModalCreateEmployee = () => {
+  // User experience.
   const [isLoading, setIsLoading] = useState(null);
   const { setSelectActionUsers } = useAction();
-  // Data form
-  const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
-  const [roleSelected, setRoleSelected] = useState('');
-  // Messages
   const [message, setMessage] = useState('');
-  // Employee data
+  // Data form.
+  const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
+  // Data user.
   const [names, setNames] = useState('');
   const [lastnames, setLastnames] = useState('');
   const [rut, setRut] = useState('');
@@ -21,14 +20,15 @@ const ModalCreateEmployee = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState(null);
-  // Validations
+  const [roleSelected, setRoleSelected] = useState('');
+  // Validations.
   const formIsFull = names && lastnames && rut && email && username && password && role;
   const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
-  //  Toggle modal
+  // Toggle modal.
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // Get roles
+    // Get roles.
     async function getRoles() {
       if (!roles.length) {
         try {
@@ -44,6 +44,7 @@ const ModalCreateEmployee = () => {
     getRoles();
   }, []);
 
+  // Handles.
   const handleToggleModal = (shouldClose) => {
     setUserHasBeenCreated(null);
     setOpen(!shouldClose);
@@ -64,7 +65,7 @@ const ModalCreateEmployee = () => {
     setMessage('');
     e.preventDefault();
     try {
-      // Create employee
+      // Create employee.
       const url = '/employee';
       const employeeData = {
         rut,
@@ -90,6 +91,7 @@ const ModalCreateEmployee = () => {
     }
   };
 
+  //Support functions.
   const removeErrorMessage = () => {
     setUserHasBeenCreated(null);
   };
