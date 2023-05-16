@@ -22,7 +22,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmit(true);
-    if (!username || !Password) {
+    if (!username || !password) {
       return;
     }
 
