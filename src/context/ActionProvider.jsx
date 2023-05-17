@@ -15,7 +15,7 @@ const ActionContext = createContext();
 const ActionProvider = ({ children }) => {
   const [selectedAction, setSelectedAction] = useState(0);
   const [selectedActionUsers, setSelectActionUsers] = useState(null);
-  const [selectedActionPhones, setSelectActionPhones] = useState(null);
+  const [selectedActionPhones, setSelectActionPhones] = useState(0);
   const mobileScreen = useMediaQuery({ maxWidth: 1024 });
 
   const getActions = (sizeIconLarge, sizeIconSmall) => {

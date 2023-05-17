@@ -6,13 +6,11 @@ import { useAction, usePhone } from '../../hooks';
 import { InfoTooltip, PhonesResultsCards, PhonesResultsTable, Spinner } from '../index.js';
 
 const Phones = () => {
-  // User experience.
-  const [isLoading, setLoading] = useState(null);
   const { page, setPage, setHasMore } = usePhone();
   const { selectedAction, selectedActionPhones, setSelectActionPhones } = useAction();
-  //Data
-  const [phones, setPhones] = useState(null);
+  const [phones, setPhones] = useState([]);
   const [phone, setPhone] = useState('');
+  const [isLoading, setLoading] = useState(null);
   const [totalPhones, setTotalPhones] = useState(null);
   const thereAreUserPhones = Array.isArray(phones) && phones.length > 0;
 
@@ -23,18 +21,26 @@ const Phones = () => {
     resetPhones();
   }, [selectedAction]);
   useEffect(() => {
-    [1, 2, 3].includes(selectedActionPhones) ? cleanPaginationPhones() : null;
+    if (selectedActionPhones === 1 || selectedActionPhones === 2 || selectedActionPhones === 3) {
+      cleanPaginationPhones();
+    }
   }, [selectedActionPhones]);
 
   // Handles.
   const handleSelectedActionPhones = async () => {
-    const actionMap = {
-      1: getAllPhones(),
-      2: () => getPhonesByStatus(1),
-      3: () => getPhonesByStatus(3),
-    };
-    const selectedAction = actionMap[selectedActionPhones];
-    await selectedAction?.();
+    switch (selectedActionPhones) {
+      case 1:
+        await getAllPhones();
+        break;
+      case 2:
+        await getPhonesByStatus(1);
+        break;
+      case 3:
+        await getPhonesByStatus(3);
+        break;
+      default:
+        break;
+    }
   };
   const handleButtonClick = (index) => {
     setSelectActionPhones(index);
@@ -65,7 +71,7 @@ const Phones = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setPhones(null);
+      setPhones([]);
     }
   };
   const handleLisPhonesByStatus = async (status) => {
@@ -78,7 +84,7 @@ const Phones = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setPhones(null);
+      setPhones([]);
     }
   };
   const handleGenerateReport = () => {
@@ -114,7 +120,7 @@ const Phones = () => {
     }
   };
 
-  // Support functions.
+  // Functions.
   const resetPhones = () => {
     setSelectActionPhones(null);
     setPhones(null);
@@ -125,7 +131,7 @@ const Phones = () => {
   const cleanPaginationPhones = () => {
     setPage(1);
     setHasMore(true);
-    setPhones(null);
+    setPhones([]);
   };
 
   return (
@@ -148,12 +154,12 @@ const Phones = () => {
                     handleButtonClick(1);
                   }}
                   className={`w-full rounded-2xl bg-gray-200 px-4
-							  py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-							${
-                selectedActionPhones === 1
-                  ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                  : 'text-zinc-700 '
-              }`}>
+														py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
+														${
+                              selectedActionPhones === 1
+                                ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                                : 'text-zinc-700 '
+                            }`}>
                   Todos
                 </button>
                 <div className='flex justify-center gap-1'>
@@ -177,12 +183,12 @@ const Phones = () => {
                       handleButtonClick(3);
                     }}
                     className={`w-full rounded-2xl bg-gray-200 px-4 
-								py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-								${
-                  selectedActionPhones === 3
-                    ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                    : 'text-zinc-700'
-                }`}>
+															py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
+															${
+                                selectedActionPhones === 3
+                                  ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                                  : 'text-zinc-700'
+                              }`}>
                     Bloqueados
                   </button>
                 </div>
@@ -215,12 +221,12 @@ const Phones = () => {
                     handleButtonClick(4);
                   }}
                   className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 
-							  shadow hover:shadow-lime-400 
-							  ${
-                  selectedActionPhones === 4
-                    ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                    : 'text-zinc-700'
-                }`}>
+												shadow hover:shadow-lime-400 
+												${
+                          selectedActionPhones === 4
+                            ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                            : 'text-zinc-700'
+                        }`}>
                   <SearchFill />
                 </button>
               </form>
@@ -232,10 +238,10 @@ const Phones = () => {
                 disabled={!thereAreUserPhones}
                 onClick={handleGenerateReport}
                 className={`${thereAreUserPhones ? 'pulsate-fwd' : ''} w-9/12 rounded-2xl bg-gradient-to-r
-							from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
-							text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
-							disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
-							sm:w-6/12  lg:w-40 xl:text-sm`}>
+								            from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
+											text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
+											disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
+											sm:w-6/12  lg:w-40 xl:text-sm`}>
                 Generar Reporte
               </button>
             </div>
