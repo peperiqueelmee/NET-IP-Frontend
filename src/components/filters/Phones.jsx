@@ -11,7 +11,7 @@ const Phones = () => {
   const { page, setPage, setHasMore } = usePhone();
   const { selectedAction, selectedActionPhones, setSelectActionPhones } = useAction();
   //Data
-  const [phones, setPhones] = useState([]);
+  const [phones, setPhones] = useState(null);
   const [phone, setPhone] = useState('');
   const [totalPhones, setTotalPhones] = useState(null);
   const thereAreUserPhones = Array.isArray(phones) && phones.length > 0;
@@ -65,7 +65,7 @@ const Phones = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setPhones('');
+      setPhones(null);
     }
   };
   const handleLisPhonesByStatus = async (status) => {
@@ -78,7 +78,7 @@ const Phones = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setPhones('');
+      setPhones(null);
     }
   };
   const handleGenerateReport = () => {
@@ -125,7 +125,7 @@ const Phones = () => {
   const cleanPaginationPhones = () => {
     setPage(1);
     setHasMore(true);
-    setPhones([]);
+    setPhones(null);
   };
 
   return (
