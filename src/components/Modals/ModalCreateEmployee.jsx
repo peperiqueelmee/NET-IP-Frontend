@@ -136,22 +136,14 @@ const ModalCreateEmployee = () => {
     setInputPasswordHasError(false);
   };
   const markInputWithError = (inputType) => {
-    switch (inputType) {
-      case 'RUT':
-        setInputRutHasError(true);
-        break;
-      case 'Email':
-        setInputEmailHasError(true);
-        break;
-      case 'Username':
-        setInputUsernameHasError(true);
-        break;
-      case 'Password':
-        setInputPasswordHasError(true);
-        break;
-      default:
-        break;
-    }
+    const inputMap = {
+      RUT: setInputRutHasError,
+      Email: setInputEmailHasError,
+      Username: setInputUsernameHasError,
+      Password: setInputPasswordHasError,
+    };
+    const setInputError = inputMap[inputType];
+    setInputError?.(true);
   };
 
   return (

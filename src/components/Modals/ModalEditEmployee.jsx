@@ -136,7 +136,7 @@ const ModalEditEmployee = () => {
     }
   };
 
-  //Support functions.
+  // Support functions.
   const uploadEmployeeData = (employee) => {
     setNames(employee.names);
     setLastnames(employee.lastnames);
@@ -184,43 +184,23 @@ const ModalEditEmployee = () => {
     setInputPasswordHasError(false);
   };
   const getUrlEmployee = (selectedActionUsers, rut) => {
-    let urlEmployee;
-    switch (selectedActionUsers) {
-      case 2:
-        urlEmployee = '/employee/employees';
-        break;
-      case 3:
-        urlEmployee = '/employee/employees/status/1';
-        break;
-      case 4:
-        urlEmployee = '/employee/employees/status/2';
-        break;
-      case 5:
-        urlEmployee = `/employee/employees/${rut}`;
-        break;
-      default:
-        urlEmployee = '/employee/employees';
-        break;
-    }
-    return urlEmployee;
+    const urlMap = {
+      2: '/employee/employees',
+      3: '/employee/employees/status/1',
+      4: '/employee/employees/status/2',
+      5: `/employee/employees/${rut}`,
+    };
+    return urlMap[selectedActionUsers] ?? '/employee/employees';
   };
   const markInputWithError = (inputType) => {
-    switch (inputType) {
-      case 'RUT':
-        setInputRutHasError(true);
-        break;
-      case 'Email':
-        setInputEmailHasError(true);
-        break;
-      case 'Username':
-        setInputUsernameHasError(true);
-        break;
-      case 'Password':
-        setInputPasswordHasError(true);
-        break;
-      default:
-        break;
-    }
+    const inputMap = {
+      RUT: setInputRutHasError,
+      Email: setInputEmailHasError,
+      Username: setInputUsernameHasError,
+      Password: setInputPasswordHasError,
+    };
+    const setInputError = inputMap[inputType];
+    setInputError?.(true);
   };
 
   return (
