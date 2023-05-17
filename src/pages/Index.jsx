@@ -109,14 +109,13 @@ const Register = () => {
                 icon={<PadlockFill className='text-slate-600' />}
                 error={password.length === 0 && submit ? true : IsInvalidCredentials ? true : false}
               />
-
               <button
                 disabled={isLoading}
                 type='submit'
                 className='mt-6 w-full cursor-pointer rounded-lg bg-gradient-to-r from-lime-400 
-                        via-lime-500 to-lime-600 px-5 py-2.5 
-						  text-center text-sm font-medium text-white hover:bg-gradient-to-r hover:from-lime-500 hover:via-lime-600 hover:to-lime-700
-                          focus:outline-none focus:ring-2 disabled:cursor-default disabled:bg-gradient-to-r disabled:from-gray-400 disabled:via-gray-500 disabled:to-gray-600'>
+                         via-lime-500 to-lime-600 px-5 py-2.5 
+						               text-center text-sm font-medium text-white hover:bg-gradient-to-r hover:from-lime-500 hover:via-lime-600 hover:to-lime-700
+                           focus:outline-none focus:ring-2 disabled:cursor-default disabled:bg-gradient-to-r disabled:from-gray-400 disabled:via-gray-500 disabled:to-gray-600'>
                 {isLoading ? <Spinner /> : 'Iniciar Sesión'}
               </button>
             </form>

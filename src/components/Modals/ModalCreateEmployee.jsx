@@ -52,7 +52,6 @@ const ModalCreateEmployee = () => {
 
   // Handles.
   const handleToggleModal = (shouldClose) => {
-    setUserHasBeenCreated(null);
     setOpen(!shouldClose);
     clearForm();
   };

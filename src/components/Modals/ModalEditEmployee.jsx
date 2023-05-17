@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { EmailFill, IdCardFill, PadlockFill, PencilFill, UserFill, UserSecretFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
-import { useEmployee, useAction } from '../../hooks';
+import { useAction, useEmployee } from '../../hooks';
 import { RESPONSE_SERVER } from '../../utils/utils';
 
 const ModalEditEmployee = () => {
@@ -28,6 +28,12 @@ const ModalEditEmployee = () => {
   // Validations.
   const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
   const userRut = localStorage.getItem('rut');
+  const [inputRutHasError, setInputRutHasError] = useState(false);
+  const [inputEmailHasError, setInputEmailHasError] = useState(false);
+  const [inputUsernameHasError, setInputUsernameHasError] = useState(false);
+  const [inputPasswordHasError, setInputPasswordHasError] = useState(false);
+  // Event.
+  const [submit, setSubmit] = useState(false);
   //  Toggle modal.
   const [open, setOpen] = useState(false);
 
@@ -67,8 +73,8 @@ const ModalEditEmployee = () => {
 
   //Handles.
   const handleToggleModal = (shouldClose) => {
-    setUserHasBeenCreated(null);
     setOpen(!shouldClose);
+    clearForm();
   };
   const handleRoleSelect = (roleSelected) => {
     setRoleSelected(roleSelected);
@@ -90,8 +96,8 @@ const ModalEditEmployee = () => {
   };
   const handleSubmit = async (e) => {
     setIsLoading(true);
-    setUserHasBeenCreated(null);
-    setMessage('');
+    actionsAfterSubmit();
+
     e.preventDefault();
     try {
       // Update employee.
@@ -120,8 +126,11 @@ const ModalEditEmployee = () => {
       setIsLoading(null);
       setUserHasBeenCreated(false);
       if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
-        setMessage(error.response.data.message);
-        return;
+        const messageError = error.response.data.message;
+        const inputWithError = error.response.data.input;
+        setMessage(messageError);
+
+        return markInputWithError(inputWithError);
       }
       setMessage('Error de servidor. Reintentar.');
     }
@@ -139,9 +148,40 @@ const ModalEditEmployee = () => {
     setStatusSelected(employee.status.description);
     setStatus(employee.status_id);
   };
-
   const removeErrorMessage = () => {
     setUserHasBeenCreated(null);
+  };
+  const actionsAfterSubmit = () => {
+    // User experience.
+    setIsLoading(true);
+    setMessage('');
+    // Validations.
+    setInputRutHasError(false);
+    setInputEmailHasError(false);
+    setInputUsernameHasError(false);
+    setInputPasswordHasError(false);
+    setUserHasBeenCreated(null);
+    // Event
+    setSubmit(true);
+  };
+  const clearForm = async () => {
+    // User Experience.
+    setMessage('');
+    // Data user.
+    setNames('');
+    setLastnames('');
+    setRut('');
+    setEmail('');
+    setUsername('');
+    setPassword('');
+    setRole(null);
+    setRoleSelected('');
+    // Validations.
+    setUserHasBeenCreated(null);
+    setInputRutHasError(false);
+    setInputEmailHasError(false);
+    setInputUsernameHasError(false);
+    setInputPasswordHasError(false);
   };
   const getUrlEmployee = (selectedActionUsers, rut) => {
     let urlEmployee;
@@ -163,6 +203,24 @@ const ModalEditEmployee = () => {
         break;
     }
     return urlEmployee;
+  };
+  const markInputWithError = (inputType) => {
+    switch (inputType) {
+      case 'RUT':
+        setInputRutHasError(true);
+        break;
+      case 'Email':
+        setInputEmailHasError(true);
+        break;
+      case 'Username':
+        setInputUsernameHasError(true);
+        break;
+      case 'Password':
+        setInputPasswordHasError(true);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -232,6 +290,7 @@ const ModalEditEmployee = () => {
                           onChange={setRut}
                           placeholder='10123456-3'
                           validationType={'rut'}
+                          error={submit && inputRutHasError ? true : false}
                           errorMessage='Formato de RUT incorrecta y/o inválido.'
                           tooltip={'El formato de rut debe ser 12345678-9'}
                         />
@@ -245,6 +304,7 @@ const ModalEditEmployee = () => {
                           onChange={setEmail}
                           placeholder='juancarlosbodoque@correo.cl'
                           validationType={'email'}
+                          error={submit && inputEmailHasError ? true : false}
                           errorMessage='Por favor ingresa un correo válido.'
                         />
                       </div>
@@ -258,7 +318,8 @@ const ModalEditEmployee = () => {
                           value={username}
                           onChange={setUsername}
                           placeholder='JcBodoque'
-                          errorMessage='Por favor ingresa el nombre de usuario.'
+                          error={submit && inputUsernameHasError ? true : false}
+                          errorMessage='Por favor ingresa un nombre de usuario valido.'
                         />
                       </div>
                       <div className='w-full'>
@@ -270,6 +331,7 @@ const ModalEditEmployee = () => {
                           onChange={setPassword}
                           placeholder='Contraseña'
                           validationType={'password'}
+                          error={submit && inputPasswordHasError ? true : false}
                           errorMessage='La contraseña no cumple con el formato de seguridad.'
                           tooltip={
                             'El formato de contraseña debe ser 6-10 caracteres, contener al menos: 1 mayúscula, 1 minúscula, 1 número.'
