@@ -68,7 +68,7 @@ const InputWithValidationTest = ({
 								sm:text-sm ${type === 'password' ? 'pl-10 pr-20' : 'px-10'} 
 								${
                   errorInput
-                    ? 'border-red-500'
+                    ? 'border-red-500 bg-red-50'
                     : successInput
                     ? 'border-emerald-500'
                     : !errorInput & !successInput
