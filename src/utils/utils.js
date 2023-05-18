@@ -1,17 +1,17 @@
 const validateRut = (rut) => {
   //The format must be without points and with hyphen, example: 10123456-0
   if (rut.indexOf('-') === -1) return false;
-  rut = rut.replace(/\./g, '').replace(/\-/g, '');
-  var dv = rut.slice(-1).toUpperCase();
-  var rutSinDV = rut.slice(0, -1);
+  rut = rut.replace(/\./g, '').replace(/-/g, '');
+  let dv = rut.slice(-1).toUpperCase();
+  let rutSinDV = rut.slice(0, -1);
   if (!/^\d+$/.test(rutSinDV)) return false;
-  var suma = 0,
+  let suma = 0,
     factor = 2;
-  for (var i = rutSinDV.length - 1; i >= 0; i--) {
+  for (let i = rutSinDV.length - 1; i >= 0; i--) {
     suma += factor * rutSinDV.charAt(i);
     factor = factor === 7 ? 2 : factor + 1;
   }
-  var dvEsperado = 11 - (suma % 11);
+  let dvEsperado = 11 - (suma % 11);
   if (dvEsperado === 11) dvEsperado = '0';
   else if (dvEsperado === 10) dvEsperado = 'K';
   else dvEsperado = dvEsperado.toString();

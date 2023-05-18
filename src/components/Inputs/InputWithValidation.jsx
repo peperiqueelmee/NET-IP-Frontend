@@ -27,6 +27,7 @@ const InputWithValidationTest = ({
     setErrorInput(error);
   }, [error]);
 
+  // Handles.
   const handleBlur = (e) => {
     const input = e.target;
     setErrorInput(errorInput ? errorInput : isInputInvalid(input, validationType));
@@ -42,10 +43,50 @@ const InputWithValidationTest = ({
     setSuccessInput(false);
   };
 
+  // Support functions
   const togglePasswordVisibility = () => {
     setTypeInput(typeInput === 'password' ? 'text' : 'password');
     setPasswordIsVisible(!passwordIsVisible);
   };
+
+  // Styles.
+  const typeNamesMapping = {
+    password: 'pl-10 pr-20',
+    default: 'px-10',
+  };
+  const statusMapping = {
+    error: 'border-red-500 bg-pink-50',
+    success: 'border-emerald-500',
+    default: 'focus:border-sky-500',
+  };
+  const inputClassName = [
+    'mt-2',
+    'w-full',
+    'rounded-md',
+    'border',
+    'bg-slate-200',
+    'py-2.5',
+    'text-xs',
+    'text-gray-900',
+    'shadow',
+    'focus:shadow-md',
+    'focus:outline-none',
+    'sm:text-sm',
+  ]
+    .concat(typeNamesMapping[type] || typeNamesMapping.default)
+    .concat(
+      Object.entries(statusMapping).reduce((acc, [key, value]) => {
+        if (
+          (key === 'error' && errorInput) ||
+          (key === 'success' && successInput) ||
+          (key === 'default' && !errorInput && !successInput)
+        ) {
+          acc.push(value);
+        }
+        return acc;
+      }, [])
+    )
+    .join(' ');
 
   return (
     <>
@@ -63,18 +104,7 @@ const InputWithValidationTest = ({
         </div>
         <input
           type={typeInput}
-          className={`mt-2 w-full rounded-md border bg-slate-200 py-2.5 text-xs
-								text-gray-900 shadow focus:shadow-md focus:outline-none  
-								sm:text-sm ${type === 'password' ? 'pl-10 pr-20' : 'px-10'} 
-								${
-                  errorInput
-                    ? 'border-red-500 bg-red-50'
-                    : successInput
-                    ? 'border-emerald-500'
-                    : !errorInput & !successInput
-                    ? 'focus:border-sky-500'
-                    : ' '
-                }`}
+          className={inputClassName}
           value={value}
           onChange={(e) => {
             {
