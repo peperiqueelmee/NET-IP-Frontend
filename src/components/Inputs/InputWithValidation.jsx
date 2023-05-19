@@ -55,7 +55,7 @@ const InputWithValidationTest = ({
     default: 'px-10',
   };
   const statusMapping = {
-    error: 'border-red-500 bg-pink-50',
+    error: 'border-red-500 bg-red-50',
     success: 'border-emerald-500',
     default: 'focus:border-sky-500',
   };
