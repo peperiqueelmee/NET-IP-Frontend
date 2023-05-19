@@ -21,6 +21,7 @@ const ActionProvider = ({ children }) => {
   const getActions = (sizeIconLarge, sizeIconSmall) => {
     const actions = [
       {
+        id: 1,
         name: 'Números Telefónicos',
         icon: (
           <PhoneCallOutline
@@ -31,6 +32,7 @@ const ActionProvider = ({ children }) => {
         ),
       },
       {
+        id: 2,
         name: 'Gestión de Anexos',
         icon: (
           <NotebookFill
@@ -41,6 +43,7 @@ const ActionProvider = ({ children }) => {
         ),
       },
       {
+        id: 3,
         name: 'Gestión Troncales',
         icon: (
           <ManagementOutline
@@ -51,6 +54,7 @@ const ActionProvider = ({ children }) => {
         ),
       },
       {
+        id: 4,
         name: 'Intercomunicador',
         icon: (
           <IntercomFill
@@ -61,6 +65,7 @@ const ActionProvider = ({ children }) => {
         ),
       },
       {
+        id: 5,
         name: 'Multi Call Ringing',
         icon: (
           <ConversationOutline
@@ -71,6 +76,7 @@ const ActionProvider = ({ children }) => {
         ),
       },
       {
+        id: 6,
         name: 'Cuentas de Usuario',
         icon: (
           <UserFill
@@ -81,6 +87,7 @@ const ActionProvider = ({ children }) => {
         ),
       },
       {
+        id: 7,
         name: 'Log',
         icon: (
           <QuestionCircleOutline

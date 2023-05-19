@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CheckCircleFill, PadlockFill } from '../assets/icons';
-import { InformativeMessage, InputWithValidation, Spinner } from '../components';
+import {
+  InformativeMessage,
+  InputWithValidation,
+  Spinner,
+} from '../components';
 import axiosClient from '../config/axios';
 import { RESPONSE_SERVER } from '../utils/utils';
 
@@ -14,7 +18,7 @@ const ChangePassword = () => {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   // Request validations
-  const [hasError, setHasError] = useState(false)
+  const [hasError, setHasError] = useState(false);
   const [passwordWasChanged, setPasswordWasChanged] = useState(null);
   // Password validations
   const [meetCharacterLength, setMetCharacterLength] = useState(false);
@@ -23,7 +27,11 @@ const ChangePassword = () => {
   const [meetsNumber, setMeetsNumber] = useState(false);
   const [meetsEqualsPassword, setMeetsEqualsPassword] = useState(false);
   const passwordMeetsAllCriteria =
-    meetCharacterLength && meetsLowerCase && meetsUpperCase && meetsNumber && meetsEqualsPassword;
+    meetCharacterLength &&
+    meetsLowerCase &&
+    meetsUpperCase &&
+    meetsNumber &&
+    meetsEqualsPassword;
 
   useEffect(() => {
     checkPasswordValidation();
@@ -49,7 +57,7 @@ const ChangePassword = () => {
     checkToken();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
       // Change password
@@ -72,7 +80,7 @@ const ChangePassword = () => {
     const requiredLength = password.length >= 6 && password.length <= 10;
     const hasLowerCase = /[a-z]/.test(password);
     const hasUpperCase = /[A-Z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
+    const hasNumber = /\d/.test(password);
     const passwordsMatch = password.length > 0 && password === repeatPassword;
 
     setMetCharacterLength(requiredLength);
@@ -84,9 +92,9 @@ const ChangePassword = () => {
 
   return (
     <>
-      <div className='login-page mx-auto flex h-screen flex-col items-center justify-center overflow-y-auto px-6 lg:py-0'>
+      <div className='flex flex-col items-center justify-center h-screen px-6 mx-auto overflow-y-auto login-page lg:py-0'>
         {/* Informative message, success or error */}
-        <div className='mb-5 mt-16 w-full sm:max-w-md'>
+        <div className='w-full mt-16 mb-5 sm:max-w-md'>
           <InformativeMessage
             message={message}
             hasError={hasError}
@@ -95,18 +103,25 @@ const ChangePassword = () => {
           />
         </div>
         {/*  Form */}
-        <div className='flex w-full rounded-2xl border-2 border-lime-500 bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 opacity-90 shadow-md shadow-lime-600 sm:max-w-md md:mt-0 xl:p-0'>
-          <div className='mx-auto my-auto w-full p-6 sm:p-8'>
-            <h1 className={`text-center text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl`}>
+        <div className='flex w-full border-2 shadow-md rounded-2xl border-lime-500 bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 opacity-90 shadow-lime-600 sm:max-w-md md:mt-0 xl:p-0'>
+          <div className='w-full p-6 mx-auto my-auto sm:p-8'>
+            <h1
+              className={`text-center text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl`}>
               Cambiar contraseña
             </h1>
             <form
-              className={`mt-8 ${hasError || passwordWasChanged ? 'hidden' : ''}`}
+              className={`mt-8 ${
+                hasError || passwordWasChanged ? 'hidden' : ''
+              }`}
               onSubmit={handleSubmit}>
               <InputWithValidation
                 label='Contraseña'
                 required={true}
-                icon={<PadlockFill className={'text-sm text-slate-600 sm:text-base'} />}
+                icon={
+                  <PadlockFill
+                    className={'text-sm text-slate-600 sm:text-base'}
+                  />
+                }
                 type='password'
                 value={password}
                 onChange={setPassword}
@@ -120,7 +135,11 @@ const ChangePassword = () => {
                 type='password'
                 repeatPassword={true}
                 placeholder='Repite tu contraseña nueva'
-                error={repeatPassword.length > 0 ? !meetsEqualsPassword : meetsEqualsPassword}
+                error={
+                  repeatPassword.length > 0
+                    ? !meetsEqualsPassword
+                    : meetsEqualsPassword
+                }
                 errorMessage='Tus contraseñas no coinciden.'
                 value={repeatPassword}
                 onChange={setRepeatPassword}
@@ -133,7 +152,9 @@ const ChangePassword = () => {
                   <div className='flex items-center gap-2'>
                     <CheckCircleFill
                       className={`${
-                        meetCharacterLength ? 'text-emerald-500' : 'text-gray-400'
+                        meetCharacterLength
+                          ? 'text-emerald-500'
+                          : 'text-gray-400'
                       } h-3 w-3 transition-colors duration-700 sm:h-4 sm:w-4`}
                     />
                     <div>Tener entre 6 y 10 caracteres.</div>
@@ -163,7 +184,7 @@ const ChangePassword = () => {
                     <div>Contener al menos un número.</div>
                   </div>
                 </div>
-                <div className='mt-2 flex items-center gap-2'>
+                <div className='flex items-center gap-2 mt-2'>
                   <CheckCircleFill
                     className={`${
                       meetsEqualsPassword ? 'text-emerald-500' : 'text-gray-400'
@@ -184,19 +205,17 @@ const ChangePassword = () => {
               </button>
             </form>
             <div
-              className='mt-5 flex justify-center text-xs font-medium
-									  text-slate-700 transition-colors duration-700
-									  hover:text-slate-950 sm:text-sm'>
+              className='flex justify-center mt-5 text-xs font-medium transition-colors duration-700 text-slate-700 hover:text-slate-950 sm:text-sm'>
               <Link
                 to='/'
-                className='animated-text-underline cursor-pointer'>
+                className='cursor-pointer animated-text-underline'>
                 {passwordWasChanged ? 'Iniciar Sesión' : 'Volver al inicio'}
               </Link>
             </div>
           </div>
         </div>
         {/* Footer */}
-        <div className='mt-10 flex flex-col items-center text-sm text-slate-100 lg:text-base'>
+        <div className='flex flex-col items-center mt-10 text-sm text-slate-100 lg:text-base'>
           <p>Diseñado por TeleSoluciones Ltda.</p>
           <p>Viña del Mar, Chile 2023</p>
         </div>

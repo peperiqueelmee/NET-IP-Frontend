@@ -1,6 +1,12 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { CheckCircleFill, CloseCircleFill, EyeFill, EyeFillInvisible, InfoFill } from '../../assets/icons';
+import {
+  CheckCircleFill,
+  CloseCircleFill,
+  EyeFill,
+  EyeFillInvisible,
+  InfoFill,
+} from '../../assets/icons';
 import { isInputInvalid } from '../../utils/utils';
 import { InfoTooltip } from '../index.js';
 
@@ -25,18 +31,21 @@ const InputWithValidationTest = ({
 
   useEffect(() => {
     setErrorInput(error);
-    setSuccessInput(false);
   }, [error]);
 
   // Handles.
-  const handleBlur = (e) => {
+  const handleBlur = e => {
     const input = e.target;
-    setErrorInput(errorInput ? errorInput : isInputInvalid(input, validationType));
+    setErrorInput(
+      errorInput ? errorInput : isInputInvalid(input, validationType)
+    );
     setSuccessInput(!isInputInvalid(input, validationType));
   };
-  const handleChange = (e) => {
+  const handleChange = e => {
     const input = e.target;
-    setErrorInput(repeatPassword ? errorInput : isInputInvalid(input, validationType));
+    setErrorInput(
+      repeatPassword ? errorInput : isInputInvalid(input, validationType)
+    );
     setSuccessInput(!isInputInvalid(input, validationType));
   };
   const handleFocus = () => {
@@ -57,7 +66,7 @@ const InputWithValidationTest = ({
   };
   const statusMapping = {
     error: 'border-red-500 bg-pink-50',
-    success: 'border-emerald-500 bg-slate-200',
+    success: `border-emerald-500  ${errorInput ? '' : 'bg-slate-200'}`,
     default: 'focus:border-sky-500 bg-slate-200',
   };
   const inputClassName = [
@@ -92,7 +101,7 @@ const InputWithValidationTest = ({
     <>
       <div className='relative mt-2'>
         <div className='flex items-center gap-1'>
-          <label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
+          <label className='block mb-2 text-xs font-medium text-slate-600 sm:text-sm'>
             {label}
             {required && <span className='text-red-500'>*</span>}
           </label>
@@ -106,7 +115,7 @@ const InputWithValidationTest = ({
           type={typeInput}
           className={inputClassName}
           value={value}
-          onChange={(e) => {
+          onChange={e => {
             {
               onChange(e.target.value);
             }
@@ -118,32 +127,42 @@ const InputWithValidationTest = ({
           required=''
         />
         {/* Left Icon Input */}
-        <div className='pointer-events-none absolute inset-y-0 left-0 mt-11 items-center pl-3 sm:mt-12'>
+        <div className='absolute inset-y-0 left-0 items-center pl-3 pointer-events-none mt-11 sm:mt-12'>
           <div>{icon}</div>
         </div>
         {/* Right Icon Input */}
-        <div className='absolute inset-y-0 right-0 mt-11 items-center pr-3 sm:mt-12'>
+        <div className='absolute inset-y-0 right-0 items-center pr-3 mt-11 sm:mt-12'>
           <div className='flex items-center'>
             {/* Icon to see password */}
             {type === 'password' && value.length > 0 && (
               <div
                 onClick={togglePasswordVisibility}
                 className='flex cursor-pointer'>
-                <Button sx={{ marginRight: -1, p: 0, borderRadius: '50%', width: 20, height: 20 }}>
+                <Button
+                  sx={{
+                    marginRight: -1,
+                    p: 0,
+                    borderRadius: '50%',
+                    width: 20,
+                    height: 20,
+                  }}>
                   {passwordIsVisible ? (
-                    <EyeFillInvisible className='h-4 w-4 text-slate-600 text-opacity-70 sm:h-5 sm:w-5' />
+                    <EyeFillInvisible className='w-4 h-4 text-slate-600 text-opacity-70 sm:h-5 sm:w-5' />
                   ) : (
-                    <EyeFill className='h-4 w-4 text-slate-600 text-opacity-70 sm:h-5 sm:w-5' />
+                    <EyeFill className='w-4 h-4 text-slate-600 text-opacity-70 sm:h-5 sm:w-5' />
                   )}
                 </Button>
               </div>
             )}
             {/* Error or success icons */}
-            <div className={`${errorInput || successInput ? 'visible' : 'invisible'} cursor-text`}>
+            <div
+              className={`${
+                errorInput || successInput ? 'visible' : 'invisible'
+              } cursor-text`}>
               {errorInput ? (
-                <CloseCircleFill className='h-4 w-4 text-red-500 sm:h-5 sm:w-5' />
+                <CloseCircleFill className='w-4 h-4 text-red-500 sm:h-5 sm:w-5' />
               ) : (
-                <CheckCircleFill className='h-4 w-4 text-emerald-500 sm:h-5 sm:w-5' />
+                <CheckCircleFill className='w-4 h-4 text-emerald-500 sm:h-5 sm:w-5' />
               )}
             </div>
           </div>

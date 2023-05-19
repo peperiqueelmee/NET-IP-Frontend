@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PadlockFill, UserFill } from '../assets/icons';
-import { InformativeMessage, InputWithValidation, Spinner, Title } from '../components';
+import {
+  InformativeMessage,
+  InputWithValidation,
+  Spinner,
+  Title,
+} from '../components';
 import axiosClient from '../config/axios';
 import { RESPONSE_SERVER } from '../utils/utils';
 
@@ -19,7 +24,7 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setSubmit(true);
     if (!username || !password) {
@@ -34,13 +39,15 @@ const Register = () => {
         username,
         emp_password: password,
       };
-      const { data } = await axiosClient.post(url, employeeData);
-      const token = data.data.token;
-      const rutUsername = data.data.rut;
+      const {
+        data: {
+          data: { token, rut },
+        },
+      } = await axiosClient.post(url, employeeData);
 
       localStorage.setItem('token', token);
       localStorage.setItem('username', username);
-      localStorage.setItem('rut', rutUsername);
+      localStorage.setItem('rut', rut);
 
       navigate('/home');
       setIsLoading(false);
@@ -62,12 +69,12 @@ const Register = () => {
 
   return (
     <>
-      <div className='login-page mx-auto flex h-screen flex-col items-center justify-center overflow-y-auto px-6 lg:py-0'>
+      <div className='flex flex-col items-center justify-center h-screen px-6 mx-auto overflow-y-auto login-page lg:py-0'>
         {/* Tittle */}
         <Title />
         {/* Error message */}
         {IsInvalidCredentials && (
-          <div className='mb-5 w-full sm:max-w-md'>
+          <div className='w-full mb-5 sm:max-w-md'>
             <InformativeMessage
               message={messageError}
               hasError={messageError.length > 0}
@@ -75,9 +82,9 @@ const Register = () => {
           </div>
         )}
         {/* Form */}
-        <div className='flex w-full rounded-2xl border-2 border-lime-500 bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 opacity-90 shadow-md shadow-lime-600 sm:max-w-md md:mt-0 xl:p-0'>
-          <div className='mx-auto my-auto w-full p-6 sm:px-8 sm:pb-5 sm:pt-8'>
-            <h1 className='text-center text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl'>
+        <div className='flex w-full border-2 shadow-md rounded-2xl border-lime-500 bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 opacity-90 shadow-lime-600 sm:max-w-md md:mt-0 xl:p-0'>
+          <div className='w-full p-6 mx-auto my-auto sm:px-8 sm:pb-5 sm:pt-8'>
+            <h1 className='text-xl font-bold leading-tight tracking-tight text-center text-slate-700 md:text-2xl'>
               Ingresa a tu cuenta
             </h1>
             <form
@@ -91,23 +98,33 @@ const Register = () => {
                 type='text'
                 placeholder='Tu usuario'
                 errorMessage={
-                  IsInvalidCredentials ? 'Credenciales incorrectas.' : 'Por favor ingresa tu nombre de usuario.'
+                  IsInvalidCredentials
+                    ? 'Credenciales incorrectas.'
+                    : 'Por favor ingresa tu nombre de usuario.'
                 }
                 value={username}
                 onChange={setUsername}
                 icon={<UserFill className='text-slate-600' />}
-                error={username.length === 0 && submit ? true : IsInvalidCredentials ? true : false}
+                error={
+                  (username.length === 0 && submit) || IsInvalidCredentials
+                }
               />
               <InputWithValidation
                 label='Contraseña'
                 required={true}
                 type='password'
                 placeholder='Tu contraseña'
-                errorMessage={IsInvalidCredentials ? 'Credenciales incorrectas.' : 'Por favor ingresa tu contraseña.'}
+                errorMessage={
+                  IsInvalidCredentials
+                    ? 'Credenciales incorrectas.'
+                    : 'Por favor ingresa tu contraseña.'
+                }
                 value={password}
                 onChange={setPassword}
                 icon={<PadlockFill className='text-slate-600' />}
-                error={password.length === 0 && submit ? true : IsInvalidCredentials ? true : false}
+                error={
+                  (username.length === 0 && submit) || IsInvalidCredentials
+                }
               />
               <button
                 disabled={isLoading}
@@ -119,20 +136,17 @@ const Register = () => {
                 {isLoading ? <Spinner /> : 'Iniciar Sesión'}
               </button>
             </form>
-            <div
-              className='mt-5 flex justify-center text-xs font-medium
-					   text-slate-700  transition-colors duration-700
-					   hover:text-slate-950 sm:text-sm'>
+            <div className='flex justify-center mt-5 text-xs font-medium transition-colors duration-700 text-slate-700 hover:text-slate-950 sm:text-sm'>
               <Link
                 to='/recuperar-contrasena'
-                className='animated-text-underline cursor-pointer'>
+                className='cursor-pointer animated-text-underline'>
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
           </div>
         </div>
         {/* Footer */}
-        <footer className='mt-10 flex flex-col items-center text-sm text-slate-100 lg:text-base'>
+        <footer className='flex flex-col items-center mt-10 text-sm text-slate-100 lg:text-base'>
           <p>Diseñado por TeleSoluciones Ltda.</p>
           <p>Viña del Mar, Chile 2023</p>
         </footer>
