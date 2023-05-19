@@ -25,6 +25,7 @@ const InputWithValidationTest = ({
 
   useEffect(() => {
     setErrorInput(error);
+    setSuccessInput(false);
   }, [error]);
 
   // Handles.
