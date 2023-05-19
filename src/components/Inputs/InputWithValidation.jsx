@@ -57,14 +57,13 @@ const InputWithValidationTest = ({
   const statusMapping = {
     error: 'border-red-500 bg-red-50',
     success: 'border-emerald-500',
-    default: 'focus:border-sky-500',
+    default: 'focus:border-sky-500 bg-slate-200',
   };
   const inputClassName = [
     'mt-2',
     'w-full',
     'rounded-md',
     'border',
-    'bg-slate-200',
     'py-2.5',
     'text-xs',
     'text-gray-900',
