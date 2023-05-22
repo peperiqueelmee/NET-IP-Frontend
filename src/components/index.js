@@ -15,4 +15,5 @@ export { default as PhonesResultsTable } from './resultsTable/Phones/PhonesResul
 export { default as Spinner } from './Others/Spinner';
 export { default as Title } from './Others/Title';
 export { default as Users } from './filters/Users';
+export { default as Extensions } from './filters/Extensions';
 export { default as InfoTooltip } from './Others/InfoTooltip';

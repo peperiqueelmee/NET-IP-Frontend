@@ -4,13 +4,19 @@ import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction, useEmployee } from '../../hooks';
 import InfoTooltip from '../Others/InfoTooltip';
-import { EmployeesResultsCards, EmployeesResultsTable, Spinner } from '../index.js';
+import {
+  EmployeesResultsCards,
+  EmployeesResultsTable,
+  Spinner,
+} from '../index.js';
 
 const Users = () => {
   // User experience.
   const [isLoading, setLoading] = useState(null);
-  const { setEmployees, employees, totalEmployees, setTotalEmployees } = useEmployee();
-  const { selectedAction, selectedActionUsers, setSelectActionUsers } = useAction();
+  const { setEmployees, employees, totalEmployees, setTotalEmployees } =
+    useEmployee();
+  const { selectedAction, selectedActionUsers, setSelectActionUsers } =
+    useAction();
   // Data user.
   const [rut, setRut] = useState('');
 
@@ -21,7 +27,7 @@ const Users = () => {
   }, [selectedAction]);
 
   // Handles.
-  const handleButtonClick = (index) => {
+  const handleButtonClick = index => {
     setSelectActionUsers(index);
   };
   const handleListAllEmployees = async () => {
@@ -36,7 +42,7 @@ const Users = () => {
       setLoading(false);
     }
   };
-  const handleListEmployeeByRut = async (e) => {
+  const handleListEmployeeByRut = async e => {
     if (!e) {
       return;
     }
@@ -53,7 +59,7 @@ const Users = () => {
       setEmployees('');
     }
   };
-  const handleListEmployeesByStatus = async (status) => {
+  const handleListEmployeesByStatus = async status => {
     setLoading(true);
     try {
       const url = `/employee/employees/status/${status}`;
@@ -93,7 +99,11 @@ const Users = () => {
                 }}
                 className={`w-9/12 rounded-2xl bg-gray-200 px-4 
 							py-1 text-xs shadow hover:shadow-lime-400 sm:w-6/12 lg:w-32 xl:text-sm
-							${selectedActionUsers === 1 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
+							${
+                selectedActionUsers === 1
+                  ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                  : 'text-zinc-700'
+              }`}>
                 Crear Usuario
               </button>
             </div>
@@ -123,7 +133,11 @@ const Users = () => {
                     }}
                     className={`w-full rounded-2xl bg-gray-200 px-4 
 													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-													${selectedActionUsers === 3 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
+													${
+                            selectedActionUsers === 3
+                              ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                              : 'text-zinc-700'
+                          }`}>
                     Activos
                   </button>
                   <button
@@ -133,7 +147,11 @@ const Users = () => {
                     }}
                     className={`w-full rounded-2xl bg-gray-200 px-4 
 													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-													${selectedActionUsers === 4 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
+													${
+                            selectedActionUsers === 4
+                              ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                              : 'text-zinc-700'
+                          }`}>
                     Inactivos
                   </button>
                 </div>
@@ -152,7 +170,7 @@ const Users = () => {
                 className='flex w-9/12 items-center sm:w-6/12 lg:w-auto'>
                 <input
                   value={rut}
-                  onChange={(e) => setRut(e.target.value)}
+                  onChange={e => setRut(e.target.value)}
                   onClick={() => handleButtonClick(5)}
                   className='h-6 w-full rounded-l-2xl pl-4 text-xs text-zinc-500 outline-none focus:border focus:border-lime-400 xl:text-sm'
                   type='text'
@@ -166,7 +184,11 @@ const Users = () => {
                   }}
                   className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 
 												shadow hover:shadow-lime-400 
-												${selectedActionUsers === 5 ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white' : 'text-zinc-700'}`}>
+												${
+                          selectedActionUsers === 5
+                            ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                            : 'text-zinc-700'
+                        }`}>
                   <SearchFill />
                 </button>
               </form>
