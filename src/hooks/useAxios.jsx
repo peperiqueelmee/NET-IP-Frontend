@@ -1,43 +1,36 @@
-import { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
+import { RESPONSE_SERVER } from '../utils/utils';
 
 const useAxios = () => {
-    const [response, setResponse] = useState(null);
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-    const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
-    const API_TOKEN = import.meta.env.VITE_TOKEN;
+  const makeRequest = async (url, data = null, method = 'GET') => {
+    try {
+      setIsLoading(true);
+      setMessage(null);
 
-    const sendRequests = async (requests) => {
-        setIsLoading(true);
-        try {
-            const headers = {
-                Authorization: `Bearer ${API_TOKEN}`,
-            };
-            const responses = await Promise.all(requests.map(({ method, url, data }) => {
-                return axios({
-                    method,
-                    url: `${API_BASE_URL}${url}`,
-                    data,
-                    headers,
-                });
-            }));
-            setResponse(responses.map(res => res));
-            setError(null);
-        } catch (err) {
-            setResponse(null);
-            setError(err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      const response = await axios({
+        method,
+        url: API_BASE_URL + url,
+        data,
+      });
+      setIsLoading(false);
+      return response.data;
+    } catch (error) {
+      const errorMessage = error.response.data.message;
+      setIsLoading(false);
+      if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
+        setMessage(errorMessage);
+        return;
+      }
+      setMessage('Error de servidor. Reintentar.');
+    }
+  };
 
-    const postRequest = async (url, data) => {
-        await sendRequests([{ method: 'post', url, data }]);
-    };
-
-    return [response, error, isLoading, sendRequests, postRequest];
+  return { message, setMessage, isLoading, makeRequest };
 };
 
 export default useAxios;

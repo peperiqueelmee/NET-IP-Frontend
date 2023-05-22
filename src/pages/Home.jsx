@@ -11,17 +11,18 @@ import {
   Title,
   Users,
 } from '../components';
-import axiosClient from '../config/axios';
-import { useEmployee } from '../hooks';
+import { useAxios, useEmployee } from '../hooks';
 
 const Home = () => {
+  //Request.
+  const { makeRequest } = useAxios();
   // Data form edit employee.
   const { setEmployee } = useEmployee();
   // Data user.
   const token = localStorage.getItem('token');
   const username = localStorage.getItem('username');
   const userRut = localStorage.getItem('rut');
-
+  // Navigation .
   const navigate = useNavigate();
   useEffect(() => {
     window.addEventListener('popstate', blockBackButton);
@@ -34,9 +35,7 @@ const Home = () => {
   const getEmployee = async rutEmployee => {
     try {
       const url = `/employee/employees/${rutEmployee}`;
-      const {
-        data: { data },
-      } = await axiosClient(url);
+      const { data } = await makeRequest(url);
       const employee = data[0];
       return employee;
     } catch (error) {
@@ -73,8 +72,7 @@ const Home = () => {
                 <span className='flex justify-center w-full'>{username}</span>
               </div>
             </div>
-            <div
-              className='px-4 py-1 text-xs tracking-wide text-gray-200 border-2 rounded-full shadow-md cursor-pointer border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'>
+            <div className='px-4 py-1 text-xs tracking-wide text-gray-200 border-2 rounded-full shadow-md cursor-pointer border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'>
               <div className='flex items-center gap-1'>
                 <HelpBuoyFill className='text-xs text-lime-400 lg:text-sm' />
                 <span className='flex justify-center w-full'>Ayuda</span>
