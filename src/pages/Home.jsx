@@ -4,12 +4,16 @@ import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
 import {
   Actions,
   Extensions,
+  Intercom,
   ModalCreateEmployee,
+  ModalCreateExtension,
   ModalEditEmployee,
   ModalGenerateReport,
   ModalLogout,
+  MultiCallRinging,
   Phones,
   Title,
+  TrunkManagement,
   Users,
 } from '../components';
 import { useAxios, useEmployee } from '../hooks';
@@ -58,33 +62,33 @@ const Home = () => {
   };
 
   return (
-    <div className='home-page h-screen overflow-y-auto'>
+    <div className='h-screen overflow-y-auto home-page'>
       <div className={`container mx-auto px-3 sm:px-6 md:px-10 `}>
         <div className='flex flex-col items-center justify-between pt-10 lg:flex-row'>
           {/* Tittle */}
           <Title titleIsExpand={true} />
           {/* Buttons: Username, Help, Sing off */}
-          <div className='mb-6 mt-6 hidden flex-row gap-3 sm:flex lg:mt-0 lg:flex-row'>
+          <div className='flex-row hidden gap-3 mt-6 mb-6 sm:flex lg:mt-0 lg:flex-row'>
             <div
-              className='cursor-pointer rounded-full border-2 border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 px-4 py-1 text-xs tracking-wide text-gray-200 shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'
+              className='px-4 py-1 text-xs tracking-wide text-gray-200 border-2 rounded-full shadow-md cursor-pointer border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'
               onClick={e => modalEditEmployee(e, userRut)}>
               <div className='flex items-center gap-1'>
                 <UserFill className='text-xs text-lime-400 lg:text-sm' />
-                <span className='flex w-full justify-center'>{username}</span>
+                <span className='flex justify-center w-full'>{username}</span>
               </div>
             </div>
-            <div className='cursor-pointer rounded-full border-2 border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 px-4 py-1 text-xs tracking-wide text-gray-200 shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'>
+            <div className='px-4 py-1 text-xs tracking-wide text-gray-200 border-2 rounded-full shadow-md cursor-pointer border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'>
               <div className='flex items-center gap-1'>
                 <HelpBuoyFill className='text-xs text-lime-400 lg:text-sm' />
-                <span className='flex w-full justify-center'>Ayuda</span>
+                <span className='flex justify-center w-full'>Ayuda</span>
               </div>
             </div>
             <div
-              className='cursor-pointer rounded-full border-2 border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 px-4 py-1 text-xs tracking-wide text-gray-200 shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'
+              className='px-4 py-1 text-xs tracking-wide text-gray-200 border-2 rounded-full shadow-md cursor-pointer border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'
               onClick={modalLogout}>
               <div className='flex items-center gap-1'>
                 <ExitDoorFill className='text-xs text-lime-400 lg:text-sm' />
-                <span className='flex w-full justify-center'>
+                <span className='flex justify-center w-full'>
                   Cerrar sesión
                 </span>
               </div>
@@ -96,25 +100,28 @@ const Home = () => {
           <Actions />
           <Phones />
           <Extensions />
+          <Intercom />
+          <TrunkManagement />
+          <MultiCallRinging />
           <Users />
         </div>
       </div>
       {/* RESPONSIVE components less than 1024px */}
       {/* Buttons: Username, Help, Sing off */}
-      <div className='fixed inset-x-0 bottom-0 z-40 block w-full rounded-t-full bg-gradient-to-r from-lime-600 to-green-600 px-10 shadow-inner sm:hidden md:hidden'>
-        <div className='flex h-12 items-center justify-between'>
+      <div className='fixed inset-x-0 bottom-0 z-40 block w-full px-10 rounded-t-full shadow-inner bg-gradient-to-r from-lime-600 to-green-600 sm:hidden md:hidden'>
+        <div className='flex items-center justify-between h-12'>
           <div
-            className='flex cursor-pointer flex-col items-center justify-center'
+            className='flex flex-col items-center justify-center cursor-pointer'
             onClick={e => modalEditEmployee(e, userRut)}>
             <UserFill className='text-base text-white' />
             <span className='text-xs text-slate-200'>{username}</span>
           </div>
-          <div className='flex cursor-pointer flex-col items-center justify-center'>
+          <div className='flex flex-col items-center justify-center cursor-pointer'>
             <HelpBuoyFill className='text-base text-white' />
             <span className='text-xs text-slate-200'>Ayuda</span>
           </div>
           <div
-            className='flex cursor-pointer flex-col items-center justify-center'
+            className='flex flex-col items-center justify-center cursor-pointer'
             onClick={modalLogout}>
             <ExitDoorFill className='text-base text-white' />
             <span className='text-xs text-slate-200'>Cerrar sesión</span>
@@ -123,6 +130,7 @@ const Home = () => {
       </div>
       {/* Modals */}
       <ModalLogout />
+      <ModalCreateExtension />
       <ModalCreateEmployee />
       <ModalEditEmployee />
       <ModalGenerateReport />

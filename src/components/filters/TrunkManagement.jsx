@@ -10,7 +10,7 @@ import {
   Spinner,
 } from '../index.js';
 
-const Extensions = () => {
+const TrunkManagement = () => {
   // User experience.
   const [isLoading, setLoading] = useState(null);
   const { setEmployees, employees, totalEmployees, setTotalEmployees } =
@@ -82,17 +82,15 @@ const Extensions = () => {
   return (
     <>
       <Grow
-        in={selectedAction === 1}
+        in={selectedAction === 2}
         timeout={500}>
-        <div className={`pb-14 ${selectedAction === 1 ? 'block' : 'hidden'} `}>
+        <div className={`pb-14 ${selectedAction === 2 ? 'block' : 'hidden'} `}>
           {/* Container */}
           <div className='bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950'>
-            <div
-              className='flex w-full flex-col justify-center 
-									gap-1 rounded-none px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
-              {/* Extension management */}
+            <div className='flex w-full flex-col justify-center gap-1 rounded-none px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
+              {/* Trunk management */}
               <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
-                <div className='text-lime-400'>Gestión de Anexos</div>
+                <div className='text-lime-400'>Gestión de Troncales</div>
                 <button
                   onClick={() => {
                     modalCreateEmployee();
@@ -105,12 +103,12 @@ const Extensions = () => {
                   ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                   : 'text-zinc-700'
               }`}>
-                  Crear Anexo
+                  Crear Troncal
                 </button>
               </div>
-              {/* Extension lists */}
+              {/* Trunk lists */}
               <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
-                <div className='text-lime-400'>Listado de Anexos</div>
+                <div className='text-lime-400'>Listado de Troncales</div>
                 <div className='flex flex-col w-9/12 gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
                   <button
                     onClick={() => {
@@ -158,10 +156,10 @@ const Extensions = () => {
                   </div>
                 </div>
               </div>
-              {/* Search by Extension */}
+              {/* Search by Trunk */}
               <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
                 <div className='flex items-center gap-1'>
-                  <div className='text-lime-400'>Búsqueda por Anexo</div>
+                  <div className='text-lime-400'>Búsqueda por Troncal</div>
                 </div>
                 <form
                   onSubmit={handleListEmployeeByRut}
@@ -172,7 +170,7 @@ const Extensions = () => {
                     onClick={() => handleButtonClick(5)}
                     className='w-full h-6 pl-4 text-xs outline-none rounded-l-2xl text-zinc-500 focus:border focus:border-lime-400 xl:text-sm'
                     type='text'
-                    placeholder='Ingrese Anexo'
+                    placeholder='Ingrese Troncal'
                   />
                   <button
                     type='submit'
@@ -191,7 +189,7 @@ const Extensions = () => {
                   </button>
                 </form>
               </div>
-              {/* Report Extensions */}
+              {/* Trunk Extensions */}
               <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 lg:hidden xl:flex xl:text-sm'>
                 <div className='text-lime-400'>Generación de Reportes</div>
                 <button
@@ -243,4 +241,4 @@ const Extensions = () => {
   );
 };
 
-export default Extensions;
+export default TrunkManagement;

@@ -18,6 +18,7 @@ export { default as PadlockFill } from './PadlockFill';
 export { default as PDFOutline } from './PDFOutline';
 export { default as PencilFill } from './PencilFill';
 export { default as PhoneCallOutline } from './PhoneCallOutline';
+export { default as PhoneFill } from './PhoneFill';
 export { default as PhoneOffOutline } from './PhoneOffOutline';
 export { default as QuestionCircleOutline } from './QuestionCircleOutline';
 export { default as SearchFill } from './SearchFill';

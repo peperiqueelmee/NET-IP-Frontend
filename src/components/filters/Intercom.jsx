@@ -10,7 +10,7 @@ import {
   Spinner,
 } from '../index.js';
 
-const Extensions = () => {
+const Intercom = () => {
   // User experience.
   const [isLoading, setLoading] = useState(null);
   const { setEmployees, employees, totalEmployees, setTotalEmployees } =
@@ -82,48 +82,48 @@ const Extensions = () => {
   return (
     <>
       <Grow
-        in={selectedAction === 1}
+        in={selectedAction === 3}
         timeout={500}>
-        <div className={`pb-14 ${selectedAction === 1 ? 'block' : 'hidden'} `}>
+        <div className={`pb-14 ${selectedAction === 3 ? 'block' : 'hidden'} `}>
           {/* Container */}
           <div className='bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950'>
-            <div
-              className='flex w-full flex-col justify-center 
-									gap-1 rounded-none px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
-              {/* Extension management */}
+            <div className='flex w-full flex-col justify-center gap-1 rounded-none px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
+              {/* Intercom management */}
               <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
-                <div className='text-lime-400'>Gestión de Anexos</div>
+                <div className='text-lime-400'>
+                  Gestión de Intercomunicadores
+                </div>
                 <button
                   onClick={() => {
                     modalCreateEmployee();
                     handleButtonClick(1);
                   }}
-                  className={`w-9/12 rounded-2xl bg-gray-200 px-4 
-							py-1 text-xs shadow hover:shadow-lime-400 sm:w-6/12 lg:w-32 xl:text-sm
+                  className={`w-9/12 rounded-2xl bg-gray-200 px-4 py-1 text-xs shadow hover:shadow-lime-400 sm:w-6/12 lg:w-32 xl:text-sm
 							${
                 selectedActionUsers === 1
                   ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                   : 'text-zinc-700'
               }`}>
-                  Crear Anexo
+                  Crear Intercom
                 </button>
               </div>
-              {/* Extension lists */}
+              {/* Intercom lists */}
               <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
-                <div className='text-lime-400'>Listado de Anexos</div>
+                <div className='text-lime-400'>
+                  Listado de Intercomunicadores
+                </div>
                 <div className='flex flex-col w-9/12 gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
                   <button
                     onClick={() => {
                       handleListAllEmployees();
                       handleButtonClick(2);
                     }}
-                    className={`w-full rounded-2xl bg-gray-200 px-4
-											    py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-												${
-                          selectedActionUsers === 2
-                            ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                            : 'text-zinc-700 '
-                        }`}>
+                    className={`w-full rounded-2xl bg-gray-200 px-4 py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
+							     ${
+                     selectedActionUsers === 2
+                       ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                       : 'text-zinc-700 '
+                   }`}>
                     Todos
                   </button>
                   <div className='flex justify-center gap-1'>
@@ -132,13 +132,12 @@ const Extensions = () => {
                         handleListEmployeesByStatus(1);
                         handleButtonClick(3);
                       }}
-                      className={`w-full rounded-2xl bg-gray-200 px-4 
-													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-													${
-                            selectedActionUsers === 3
-                              ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                              : 'text-zinc-700'
-                          }`}>
+                      className={`w-full rounded-2xl bg-gray-200 px-4 py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
+								    ${
+                      selectedActionUsers === 3
+                        ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                        : 'text-zinc-700'
+                    }`}>
                       Activos
                     </button>
                     <button
@@ -146,22 +145,23 @@ const Extensions = () => {
                         handleListEmployeesByStatus(2);
                         handleButtonClick(4);
                       }}
-                      className={`w-full rounded-2xl bg-gray-200 px-4 
-													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-													${
-                            selectedActionUsers === 4
-                              ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                              : 'text-zinc-700'
-                          }`}>
+                      className={`w-full rounded-2xl bg-gray-200 px-4 py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
+									${
+                    selectedActionUsers === 4
+                      ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                      : 'text-zinc-700'
+                  }`}>
                       Inactivos
                     </button>
                   </div>
                 </div>
               </div>
-              {/* Search by Extension */}
+              {/* Search by Intercom */}
               <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
                 <div className='flex items-center gap-1'>
-                  <div className='text-lime-400'>Búsqueda por Anexo</div>
+                  <div className='text-lime-400'>
+                    Búsqueda por Intercomunicador
+                  </div>
                 </div>
                 <form
                   onSubmit={handleListEmployeeByRut}
@@ -172,7 +172,7 @@ const Extensions = () => {
                     onClick={() => handleButtonClick(5)}
                     className='w-full h-6 pl-4 text-xs outline-none rounded-l-2xl text-zinc-500 focus:border focus:border-lime-400 xl:text-sm'
                     type='text'
-                    placeholder='Ingrese Anexo'
+                    placeholder='Ingrese Intercomunicador'
                   />
                   <button
                     type='submit'
@@ -180,26 +180,25 @@ const Extensions = () => {
                       handleListEmployeeByRut();
                       handleButtonClick(5);
                     }}
-                    className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 
-												shadow hover:shadow-lime-400 
-												${
-                          selectedActionUsers === 5
-                            ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                            : 'text-zinc-700'
-                        }`}>
+                    className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 shadow hover:shadow-lime-400 
+								 ${
+                   selectedActionUsers === 5
+                     ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
+                     : 'text-zinc-700'
+                 }`}>
                     <SearchFill />
                   </button>
                 </form>
               </div>
-              {/* Report Extensions */}
+              {/* Intercom Management */}
               <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 lg:hidden xl:flex xl:text-sm'>
                 <div className='text-lime-400'>Generación de Reportes</div>
                 <button
                   className={`w-9/12 rounded-2xl bg-gradient-to-r
-								            from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
-											text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
-											disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
-											sm:w-6/12  lg:w-40 xl:text-sm`}>
+							from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
+							text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
+							disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
+							sm:w-6/12  lg:w-40 xl:text-sm`}>
                   Generar Reporte
                 </button>
               </div>
@@ -209,10 +208,10 @@ const Extensions = () => {
                 <div className='text-lime-400'>Generación de Reportes</div>
                 <button
                   className={`w-9/12 rounded-2xl bg-gradient-to-r
-								            from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
-											text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
-											disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
-											sm:w-6/12  lg:w-40 xl:text-sm`}>
+							from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
+							text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
+							disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
+							sm:w-6/12  lg:w-40 xl:text-sm`}>
                   Generar Reporte
                 </button>
               </div>
@@ -243,4 +242,4 @@ const Extensions = () => {
   );
 };
 
-export default Extensions;
+export default Intercom;
