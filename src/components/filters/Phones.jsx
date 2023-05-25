@@ -2,18 +2,13 @@ import Grow from '@mui/material/Grow';
 import { useEffect, useState } from 'react';
 import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
-import { useAction, usePhone } from '../../hooks';
-import {
-  InfoTooltip,
-  PhonesResultsCards,
-  PhonesResultsTable,
-  Spinner,
-} from '../index.js';
+import { useAction, usePagination, useReport } from '../../hooks';
+import { InfoTooltip, PhonesResultsCards, PhonesResultsTable, Spinner } from '../index.js';
 
 const Phones = () => {
-  const { page, setPage, setHasMore } = usePhone();
-  const { selectedAction, selectedActionPhones, setSelectActionPhones } =
-    useAction();
+  const { page, setPage, setHasMore } = usePagination();
+  const { setTableName, setFilename } = useReport();
+  const { selectedAction, selectedActionPhones, setSelectActionPhones } = useAction();
   const [phones, setPhones] = useState([]);
   const [phone, setPhone] = useState('');
   const [isLoading, setLoading] = useState(null);
@@ -27,11 +22,7 @@ const Phones = () => {
     resetPhones();
   }, [selectedAction]);
   useEffect(() => {
-    if (
-      selectedActionPhones === 1 ||
-      selectedActionPhones === 2 ||
-      selectedActionPhones === 3
-    ) {
+    if (selectedActionPhones === 1 || selectedActionPhones === 2 || selectedActionPhones === 3) {
       cleanPaginationPhones();
     }
   }, [selectedActionPhones]);
@@ -98,6 +89,8 @@ const Phones = () => {
     }
   };
   const handleGenerateReport = () => {
+    setTableName('phone-table');
+    setFilename('reporte-teléfonos-usuarios');
     document.getElementById('generate-report').click();
   };
 
@@ -130,7 +123,7 @@ const Phones = () => {
     }
   };
 
-  // Functions.
+  // Support functions.
   const resetPhones = () => {
     setSelectActionPhones(null);
     setPhones(null);
@@ -156,9 +149,7 @@ const Phones = () => {
 									gap-1 rounded-none bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950 px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
             {/* List of user accounts */}
             <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
-              <div className='text-lime-400'>
-                Listado de números telefónicos
-              </div>
+              <div className='text-lime-400'>Listado de números telefónicos</div>
               <div className='flex w-9/12 flex-col gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
                 <button
                   onClick={() => {
@@ -249,9 +240,7 @@ const Phones = () => {
               <button
                 disabled={!thereAreUserPhones}
                 onClick={handleGenerateReport}
-                className={`${
-                  thereAreUserPhones ? 'pulsate-fwd' : ''
-                } w-9/12 rounded-2xl bg-gradient-to-r
+                className={`${thereAreUserPhones ? 'pulsate-fwd' : ''} w-9/12 rounded-2xl bg-gradient-to-r
 								            from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
 											text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
 											disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none

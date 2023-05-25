@@ -1,4 +1,6 @@
 export { default as Actions } from './Actions/Actions';
+export { default as AnexesResultsCards } from './resultsTable/Anexes/AnexesResultsCards';
+export { default as AnexResultsTable } from './resultsTable/Anexes/AnexesResultsTable';
 export { default as Badge } from './Others/Badge';
 export { default as EmployeesResultsCards } from './resultsTable/Employees/EmployeesResultsCards';
 export { default as EmployeesResultsTable } from './resultsTable/Employees/EmployeesResultsTable';

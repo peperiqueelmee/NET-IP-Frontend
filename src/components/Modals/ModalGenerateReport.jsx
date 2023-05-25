@@ -4,21 +4,21 @@ import { useState } from 'react';
 import * as XLSX from 'xlsx/xlsx.mjs';
 import { ExcelOutline, PDFOutline } from '../../assets/icons';
 
-const ModalGenerateReport = () => {
+const ModalGenerateReport = ({ tableName, filename }) => {
   const [open, setOpen] = useState(false);
 
-  const handleToggleModal = (shouldClose) => {
+  const handleToggleModal = shouldClose => {
     setOpen(!shouldClose);
   };
   const handleGeneratePDF = () => {
     const doc = new jsPDF();
-    autoTable(doc, { html: '#phone-table' });
-    doc.save('teléfonos-usuarios.pdf');
+    autoTable(doc, { html: `#${tableName}` });
+    doc.save(`${filename}.pdf`);
   };
   const handleGenerateExcel = () => {
-    const table = document.getElementById('phone-table');
+    const table = document.getElementById(tableName);
     const workbook = XLSX.utils.table_to_book(table);
-    XLSX.writeFile(workbook, 'teléfonos-usuarios.xls');
+    XLSX.writeFile(workbook, `${filename}.xls`);
   };
 
   return (

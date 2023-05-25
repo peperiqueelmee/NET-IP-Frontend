@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
-import {
-  InformativeMessage,
-  InputAutocomplete,
-  InputWithValidation,
-  Spinner,
-} from '..';
-import { LabFill, UserSecretFill, PadlockFill, PhoneFill } from '../../assets/icons';
+import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
+import { LabFill, PadlockFill, PhoneFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction, useAxios } from '../../hooks';
 import { RESPONSE_SERVER } from '../../utils/utils';
@@ -18,28 +13,19 @@ const ModalCreateExtension = () => {
   const { setSelectActionUsers } = useAction();
   const [message, setMessage] = useState('');
   // Data form.
-  const [departments, setDepartments] = useState(
-    () => JSON.parse(localStorage.getItem('departments')) || []
-  );
-  const [transportTypes, setTransportTypes] = useState(
-    () => JSON.parse(localStorage.getItem('transport_types')) || []
-  );
+  const [departments, setDepartments] = useState(() => JSON.parse(localStorage.getItem('departments')) || []);
+  const [transportTypes, setTransportTypes] = useState(() => JSON.parse(localStorage.getItem('transport_types')) || []);
   // Data user.
-  const [names, setNames] = useState('');
-  const [lastnames, setLastnames] = useState('');
-  const [rut, setRut] = useState('');
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  const [extensionNumber, setExtensionNumber] = useState('');
   const [password, setPassword] = useState('');
   const [departmentId, setDepartmentId] = useState(null);
   const [departmentSelectedString, setDepartmentSelectedString] = useState('');
   const [transportTypeId, setTransportTypeId] = useState(null);
-  const [transportTypeSelectedString, setTransportTypeSelectedString] =
-    useState('');
+  const [transportTypeSelectedString, setTransportTypeSelectedString] = useState('');
   // Validations.
-  const formIsFull =
-    names && lastnames && rut && email && username && password && departmentId;
-  const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
+  const formIsFull = extensionNumber && password && departmentId && transportTypeId;
+  const [extensionHasBeenCreated, setExtensionHasBeenCreated] = useState(null);
+  const [inputAnexHasError, setInputAnexHasError] = useState(false);
   const [inputPasswordHasError, setInputPasswordHasError] = useState(false);
   // Event.
   const [submit, setSubmit] = useState(false);
@@ -84,9 +70,7 @@ const ModalCreateExtension = () => {
   };
   const handleDepartmentSelect = departmentSelected => {
     setDepartmentSelectedString(departmentSelected);
-    const selectedObject = departments.find(
-      ({ description }) => description === departmentSelected
-    );
+    const selectedObject = departments.find(({ description }) => description === departmentSelected);
     if (!selectedObject) {
       setDepartmentId(null);
       return;
@@ -95,9 +79,7 @@ const ModalCreateExtension = () => {
   };
   const handleTransportTypeSelect = transportTypeSelected => {
     setTransportTypeSelectedString(transportTypeSelected);
-    const selectedObject = transportTypes.find(
-      ({ description }) => description === transportTypeSelected
-    );
+    const selectedObject = transportTypes.find(({ description }) => description === transportTypeSelected);
     if (!selectedObject) {
       setTransportTypeId(null);
       return;
@@ -110,23 +92,20 @@ const ModalCreateExtension = () => {
 
     try {
       // Create employee.
-      const url = '/employee';
-      const employeeData = {
-        rut,
-        names,
-        lastnames,
-        role_id: departmentId,
-        username,
-        emp_password: password,
-        email,
+      const url = '/regular_anex/create';
+      const extensionData = {
+        anexNumber: extensionNumber,
+        password,
+        transportType: transportTypeId,
+        department: departmentId,
       };
-      await axiosClient.post(url, employeeData);
+      await axiosClient.post(url, extensionData);
       setIsLoading(null);
-      setMessage('¡El usuario ha sido creado exitosamente!');
-      setUserHasBeenCreated(true);
+      setMessage('¡El anexo ha sido creado exitosamente!');
+      setExtensionHasBeenCreated(true);
     } catch (error) {
       setIsLoading(null);
-      setUserHasBeenCreated(false);
+      setExtensionHasBeenCreated(false);
       if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
         const messageError = error.response.data.message;
         const inputWithError = error.response.data.input;
@@ -140,17 +119,16 @@ const ModalCreateExtension = () => {
 
   // Support functions.
   const removeErrorMessage = () => {
-    setUserHasBeenCreated(null);
+    setExtensionHasBeenCreated(null);
   };
   const actionsAfterSubmit = () => {
     // User experience.
     setIsLoading(true);
     setMessage('');
     // Validations.
-    setInputEmailHasError(false);
-    setInputUsernameHasError(false);
+    setInputAnexHasError(false);
     setInputPasswordHasError(false);
-    setUserHasBeenCreated(null);
+    setExtensionHasBeenCreated(null);
     // Event
     setSubmit(true);
   };
@@ -158,22 +136,21 @@ const ModalCreateExtension = () => {
     // User Experience.
     setMessage('');
     // Data user.
-    setNames('');
-    setLastnames('');
-    setRut('');
-    setEmail('');
-    setUsername('');
+    setExtensionNumber('');
     setPassword('');
+    setTransportTypeId(null);
     setDepartmentId(null);
     setDepartmentSelectedString('');
+    setTransportTypeSelectedString('');
     // Validations.
-    setUserHasBeenCreated(null);
+    setExtensionHasBeenCreated(null);
     setSelectActionUsers(null);
+    setInputAnexHasError(false);
     setInputPasswordHasError(false);
   };
   const markInputWithError = inputType => {
     const inputMap = {
-      Username: setInputUsernameHasError,
+      Anex: setInputAnexHasError,
       Password: setInputPasswordHasError,
     };
     const setInputError = inputMap[inputType];
@@ -191,23 +168,21 @@ const ModalCreateExtension = () => {
           <div
             className={`scale-in-center mx-5 mb-5 mt-60 flex w-full  flex-col  items-center overflow-auto rounded-lg border border-lime-400 bg-slate-200 bg-opacity-90 py-5 sm:mt-52 sm:w-11/12 lg:mt-10 lg:w-10/12 2xl:w-8/12`}>
             {/* Success or error message */}
-            {userHasBeenCreated != null ? (
+            {extensionHasBeenCreated != null ? (
               <div className='flex w-full justify-center px-3'>
                 <InformativeMessage
                   message={message}
-                  hasError={!userHasBeenCreated}
-                  hasSuccessful={userHasBeenCreated}
+                  hasError={!extensionHasBeenCreated}
+                  hasSuccessful={extensionHasBeenCreated}
                 />
               </div>
             ) : null}
             {/* Form */}
-            {!userHasBeenCreated ? (
+            {!extensionHasBeenCreated ? (
               <>
                 {/* Title */}
                 <div className='mt-2 flex items-center gap-2'>
-                  <h2 className='text-xl font-bold text-slate-700 md:text-2xl'>
-                    Crear Anexo
-                  </h2>
+                  <h2 className='text-xl font-bold text-slate-700 md:text-2xl'>Crear Anexo</h2>
                   <LabFill className='md:ext-xl text-lg text-slate-700' />
                 </div>
                 <form
@@ -220,30 +195,22 @@ const ModalCreateExtension = () => {
                         <InputWithValidation
                           label='Numero de anexo'
                           required={true}
-                          icon={
-                            <PhoneFill
-                              className={'text-sm text-slate-600 sm:text-base'}
-                            />
-                          }
+                          icon={<PhoneFill className={'text-sm text-slate-600 sm:text-base'} />}
                           type='text'
-                          value={names}
-                          onChange={setNames}
+                          value={extensionNumber}
+                          onChange={setExtensionNumber}
                           placeholder='1001'
+                          validationType={'extension'}
+                          error={submit && inputAnexHasError ? true : false}
                           errorMessage='Por favor ingresa un anexo correcto.'
-                          tooltip={
-                            'El número anexo debe encontrarse en el rango de 1001 a 9999.'
-                          }
+                          tooltip={'El número anexo debe encontrarse en el rango de 1001 a 9999.'}
                         />
                       </div>
                       <div className='w-full'>
                         <InputWithValidation
                           label='Contraseña'
                           required={true}
-                          icon={
-                            <PadlockFill
-                              className={'text-sm text-slate-600 sm:text-base'}
-                            />
-                          }
+                          icon={<PadlockFill className={'text-sm text-slate-600 sm:text-base'} />}
                           type='password'
                           value={password}
                           onChange={setPassword}
@@ -265,9 +232,7 @@ const ModalCreateExtension = () => {
                             <span className='text-red-500'>*</span>
                           </label>
                           <InputAutocomplete
-                            options={departments.map(
-                              department => department.description
-                            )}
+                            options={departments.map(department => department.description)}
                             onSelect={handleDepartmentSelect}
                             placeholder='Seleccionar departamento'
                             value={departmentSelectedString}
@@ -281,9 +246,7 @@ const ModalCreateExtension = () => {
                             <span className='text-red-500'>*</span>
                           </label>
                           <InputAutocomplete
-                            options={transportTypes.map(
-                              transportType => transportType.description
-                            )}
+                            options={transportTypes.map(transportType => transportType.description)}
                             onSelect={handleTransportTypeSelect}
                             placeholder='Seleccionar transporte'
                             value={transportTypeSelectedString}
@@ -293,11 +256,8 @@ const ModalCreateExtension = () => {
                     </div>
                   </div>
                   {/* Error message */}
-                  {userHasBeenCreated != null ? (
-                    <div
-                      className={`mt-4 block text-center text-xs font-medium text-red-600 md:hidden`}>
-                      {message}
-                    </div>
+                  {extensionHasBeenCreated != null ? (
+                    <div className={`mt-4 block text-center text-xs font-medium text-red-600 md:hidden`}>{message}</div>
                   ) : null}
                   {isLoading && (
                     <div className='mt-4'>

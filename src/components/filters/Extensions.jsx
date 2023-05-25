@@ -2,81 +2,163 @@ import Grow from '@mui/material/Grow';
 import { useEffect, useState } from 'react';
 import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
-import { useAction, useEmployee } from '../../hooks';
-import InfoTooltip from '../Others/InfoTooltip';
-import {
-  EmployeesResultsCards,
-  EmployeesResultsTable,
-  Spinner,
-} from '../index.js';
+import { useAction, usePagination, useReport } from '../../hooks';
+import { AnexResultsTable, Spinner, AnexesResultsCards } from '../index.js';
 
 const Extensions = () => {
   // User experience.
+  const { page, setPage, setHasMore } = usePagination();
   const [isLoading, setLoading] = useState(null);
-  const { setEmployees, employees, totalEmployees, setTotalEmployees } =
-    useEmployee();
-  const { selectedAction, selectedActionUsers, setSelectActionUsers } =
-    useAction();
+  const [anexes, setAnexes] = useState([]);
+  const [totalAnexes, setTotalAnexes] = useState(null);
+  const { selectedAction, selectedActionUsers, setSelectActionUsers } = useAction();
+  const thereAreAnexes = Array.isArray(anexes) && anexes.length > 0;
+  // Report.
+  const { setTableName, setFilename } = useReport();
   // Data user.
-  const [rut, setRut] = useState('');
+  const [anexe, setAnexe] = useState('');
+  // Buttons.
+  const createAnex = 1;
+  const listAllAnexes = 2;
+  const listActiveAnexes = 3;
+  const listBlockedAnexes = 4;
+  const searchByAnex = 5;
+  // Status anexes.
+  const active = 1;
+  const blocked = 3;
 
   useEffect(() => {
-    setSelectActionUsers(null);
-    setEmployees(null);
-    setRut('');
+    handleSelectedActionPhones();
+  }, [page]);
+  useEffect(() => {
+    resetPhones();
+    console.log(thereAreAnexes);
   }, [selectedAction]);
+  useEffect(() => {
+    if (
+      selectedActionUsers === listAllAnexes ||
+      selectedActionUsers === listActiveAnexes ||
+      selectedActionUsers === listBlockedAnexes
+    ) {
+      cleanPaginationPhones();
+    }
+  }, [selectedActionUsers]);
 
   // Handles.
+  const handleSelectedActionPhones = async () => {
+    switch (selectedActionUsers) {
+      case listAllAnexes:
+        await getAllPhones();
+        break;
+      case listActiveAnexes:
+        await getPhonesByStatus(active);
+        break;
+      case listBlockedAnexes:
+        await getPhonesByStatus(blocked);
+        break;
+      default:
+        break;
+    }
+  };
   const handleButtonClick = index => {
     setSelectActionUsers(index);
   };
-  const handleListAllEmployees = async () => {
+  const handleListAllAnexes = async () => {
     setLoading(true);
     try {
-      const url = '/employee/employees';
+      const url = '/regular_anex';
       const { data } = await axiosClient(url);
-      setEmployees(data.data);
-      setTotalEmployees(data.total);
+      setAnexes(data.data);
+      setTotalAnexes(data.total);
       setLoading(false);
     } catch (error) {
       setLoading(false);
     }
   };
-  const handleListEmployeeByRut = async e => {
+  const handleListAnexeByNumber = async e => {
     if (!e) {
       return;
     }
     e.preventDefault();
     setLoading(true);
     try {
-      const url = `/employee/employees/${rut}`;
+      const url = `/regular_anex/${anexe}`;
       const { data } = await axiosClient(url);
-      setEmployees(data.data);
-      setTotalEmployees(data.total);
+      setAnexes(data.data);
+      setTotalAnexes(data.total);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setEmployees('');
+      setAnexes('');
     }
   };
   const handleListEmployeesByStatus = async status => {
     setLoading(true);
     try {
-      const url = `/employee/employees/status/${status}`;
+      const url = `/regular_anex/status/${status}`;
       const { data } = await axiosClient(url);
-      setEmployees(data.data);
-      setTotalEmployees(data.total);
+      setAnexes(data.data);
+      setTotalAnexes(data.total);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setEmployees('');
+      setAnexes('');
+    }
+  };
+  const handleGenerateReport = () => {
+    setTableName('anex-table');
+    setFilename('reporte-anexos');
+    document.getElementById('generate-report').click();
+  };
+
+  // Pagination.
+  const getAllPhones = async () => {
+    if (anexes.length === totalAnexes) {
+      return setHasMore(false);
+    }
+    try {
+      const url = `/regular_anex/?page=${page}`;
+      const { data } = await axiosClient(url);
+      setAnexes([...anexes, ...data.data]);
+      if (anexes.length === totalAnexes) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      setHasMore(false);
+    }
+  };
+  const getPhonesByStatus = async status => {
+    if (anexes.length === totalAnexes) {
+      return setHasMore(false);
+    }
+    try {
+      const url = `/regular_anex/status/${status}?page=${page}`;
+      const { data } = await axiosClient(url);
+      setAnexes([...anexes, ...data.data]);
+      if (anexes.length === totalAnexes) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      setHasMore(false);
     }
   };
 
   //Support functions.
   const modalCreateEmployee = () => {
-    setEmployees(null);
+    setAnexes(null);
     document.getElementById('create-extension').click();
+  };
+  const resetPhones = () => {
+    setSelectActionUsers(null);
+    setAnexes(null);
+    setAnexe('');
+    setHasMore(true);
+    setPage(1);
+  };
+  const cleanPaginationPhones = () => {
+    setPage(1);
+    setHasMore(true);
+    setAnexes([]);
   };
 
   return (
@@ -91,17 +173,17 @@ const Extensions = () => {
               className='flex w-full flex-col justify-center 
 									gap-1 rounded-none px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
               {/* Extension management */}
-              <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
+              <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
                 <div className='text-lime-400'>Gestión de Anexos</div>
                 <button
                   onClick={() => {
                     modalCreateEmployee();
-                    handleButtonClick(1);
+                    handleButtonClick(createAnex);
                   }}
                   className={`w-9/12 rounded-2xl bg-gray-200 px-4 
 							py-1 text-xs shadow hover:shadow-lime-400 sm:w-6/12 lg:w-32 xl:text-sm
 							${
-                selectedActionUsers === 1
+                selectedActionUsers === createAnex
                   ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                   : 'text-zinc-700'
               }`}>
@@ -109,18 +191,18 @@ const Extensions = () => {
                 </button>
               </div>
               {/* Extension lists */}
-              <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
+              <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
                 <div className='text-lime-400'>Listado de Anexos</div>
-                <div className='flex flex-col w-9/12 gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
+                <div className='flex w-9/12 flex-col gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
                   <button
                     onClick={() => {
-                      handleListAllEmployees();
-                      handleButtonClick(2);
+                      handleListAllAnexes();
+                      handleButtonClick(listAllAnexes);
                     }}
                     className={`w-full rounded-2xl bg-gray-200 px-4
 											    py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 												${
-                          selectedActionUsers === 2
+                          selectedActionUsers === listAllAnexes
                             ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                             : 'text-zinc-700 '
                         }`}>
@@ -129,13 +211,13 @@ const Extensions = () => {
                   <div className='flex justify-center gap-1'>
                     <button
                       onClick={() => {
-                        handleListEmployeesByStatus(1);
-                        handleButtonClick(3);
+                        handleListEmployeesByStatus(active);
+                        handleButtonClick(listActiveAnexes);
                       }}
                       className={`w-full rounded-2xl bg-gray-200 px-4 
 													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 													${
-                            selectedActionUsers === 3
+                            selectedActionUsers === listActiveAnexes
                               ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                               : 'text-zinc-700'
                           }`}>
@@ -143,47 +225,47 @@ const Extensions = () => {
                     </button>
                     <button
                       onClick={() => {
-                        handleListEmployeesByStatus(2);
-                        handleButtonClick(4);
+                        handleListEmployeesByStatus(blocked);
+                        handleButtonClick(listBlockedAnexes);
                       }}
                       className={`w-full rounded-2xl bg-gray-200 px-4 
 													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 													${
-                            selectedActionUsers === 4
+                            selectedActionUsers === listBlockedAnexes
                               ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                               : 'text-zinc-700'
                           }`}>
-                      Inactivos
+                      Bloqueados
                     </button>
                   </div>
                 </div>
               </div>
               {/* Search by Extension */}
-              <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
+              <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
                 <div className='flex items-center gap-1'>
                   <div className='text-lime-400'>Búsqueda por Anexo</div>
                 </div>
                 <form
-                  onSubmit={handleListEmployeeByRut}
-                  className='flex items-center w-9/12 sm:w-6/12 lg:w-auto'>
+                  onSubmit={handleListAnexeByNumber}
+                  className='flex w-9/12 items-center sm:w-6/12 lg:w-auto'>
                   <input
-                    value={rut}
-                    onChange={e => setRut(e.target.value)}
-                    onClick={() => handleButtonClick(5)}
-                    className='w-full h-6 pl-4 text-xs outline-none rounded-l-2xl text-zinc-500 focus:border focus:border-lime-400 xl:text-sm'
+                    value={anexe}
+                    onChange={e => setAnexe(e.target.value)}
+                    onClick={() => handleButtonClick(searchByAnex)}
+                    className='h-6 w-full rounded-l-2xl pl-4 text-xs text-zinc-500 outline-none focus:border focus:border-lime-400 xl:text-sm'
                     type='text'
                     placeholder='Ingrese Anexo'
                   />
                   <button
                     type='submit'
                     onClick={() => {
-                      handleListEmployeeByRut();
-                      handleButtonClick(5);
+                      handleListAnexeByNumber();
+                      handleButtonClick(searchByAnex);
                     }}
                     className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 
 												shadow hover:shadow-lime-400 
 												${
-                          selectedActionUsers === 5
+                          selectedActionUsers === searchByAnex
                             ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                             : 'text-zinc-700'
                         }`}>
@@ -192,10 +274,12 @@ const Extensions = () => {
                 </form>
               </div>
               {/* Report Extensions */}
-              <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 lg:hidden xl:flex xl:text-sm'>
+              <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium lg:hidden xl:flex xl:text-sm'>
                 <div className='text-lime-400'>Generación de Reportes</div>
                 <button
-                  className={`w-9/12 rounded-2xl bg-gradient-to-r
+                  onClick={handleGenerateReport}
+                  disabled={!thereAreAnexes}
+                  className={`${thereAreAnexes ? 'pulsate-fwd' : ''} w-9/12 rounded-2xl bg-gradient-to-r
 								            from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
 											text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
 											disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
@@ -204,11 +288,13 @@ const Extensions = () => {
                 </button>
               </div>
             </div>
-            <div className='hidden py-2 justify-evenly px-11 lg:flex xl:hidden'>
-              <div className='flex items-center w-full px-4 py-2 text-xs font-medium border rounded-lg gap-y-1 border-lime-400 lg:flex-col'>
+            <div className='hidden justify-evenly px-11 py-2 lg:flex xl:hidden'>
+              <div className='flex w-full items-center gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium lg:flex-col'>
                 <div className='text-lime-400'>Generación de Reportes</div>
                 <button
-                  className={`w-9/12 rounded-2xl bg-gradient-to-r
+                  onClick={handleGenerateReport}
+                  disabled={!thereAreAnexes}
+                  className={`${thereAreAnexes ? 'pulsate-fwd' : ''} w-9/12 rounded-2xl bg-gradient-to-r
 								            from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
 											text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
 											disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
@@ -220,21 +306,21 @@ const Extensions = () => {
           </div>
           {/* Spinner */}
           {isLoading && (
-            <div className='flex items-center justify-center h-12 bg-black opacity-70'>
+            <div className='flex h-12 items-center justify-center bg-black opacity-70'>
               <Spinner />
             </div>
           )}
           {/* Results employees table */}
-          {employees !== null && isLoading === false && (
-            <EmployeesResultsTable
-              employees={employees}
-              totalResults={totalEmployees}
+          {anexes !== null && isLoading === false && (
+            <AnexResultsTable
+              anexes={anexes}
+              totalResults={totalAnexes}
             />
           )}
-          {employees !== null && isLoading === false && (
-            <EmployeesResultsCards
-              employees={employees}
-              totalResults={totalEmployees}
+          {anexes !== null && isLoading === false && (
+            <AnexesResultsCards
+              anexes={anexes}
+              totalResults={totalAnexes}
             />
           )}
         </div>

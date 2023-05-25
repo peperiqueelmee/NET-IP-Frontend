@@ -1,4 +1,4 @@
-const validateRut = (rut) => {
+const validateRut = rut => {
   //The format must be without points and with hyphen, example: 10123456-0
   if (rut.indexOf('-') === -1) return false;
   rut = rut.replace(/\./g, '').replace(/-/g, '');
@@ -18,12 +18,12 @@ const validateRut = (rut) => {
   return dv === dvEsperado;
 };
 
-const validateEmail = (email) => {
+const validateEmail = email => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
-const ValidatePasswordStrength = (password) => {
+const ValidatePasswordStrength = password => {
   // The password must be between 6 and 10 characters long
   // and must contain at least one uppercase letter, one lowercase letter, and one number.
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,10}$/;
@@ -35,10 +35,16 @@ const isInputInvalid = (input, validationType) => {
     password: () => !ValidatePasswordStrength(input.value),
     email: () => !validateEmail(input.value),
     rut: () => !validateRut(input.value),
+    extension: () => !validateNumberAnex(input.value, 1000, 9999),
     default: () => !input.value,
   };
-  const validationFunction = validationMap[validationType] ?? validationMap.default;
+  const validationFunction =
+    validationMap[validationType] ?? validationMap.default;
   return validationFunction();
+};
+
+const validateNumberAnex = (number, rangeMin, RangoMax) => {
+  return !isNaN(number) && number >= rangeMin && number <= RangoMax;
 };
 
 const RESPONSE_SERVER = {
