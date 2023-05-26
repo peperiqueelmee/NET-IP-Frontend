@@ -5,7 +5,7 @@ import axiosClient from '../../config/axios';
 import { useAction, useAxios } from '../../hooks';
 import { RESPONSE_SERVER } from '../../utils/utils';
 
-const ModalCreateExtension = () => {
+const ModalCreateIntercom = () => {
   //Request.
   const { makeRequest } = useAxios();
   // User experience.
@@ -13,17 +13,24 @@ const ModalCreateExtension = () => {
   const { setSelectActionUsers } = useAction();
   const [message, setMessage] = useState('');
   // Data form.
-  const [departments, setDepartments] = useState(() => JSON.parse(localStorage.getItem('departments')) || []);
+  const [restrictionsTypes, setRestrictionsTypes] = useState(
+    () => JSON.parse(localStorage.getItem('restrictions')) || []
+  );
   const [transportTypes, setTransportTypes] = useState(() => JSON.parse(localStorage.getItem('transport_types')) || []);
+  const [extensionsByDepartment, setExtensionsByDepartment] = useState([]);
   // Data user.
-  const [extensionNumber, setExtensionNumber] = useState('');
+  const [intercomNumber, setIntercomNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [departmentId, setDepartmentId] = useState(null);
-  const [departmentSelectedString, setDepartmentSelectedString] = useState('');
+  const [restrictionId, setRestrictionId] = useState(null);
+  const [restrictionSelectedString, setRestrictionSelectedString] = useState('');
   const [transportTypeId, setTransportTypeId] = useState(null);
   const [transportTypeSelectedString, setTransportTypeSelectedString] = useState('');
+  const [extensionByDepartmentSelectedString, setExtensionByDepartmentSelectedString] = useState('');
+  const [intercomCaller, setIntercomCaller] = useState(null);
   // Validations.
-  const formIsFull = extensionNumber && password && departmentId && transportTypeId;
+  const formIsFull =
+    intercomNumber && password && restrictionId && transportTypeId && (restrictionId !== 2 || intercomCaller);
+
   const [extensionHasBeenCreated, setExtensionHasBeenCreated] = useState(null);
   const [inputAnexHasError, setInputAnexHasError] = useState(false);
   const [inputPasswordHasError, setInputPasswordHasError] = useState(false);
@@ -33,20 +40,27 @@ const ModalCreateExtension = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // Get departments.
+    async function getExtensionsByDepartment() {
+      try {
+        const url = '/regular_anex/by-department/active';
+        const { data } = await makeRequest(url);
+        setExtensionsByDepartment(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     async function getDepartments() {
-      if (!departments.length) {
+      if (!restrictionsTypes.length) {
         try {
-          const url = '/departments';
+          const url = '/restrictions';
           const { data } = await makeRequest(url);
-          localStorage.setItem('departments', JSON.stringify(data));
-          setDepartments(data);
+          localStorage.setItem('restrictions', JSON.stringify(data));
+          setRestrictionsTypes(data);
         } catch (error) {
           console.log(error);
         }
       }
     }
-    // Get transport types.
     async function getTransportTypes() {
       if (!transportTypes.length) {
         try {
@@ -61,6 +75,7 @@ const ModalCreateExtension = () => {
     }
     getDepartments();
     getTransportTypes();
+    getExtensionsByDepartment();
   }, []);
 
   // Handles.
@@ -69,13 +84,13 @@ const ModalCreateExtension = () => {
     clearForm();
   };
   const handleDepartmentSelect = departmentSelected => {
-    setDepartmentSelectedString(departmentSelected);
-    const selectedObject = departments.find(({ description }) => description === departmentSelected);
+    setRestrictionSelectedString(departmentSelected);
+    const selectedObject = restrictionsTypes.find(({ description }) => description === departmentSelected);
     if (!selectedObject) {
-      setDepartmentId(null);
+      setRestrictionId(null);
       return;
     }
-    setDepartmentId(selectedObject.id);
+    setRestrictionId(selectedObject.id);
   };
   const handleTransportTypeSelect = transportTypeSelected => {
     setTransportTypeSelectedString(transportTypeSelected);
@@ -86,22 +101,30 @@ const ModalCreateExtension = () => {
     }
     setTransportTypeId(selectedObject.id);
   };
+  const handleExtensionByDepartmentSelect = extensionByDepartmentSelected => {
+    setExtensionByDepartmentSelectedString(extensionByDepartmentSelected);
+    if (!extensionByDepartmentSelected) {
+      return setIntercomCaller(null);
+    }
+    const extensionNumber = parseInt(extensionByDepartmentSelected.match(/\d+/)[0]);
+    setIntercomCaller(extensionNumber);
+  };
   const handleSubmit = async e => {
     e.preventDefault();
     actionsAfterSubmit();
 
     try {
-      // Create employee.
-      const url = '/regular_anex/create';
-      const extensionData = {
-        anexNumber: extensionNumber,
+      const url = '/intercom/create';
+      const intercomData = {
+        intercomNumber,
         password,
-        transportType: transportTypeId,
-        department: departmentId,
+        transportTypeId,
+        restrictionId,
+        intercomCaller,
       };
-      await axiosClient.post(url, extensionData);
+      await axiosClient.post(url, intercomData);
       setIsLoading(null);
-      setMessage('¡El anexo ha sido creado exitosamente!');
+      setMessage('¡El intercomunicador ha sido creado exitosamente!');
       setExtensionHasBeenCreated(true);
     } catch (error) {
       setIsLoading(null);
@@ -136,12 +159,13 @@ const ModalCreateExtension = () => {
     // User Experience.
     setMessage('');
     // Data user.
-    setExtensionNumber('');
+    setIntercomNumber('');
     setPassword('');
     setTransportTypeId(null);
-    setDepartmentId(null);
-    setDepartmentSelectedString('');
+    setRestrictionId(null);
+    setRestrictionSelectedString('');
     setTransportTypeSelectedString('');
+    setExtensionByDepartmentSelectedString('');
     // Validations.
     setExtensionHasBeenCreated(null);
     setSelectActionUsers(null);
@@ -160,7 +184,7 @@ const ModalCreateExtension = () => {
   return (
     <div>
       <button
-        id='create-Anexo'
+        id='create-Intercom'
         className='text-xs text-white sm:text-base'
         onClick={() => handleToggleModal(false)}></button>
       {open && (
@@ -182,7 +206,7 @@ const ModalCreateExtension = () => {
               <>
                 {/* Title */}
                 <div className='mt-2 flex items-center gap-2'>
-                  <h2 className='text-xl font-bold text-slate-700 md:text-2xl'>Crear Anexo</h2>
+                  <h2 className='text-xl font-bold text-slate-700 md:text-2xl'>Crear Intercomunicador</h2>
                   <LabFill className='md:ext-xl text-lg text-slate-700' />
                 </div>
                 <form
@@ -193,17 +217,17 @@ const ModalCreateExtension = () => {
                     <div className='block w-full justify-center gap-4 md:flex'>
                       <div className='w-full'>
                         <InputWithValidation
-                          label='Numero de anexo'
+                          label='Numero de intercomunicador'
                           required={true}
                           icon={<PhoneFill className={'text-sm text-slate-600 sm:text-base'} />}
                           type='text'
-                          value={extensionNumber}
-                          onChange={setExtensionNumber}
-                          placeholder='1001'
-                          validationType={'extension'}
+                          value={intercomNumber}
+                          onChange={setIntercomNumber}
+                          placeholder='20000'
+                          validationType={'intercom'}
                           error={submit && inputAnexHasError ? true : false}
-                          errorMessage='Por favor ingresa un anexo correcto.'
-                          tooltip={'El número anexo debe encontrarse en el rango de 1001 a 9999.'}
+                          errorMessage='Por favor ingresa un intercomunicador correcto.'
+                          tooltip={'El número intercomunicador debe encontrarse en el rango de 20000 a 29999.'}
                         />
                       </div>
                       <div className='w-full'>
@@ -227,14 +251,14 @@ const ModalCreateExtension = () => {
                     <div className='block w-full justify-center gap-4 md:flex'>
                       <div className='w-full'>
                         <label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
-                          Departamento
+                          Restricción
                           <span className='text-red-500'>*</span>
                         </label>
                         <InputAutocomplete
-                          options={departments.map(department => department.description)}
+                          options={restrictionsTypes.map(department => department.description)}
                           onSelect={handleDepartmentSelect}
-                          placeholder='Seleccionar departamento'
-                          value={departmentSelectedString}
+                          placeholder='Seleccionar restricción'
+                          value={restrictionSelectedString}
                         />
                       </div>
                       <div className='w-full'>
@@ -250,6 +274,22 @@ const ModalCreateExtension = () => {
                         />
                       </div>
                     </div>
+                    {restrictionId === 2 && (
+                      <div className='w-full'>
+                        <label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
+                          Número restringido
+                          <span className='text-red-500'>*</span>
+                        </label>
+                        <InputAutocomplete
+                          options={extensionsByDepartment.map(
+                            extensionByDepartment => extensionByDepartment.department.department_anex
+                          )}
+                          onSelect={handleExtensionByDepartmentSelect}
+                          placeholder='Seleccionar anexo'
+                          value={extensionByDepartmentSelectedString}
+                        />
+                      </div>
+                    )}
                   </div>
                   {/* Error message */}
                   {extensionHasBeenCreated != null ? (
@@ -299,4 +339,4 @@ const ModalCreateExtension = () => {
   );
 };
 
-export default ModalCreateExtension;
+export default ModalCreateIntercom;

@@ -70,7 +70,6 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
   }, [page]);
   useEffect(() => {
     resetPhones();
-    console.log(thereAreAnexes);
   }, [selectedAction]);
   useEffect(() => {
     if (
@@ -183,9 +182,9 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
   };
 
   //Support functions.
-  const modalCreateEmployee = () => {
+  const modalCreateAnex = () => {
     setAnexes(null);
-    document.getElementById('create-extension').click();
+    document.getElementById(`create-${singularTitle}`).click();
   };
   const resetPhones = () => {
     setSelectActionUsers(null);
@@ -216,7 +215,7 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
                 <div className='text-lime-400'>Gestión de {pluralTitle}</div>
                 <button
                   onClick={() => {
-                    modalCreateEmployee();
+                    modalCreateAnex();
                     handleButtonClick(createAnex);
                   }}
                   className={`w-9/12 rounded-2xl bg-gray-200 px-4 

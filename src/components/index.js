@@ -13,6 +13,7 @@ export { default as IntercomsResultsCards } from './resultsTable/Intercoms/Inter
 export { default as IntercomsResultsTable } from './resultsTable/Intercoms/IntercomsResultsTable';
 export { default as ModalCreateEmployee } from './Modals/ModalCreateEmployee';
 export { default as ModalCreateExtension } from './Modals/ModalCreateExtension';
+export { default as ModalCreateIntercom } from './Modals/ModalCreateIntercom';
 export { default as ModalEditEmployee } from './Modals/ModalEditEmployee';
 export { default as ModalGenerateReport } from './Modals/ModalGenerateReport';
 export { default as ModalLogout } from './Modals/ModalLogout';

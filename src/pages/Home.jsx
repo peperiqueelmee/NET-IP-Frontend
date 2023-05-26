@@ -8,6 +8,7 @@ import {
   ModalCreateExtension,
   ModalEditEmployee,
   ModalGenerateReport,
+  ModalCreateIntercom,
   ModalLogout,
   MultiCallRinging,
   Phones,
@@ -140,6 +141,7 @@ const Home = () => {
       {/* Modals */}
       <ModalLogout />
       <ModalCreateExtension />
+      <ModalCreateIntercom />
       <ModalCreateEmployee />
       <ModalEditEmployee />
       <ModalGenerateReport
