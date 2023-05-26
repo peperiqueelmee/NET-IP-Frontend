@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
 import {
   Actions,
-  Extensions,
-  Intercom,
+  FilterTemplate,
   ModalCreateEmployee,
   ModalCreateExtension,
   ModalEditEmployee,
@@ -99,8 +98,18 @@ const Home = () => {
         <div className='block'>
           <Actions />
           <Phones />
-          <Extensions />
-          <Intercom />
+          <FilterTemplate
+            indexAction={1}
+            pluralTitle={'Anexos'}
+            singularTitle={'Anexo'}
+            urlFetch={'regular_anex'}
+          />
+          <FilterTemplate
+            indexAction={3}
+            pluralTitle={'Intercomunicadores'}
+            singularTitle={'Intercom'}
+            urlFetch={'intercom'}
+          />
           <TrunkManagement />
           <MultiCallRinging />
           <Users />

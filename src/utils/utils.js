@@ -35,11 +35,11 @@ const isInputInvalid = (input, validationType) => {
     password: () => !ValidatePasswordStrength(input.value),
     email: () => !validateEmail(input.value),
     rut: () => !validateRut(input.value),
-    extension: () => !validateNumberAnex(input.value, 1000, 9999),
+    extension: () => !validateNumberAnex(input.value, 1001, 9999),
+    intercom: () => !validateNumberAnex(input.value, 20000, 29999),
     default: () => !input.value,
   };
-  const validationFunction =
-    validationMap[validationType] ?? validationMap.default;
+  const validationFunction = validationMap[validationType] ?? validationMap.default;
   return validationFunction();
 };
 

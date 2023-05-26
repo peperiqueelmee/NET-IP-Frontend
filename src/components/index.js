@@ -4,12 +4,13 @@ export { default as AnexResultsTable } from './resultsTable/Anexes/AnexesResults
 export { default as Badge } from './Others/Badge';
 export { default as EmployeesResultsCards } from './resultsTable/Employees/EmployeesResultsCards';
 export { default as EmployeesResultsTable } from './resultsTable/Employees/EmployeesResultsTable';
-export { default as Extensions } from './filters/Extensions';
+export { default as FilterTemplate } from './filters/FilterTemplate';
 export { default as InformativeMessage } from './Others/InformativeMessage';
 export { default as InfoTooltip } from './Others/InfoTooltip';
 export { default as InputAutocomplete } from './Inputs/InputAutoComplete';
 export { default as InputWithValidation } from './Inputs/InputWithValidation';
-export { default as Intercom } from './filters/Intercom';
+export { default as IntercomsResultsCards } from './resultsTable/Intercoms/IntercomsResultsCards';
+export { default as IntercomsResultsTable } from './resultsTable/Intercoms/IntercomsResultsTable';
 export { default as ModalCreateEmployee } from './Modals/ModalCreateEmployee';
 export { default as ModalCreateExtension } from './Modals/ModalCreateExtension';
 export { default as ModalEditEmployee } from './Modals/ModalEditEmployee';

@@ -3,9 +3,15 @@ import { useEffect, useState } from 'react';
 import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction, usePagination, useReport } from '../../hooks';
-import { AnexResultsTable, Spinner, AnexesResultsCards } from '../index.js';
+import {
+  AnexResultsTable,
+  AnexesResultsCards,
+  IntercomsResultsCards,
+  IntercomsResultsTable,
+  Spinner,
+} from '../index.js';
 
-const Extensions = () => {
+const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) => {
   // User experience.
   const { page, setPage, setHasMore } = usePagination();
   const [isLoading, setLoading] = useState(null);
@@ -27,8 +33,40 @@ const Extensions = () => {
   const active = 1;
   const blocked = 3;
 
+  // Component rendering.
+  const componentsTablesObj = {
+    1: (
+      <AnexResultsTable
+        anexes={anexes}
+        totalResults={totalAnexes}
+      />
+    ),
+    3: (
+      <IntercomsResultsTable
+        intercoms={anexes}
+        totalResults={totalAnexes}
+      />
+    ),
+  };
+  const componentsCardsObj = {
+    1: (
+      <AnexesResultsCards
+        anexes={anexes}
+        totalResults={totalAnexes}
+      />
+    ),
+    3: (
+      <IntercomsResultsCards
+        intercoms={anexes}
+        totalResults={totalAnexes}
+      />
+    ),
+  };
+  const tableRender = componentsTablesObj[indexAction];
+  const cardRender = componentsCardsObj[indexAction];
+
   useEffect(() => {
-    handleSelectedActionPhones();
+    handleSelectedAction();
   }, [page]);
   useEffect(() => {
     resetPhones();
@@ -45,16 +83,16 @@ const Extensions = () => {
   }, [selectedActionUsers]);
 
   // Handles.
-  const handleSelectedActionPhones = async () => {
+  const handleSelectedAction = async () => {
     switch (selectedActionUsers) {
       case listAllAnexes:
-        await getAllPhones();
+        await getAllAnexes();
         break;
       case listActiveAnexes:
-        await getPhonesByStatus(active);
+        await getAnexesByStatus(active);
         break;
       case listBlockedAnexes:
-        await getPhonesByStatus(blocked);
+        await getAnexesByStatus(blocked);
         break;
       default:
         break;
@@ -66,8 +104,9 @@ const Extensions = () => {
   const handleListAllAnexes = async () => {
     setLoading(true);
     try {
-      const url = '/regular_anex';
+      const url = `/${urlFetch}`;
       const { data } = await axiosClient(url);
+      console.log(data);
       setAnexes(data.data);
       setTotalAnexes(data.total);
       setLoading(false);
@@ -82,7 +121,7 @@ const Extensions = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const url = `/regular_anex/${anexe}`;
+      const url = `/${urlFetch}/${anexe}`;
       const { data } = await axiosClient(url);
       setAnexes(data.data);
       setTotalAnexes(data.total);
@@ -92,10 +131,10 @@ const Extensions = () => {
       setAnexes('');
     }
   };
-  const handleListEmployeesByStatus = async status => {
+  const handleListAnexesByStatus = async status => {
     setLoading(true);
     try {
-      const url = `/regular_anex/status/${status}`;
+      const url = `/${urlFetch}/status/${status}`;
       const { data } = await axiosClient(url);
       setAnexes(data.data);
       setTotalAnexes(data.total);
@@ -106,18 +145,18 @@ const Extensions = () => {
     }
   };
   const handleGenerateReport = () => {
-    setTableName('anex-table');
-    setFilename('reporte-anexos');
+    setTableName(`${pluralTitle}-table`);
+    setFilename(`Reporte-${pluralTitle}`);
     document.getElementById('generate-report').click();
   };
 
   // Pagination.
-  const getAllPhones = async () => {
+  const getAllAnexes = async () => {
     if (anexes.length === totalAnexes) {
       return setHasMore(false);
     }
     try {
-      const url = `/regular_anex/?page=${page}`;
+      const url = `/${urlFetch}/?page=${page}`;
       const { data } = await axiosClient(url);
       setAnexes([...anexes, ...data.data]);
       if (anexes.length === totalAnexes) {
@@ -127,12 +166,12 @@ const Extensions = () => {
       setHasMore(false);
     }
   };
-  const getPhonesByStatus = async status => {
+  const getAnexesByStatus = async status => {
     if (anexes.length === totalAnexes) {
       return setHasMore(false);
     }
     try {
-      const url = `/regular_anex/status/${status}?page=${page}`;
+      const url = `/${urlFetch}/status/${status}?page=${page}`;
       const { data } = await axiosClient(url);
       setAnexes([...anexes, ...data.data]);
       if (anexes.length === totalAnexes) {
@@ -164,9 +203,9 @@ const Extensions = () => {
   return (
     <>
       <Grow
-        in={selectedAction === 1}
+        in={selectedAction === indexAction}
         timeout={500}>
-        <div className={`pb-14 ${selectedAction === 1 ? 'block' : 'hidden'} `}>
+        <div className={`pb-14 ${selectedAction === indexAction ? 'block' : 'hidden'} `}>
           {/* Container */}
           <div className='bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950'>
             <div
@@ -174,7 +213,7 @@ const Extensions = () => {
 									gap-1 rounded-none px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
               {/* Extension management */}
               <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
-                <div className='text-lime-400'>Gestión de Anexos</div>
+                <div className='text-lime-400'>Gestión de {pluralTitle}</div>
                 <button
                   onClick={() => {
                     modalCreateEmployee();
@@ -187,12 +226,12 @@ const Extensions = () => {
                   ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                   : 'text-zinc-700'
               }`}>
-                  Crear Anexo
+                  Crear {singularTitle}
                 </button>
               </div>
               {/* Extension lists */}
               <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
-                <div className='text-lime-400'>Listado de Anexos</div>
+                <div className='text-lime-400'>Listado de {pluralTitle}</div>
                 <div className='flex w-9/12 flex-col gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
                   <button
                     onClick={() => {
@@ -211,7 +250,7 @@ const Extensions = () => {
                   <div className='flex justify-center gap-1'>
                     <button
                       onClick={() => {
-                        handleListEmployeesByStatus(active);
+                        handleListAnexesByStatus(active);
                         handleButtonClick(listActiveAnexes);
                       }}
                       className={`w-full rounded-2xl bg-gray-200 px-4 
@@ -225,7 +264,7 @@ const Extensions = () => {
                     </button>
                     <button
                       onClick={() => {
-                        handleListEmployeesByStatus(blocked);
+                        handleListAnexesByStatus(blocked);
                         handleButtonClick(listBlockedAnexes);
                       }}
                       className={`w-full rounded-2xl bg-gray-200 px-4 
@@ -243,7 +282,7 @@ const Extensions = () => {
               {/* Search by Extension */}
               <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
                 <div className='flex items-center gap-1'>
-                  <div className='text-lime-400'>Búsqueda por Anexo</div>
+                  <div className='text-lime-400'>Búsqueda por {singularTitle}</div>
                 </div>
                 <form
                   onSubmit={handleListAnexeByNumber}
@@ -254,7 +293,7 @@ const Extensions = () => {
                     onClick={() => handleButtonClick(searchByAnex)}
                     className='h-6 w-full rounded-l-2xl pl-4 text-xs text-zinc-500 outline-none focus:border focus:border-lime-400 xl:text-sm'
                     type='text'
-                    placeholder='Ingrese Anexo'
+                    placeholder={`Ingrese ${singularTitle}`}
                   />
                   <button
                     type='submit'
@@ -312,16 +351,9 @@ const Extensions = () => {
           )}
           {/* Results employees table */}
           {anexes !== null && isLoading === false && (
-            <AnexResultsTable
-              anexes={anexes}
-              totalResults={totalAnexes}
-            />
-          )}
-          {anexes !== null && isLoading === false && (
-            <AnexesResultsCards
-              anexes={anexes}
-              totalResults={totalAnexes}
-            />
+            <>
+              {tableRender} {cardRender}
+            </>
           )}
         </div>
       </Grow>
@@ -329,4 +361,4 @@ const Extensions = () => {
   );
 };
 
-export default Extensions;
+export default FilterTemplate;
