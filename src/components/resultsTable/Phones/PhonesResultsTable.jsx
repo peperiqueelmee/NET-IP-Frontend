@@ -17,7 +17,7 @@ const PhonesResultsTable = ({ phones, totalResults }) => {
   return (
     <>
       <div
-        className='flip-in-hor-top relative hidden overflow-y-auto shadow-md lg:block scroll-bar-secondary'
+        className='flip-in-hor-top scroll-bar-secondary relative hidden overflow-y-auto shadow-md lg:block'
         onScroll={handleScroll}
         id='div-phone-table'
         style={{ height: '70vh' }}>
@@ -26,7 +26,7 @@ const PhonesResultsTable = ({ phones, totalResults }) => {
             <table
               id='phone-table'
               className='w-full text-center text-gray-500'>
-              <thead className='sticky top-0 border-b-2 border-zinc-300 bg-gradient-to-r from-gray-200 via-zinc-200 to-neutral-200 text-xs text-gray-700 opacity-95'>
+              <thead className='sticky top-0 border border-zinc-200 bg-gradient-to-r from-gray-50 via-zinc-50 to-neutral-50 text-xs text-gray-600 opacity-95'>
                 <tr>
                   <th
                     scope='col'
@@ -65,16 +65,23 @@ const PhonesResultsTable = ({ phones, totalResults }) => {
                 {phones.map((phone, index) => (
                   <tr
                     key={phone.id}
-                    className={`border-b text-center text-xs odd:bg-white even:bg-slate-100 xl:text-sm`}>
+                    className={`border-b text-center text-xs odd:bg-white even:bg-sky-50 xl:text-sm`}>
                     <td className='px-2'>{index + 1}</td>
                     <td className='border-x px-5'>+{phone.phone_number}</td>
                     <td className='border-x px-5'>{phone.client.fullName}</td>
                     <td className='border-x px-1'>{phone.client.rut}</td>
                     <td className={`border-x px-6`}>{phone.client.address}</td>
-                    <td
-                      className={`border-x px-4 py-4 font-medium 
-										${phone.status_id === 1 ? 'text-emerald-500' : 'text-red-600'}`}>
-                      {phone.status.description}
+                    <td className={`border-x py-4 font-medium text-white`}>
+                      <div className='flex justify-center'>
+                        <div
+                          className={`border bg-gradient-to-r shadow ${
+                            phone.status_id === 1
+                              ? 'border-emerald-200 from-emerald-400 via-emerald-500 to-emerald-600 shadow-emerald-200'
+                              : 'border-red-200 from-red-400 via-red-500 to-red-600 shadow-red-200'
+                          } w-20 rounded-md py-1`}>
+                          {phone.status.description}
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 ))}

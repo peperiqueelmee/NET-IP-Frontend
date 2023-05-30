@@ -52,7 +52,7 @@
   width: 7px;
 }
 .scroll-bar-secondary::-webkit-scrollbar-thumb {
-  background-color: #6ee7b7d1;
+  background-color: #6ee7b7b6;
   border-radius: 8px;
 }
 .scroll-bar-secondary::-webkit-scrollbar-track {
