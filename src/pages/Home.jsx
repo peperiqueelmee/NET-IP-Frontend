@@ -64,7 +64,7 @@ const Home = () => {
   };
 
   return (
-    <div className='home-page h-screen overflow-y-auto'>
+    <div className='home-page h-screen overflow-y-auto scroll-bar-primary'>
       <div className={`container mx-auto px-3 sm:px-6 md:px-10 `}>
         <div className='flex flex-col items-center justify-between pt-10 lg:flex-row'>
           {/* Tittle */}

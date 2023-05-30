@@ -45,7 +45,7 @@ const RecoverPassword = () => {
 
   return (
     <>
-      <div className='flex flex-col items-center justify-center h-screen px-6 mx-auto overflow-y-auto login-page lg:py-0'>
+      <div className='flex flex-col items-center justify-center h-screen px-6 mx-auto overflow-y-auto login-page lg:py-0 scroll-bar-primary'>
         {/* Title */}
         <Title />
         {/* Success or error message */}

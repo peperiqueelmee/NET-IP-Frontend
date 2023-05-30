@@ -17,7 +17,7 @@ const IntercomsResultsTable = ({ intercoms, totalResults }) => {
   return (
     <>
       <div
-        className='flip-in-hor-top relative hidden overflow-y-auto shadow-md lg:block '
+        className='flip-in-hor-top relative hidden overflow-y-auto shadow-md lg:block scroll-bar-secondary'
         onScroll={handleScroll}
         id='div-intercoms-table'
         style={{ height: '70vh' }}>

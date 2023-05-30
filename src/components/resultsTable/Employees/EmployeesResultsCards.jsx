@@ -32,7 +32,7 @@ const EmployeesResultsCardsResponsive = ({ employees, totalResults }) => {
 							{employees.length === 1 ? 'resultado' : 'resultados'}.
 						</div>
 						<div
-							className='overflow-y-auto'
+							className='overflow-y-auto scroll-bar-secondary'
 							style={{ height: '50vh' }}>
 							{employees.map((employee, index) => (
 								<div

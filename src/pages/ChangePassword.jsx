@@ -92,7 +92,7 @@ const ChangePassword = () => {
 
   return (
     <>
-      <div className='flex flex-col items-center justify-center h-screen px-6 mx-auto overflow-y-auto login-page lg:py-0'>
+      <div className='flex flex-col items-center justify-center h-screen px-6 mx-auto overflow-y-auto login-page lg:py-0 scroll-bar-primary'>
         {/* Informative message, success or error */}
         <div className='w-full mt-16 mb-5 sm:max-w-md'>
           <InformativeMessage

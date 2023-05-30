@@ -25,7 +25,7 @@ const PhonesResultsCards = ({ phones, totalResults }) => {
               {phones.length === 1 ? 'resultado' : 'resultados'}.
             </div>
             <div
-              className='overflow-y-auto'
+              className='overflow-y-auto scroll-bar-secondary'
               style={{ height: '50vh' }}
               onScroll={handleScroll}
               id='phone-card'>

@@ -25,7 +25,7 @@ const AnexesResultsCards = ({ anexes, totalResults }) => {
               {anexes.length === 1 ? 'resultado' : 'resultados'}.
             </div>
             <div
-              className='overflow-y-auto'
+              className='overflow-y-auto scroll-bar-secondary'
               style={{ height: '50vh' }}
               onScroll={handleScroll}
               id='anexes-card'>

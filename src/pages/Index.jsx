@@ -52,7 +52,7 @@ const Register = () => {
 
   return (
     <>
-      <div className='login-page mx-auto flex h-screen flex-col items-center justify-center overflow-y-auto px-6 lg:py-0'>
+      <div className='login-page mx-auto flex h-screen flex-col items-center justify-center overflow-y-auto px-6 lg:py-0 scroll-bar-primary'>
         {/* Tittle */}
         <Title />
         {/* Error message */}
