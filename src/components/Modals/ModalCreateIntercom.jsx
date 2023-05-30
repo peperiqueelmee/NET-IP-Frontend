@@ -76,7 +76,7 @@ const ModalCreateIntercom = () => {
     getDepartments();
     getTransportTypes();
     getExtensionsByDepartment();
-  }, []);
+  }, [open]);
 
   // Handles.
   const handleToggleModal = shouldClose => {
