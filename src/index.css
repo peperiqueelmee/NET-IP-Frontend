@@ -38,10 +38,10 @@
 
 /* Scroll Bar */
 .scroll-bar-primary::-webkit-scrollbar {
-  width: 12px;
+  width: 7px;
 }
 .scroll-bar-primary::-webkit-scrollbar-thumb {
-  background-color: #3b83f6c6;
+  background-color: #45464772;
   border-radius: 8px;
 }
 .scroll-bar-primary::-webkit-scrollbar-track {
@@ -49,7 +49,7 @@
 }
 
 .scroll-bar-secondary::-webkit-scrollbar {
-  width: 12px;
+  width: 7px;
 }
 .scroll-bar-secondary::-webkit-scrollbar-thumb {
   background-color: #6ee7b7d1;
