@@ -38,23 +38,23 @@ const PhonesResultsCards = ({ phones, totalResults }) => {
                   {/* Content */}
                   <div className='ml-3 mt-2 flex w-full flex-col gap-1 tracking-wide'>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Nro. Telefónico:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>Nro. Telefónico:</div>
                       <div className='w-1/2'>+{phone.phone_number}</div>
                     </div>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Cliente:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>Cliente:</div>
                       <div className='w-1/2'>{phone.client.fullName}</div>
                     </div>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>RUT:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>RUT:</div>
                       <div className='w-1/2'>{phone.client.rut}</div>
                     </div>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Dirección:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>Dirección:</div>
                       <div className='w-1/2'>{phone.client.address}</div>
                     </div>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Estado:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>Estado:</div>
                       <div
                         className={`w-1/2 font-medium text-emerald-600
 													${phone.status_id === 1 ? 'text-emerald-500' : 'text-red-600'}`}>

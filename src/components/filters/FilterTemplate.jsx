@@ -8,6 +8,8 @@ import {
   AnexesResultsCards,
   IntercomsResultsCards,
   IntercomsResultsTable,
+  MCRResultsCards,
+  MCRResultsTable,
   Spinner,
 } from '../index.js';
 
@@ -47,6 +49,12 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
         totalResults={totalAnexes}
       />
     ),
+    4: (
+      <MCRResultsTable
+        multiCallRingings={anexes}
+        totalResults={totalAnexes}
+      />
+    ),
   };
   const componentsCardsObj = {
     1: (
@@ -58,6 +66,12 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
     3: (
       <IntercomsResultsCards
         intercoms={anexes}
+        totalResults={totalAnexes}
+      />
+    ),
+    4: (
+      <MCRResultsCards
+        multiCallRingings={anexes}
         totalResults={totalAnexes}
       />
     ),

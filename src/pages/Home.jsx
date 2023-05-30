@@ -10,7 +10,6 @@ import {
   ModalGenerateReport,
   ModalCreateIntercom,
   ModalLogout,
-  MultiCallRinging,
   Phones,
   Title,
   TrunkManagement,
@@ -64,7 +63,7 @@ const Home = () => {
   };
 
   return (
-    <div className='home-page h-screen overflow-y-auto scroll-bar-primary'>
+    <div className='home-page scroll-bar-primary h-screen overflow-y-auto'>
       <div className={`container mx-auto px-3 sm:px-6 md:px-10 `}>
         <div className='flex flex-col items-center justify-between pt-10 lg:flex-row'>
           {/* Tittle */}
@@ -105,14 +104,19 @@ const Home = () => {
             singularTitle={'Anexo'}
             urlFetch={'regular_anex'}
           />
+          <TrunkManagement />
           <FilterTemplate
             indexAction={3}
             pluralTitle={'Intercomunicadores'}
             singularTitle={'Intercom'}
             urlFetch={'intercom'}
           />
-          <TrunkManagement />
-          <MultiCallRinging />
+          <FilterTemplate
+            indexAction={4}
+            pluralTitle={'MCR'}
+            singularTitle={'MCR'}
+            urlFetch={'mcr'}
+          />
           <Users />
         </div>
       </div>

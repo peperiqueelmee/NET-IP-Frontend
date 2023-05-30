@@ -38,25 +38,25 @@ const IntercomsResultsCards = ({ intercoms, totalResults }) => {
                   {/* Content */}
                   <div className='ml-3 mt-2 flex w-full flex-col gap-1 tracking-wide'>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Nro de anexo:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>Nro de intercomunicador:</div>
                       <div className='w-1/2'>{intercom.intercom_number}</div>
                     </div>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>T. Transporte:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>T. Transporte:</div>
                       <div className='w-1/2'>{intercom.transport_type.description}</div>
                     </div>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Restricción:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>Restricción:</div>
                       <div className='w-1/2'>{intercom.restriction.description}</div>
                     </div>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>A. Permitido:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>A. Permitido:</div>
                       <div className='w-1/2'>
                         {intercom.restrictions_id === 2 ? intercom.intercom_caller : 'No aplica'}
                       </div>
                     </div>
                     <div className='flex w-full'>
-                      <div className='w-1/3 font-bold text-gray-700 sm:w-1/2'>Estado:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>Estado:</div>
                       <div
                         className={`w-1/2 font-medium text-emerald-600
 													${intercom.status_id === 1 ? 'text-emerald-500' : 'text-red-600'}`}>
