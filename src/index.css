@@ -58,3 +58,24 @@
 .scroll-bar-secondary::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 }
+
+.css-13cymwt-control {
+  cursor: text !important;
+  background-color: #e2e8f0 !important;
+  font-size: 14px;
+}
+.css-13cymwt-control:hover {
+  border: 1px solid #0ea5e9 !important;
+}
+
+.css-t3ipsp-control {
+  box-shadow: none !important;
+  border: 1px solid #0ea5e9 !important;
+  cursor: text !important;
+  background-color: #e2e8f0 !important;
+  font-size: 15px;
+}
+
+.css-1p3m7a8-multiValue{
+  background-color: #bfdbfe !important;
+}

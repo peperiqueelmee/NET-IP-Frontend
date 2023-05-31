@@ -37,6 +37,7 @@ const isInputInvalid = (input, validationType) => {
     rut: () => !validateRut(input.value),
     extension: () => !validateNumberAnex(input.value, 1001, 9999),
     intercom: () => !validateNumberAnex(input.value, 20000, 29999),
+    mcr: () => !validateNumberAnex(input.value, 30000, 39999),
     default: () => !input.value,
   };
   const validationFunction = validationMap[validationType] ?? validationMap.default;

@@ -91,7 +91,6 @@ const ModalCreateExtension = () => {
     actionsAfterSubmit();
 
     try {
-      // Create employee.
       const url = '/regular_anex/create';
       const extensionData = {
         anexNumber: extensionNumber,

@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
-import { LabFill, PadlockFill, PhoneFill } from '../../assets/icons';
+import { LabFill, PadlockFill, PhoneFill, InfoFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction, useAxios } from '../../hooks';
 import { RESPONSE_SERVER } from '../../utils/utils';
 
-const ModalCreateIntercom = () => {
+const animatedComponents = makeAnimated();
+
+const ModalCreateMultiCallRinging = () => {
   //Request.
   const { makeRequest } = useAxios();
   // User experience.
@@ -13,27 +17,25 @@ const ModalCreateIntercom = () => {
   const { setSelectActionUsers } = useAction();
   const [message, setMessage] = useState('');
   // Data form.
-  const [restrictionsTypes, setRestrictionsTypes] = useState(
-    () => JSON.parse(localStorage.getItem('restrictions')) || []
-  );
+  const [departments, setDepartments] = useState(() => JSON.parse(localStorage.getItem('departments')) || []);
   const [transportTypes, setTransportTypes] = useState(() => JSON.parse(localStorage.getItem('transport_types')) || []);
   const [extensionsByDepartment, setExtensionsByDepartment] = useState([]);
   // Data user.
-  const [intercomNumber, setIntercomNumber] = useState('');
+  const [mcrNumber, setMcrNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [restrictionId, setRestrictionId] = useState(null);
-  const [restrictionSelectedString, setRestrictionSelectedString] = useState('');
+  const [departmentId, setDepartmentId] = useState(null);
+  const [departmentSelectedString, setDepartmentSelectedString] = useState('');
   const [transportTypeId, setTransportTypeId] = useState(null);
   const [transportTypeSelectedString, setTransportTypeSelectedString] = useState('');
-  const [extensionByDepartmentSelectedString, setExtensionByDepartmentSelectedString] = useState('');
-  const [intercomCaller, setIntercomCaller] = useState(null);
+  const [anexesByDepartmentSelectedString, setAnexesByDepartmentSelectedString] = useState([]);
+  const [anexesByDepartmentSelectedValues, setAnexesByDepartmentSelectedValues] = useState([]);
   // Validations.
   const formIsFull =
-    intercomNumber && password && restrictionId && transportTypeId && (restrictionId !== 2 || intercomCaller);
-
-  const [extensionHasBeenCreated, setExtensionHasBeenCreated] = useState(null);
-  const [inputAnexHasError, setInputAnexHasError] = useState(false);
+    mcrNumber && password && departmentId && transportTypeId && anexesByDepartmentSelectedString.length > 0;
+  const [mcrHasBeenCreated, setMcrHasBeenCreated] = useState(null);
+  const [inputMcrHasError, setInputMcrHasError] = useState(false);
   const [inputPasswordHasError, setInputPasswordHasError] = useState(false);
+  const [messageErrorMcr, setMessageErrorMcr] = useState('');
   // Event.
   const [submit, setSubmit] = useState(false);
   // Toggle modal.
@@ -44,18 +46,22 @@ const ModalCreateIntercom = () => {
       try {
         const url = '/regular_anex/by-department/active';
         const { data } = await makeRequest(url);
-        setExtensionsByDepartment(data);
+        const formattedOptions = data.map(item => ({
+          value: item.anex_number.toString(),
+          label: item.department.department_anex,
+        }));
+        setExtensionsByDepartment(formattedOptions);
       } catch (error) {
         console.log(error);
       }
     }
-    async function getRestrictions() {
-      if (!restrictionsTypes.length) {
+    async function getDepartments() {
+      if (!departments.length) {
         try {
-          const url = '/restrictions';
+          const url = '/departments';
           const { data } = await makeRequest(url);
-          localStorage.setItem('restrictions', JSON.stringify(data));
-          setRestrictionsTypes(data);
+          localStorage.setItem('departments', JSON.stringify(data));
+          setDepartments(data);
         } catch (error) {
           console.log(error);
         }
@@ -73,9 +79,9 @@ const ModalCreateIntercom = () => {
         }
       }
     }
-    getRestrictions();
-    getTransportTypes();
     getExtensionsByDepartment();
+    getDepartments();
+    getTransportTypes();
   }, [open]);
 
   // Handles.
@@ -84,13 +90,13 @@ const ModalCreateIntercom = () => {
     clearForm();
   };
   const handleDepartmentSelect = departmentSelected => {
-    setRestrictionSelectedString(departmentSelected);
-    const selectedObject = restrictionsTypes.find(({ description }) => description === departmentSelected);
+    setDepartmentSelectedString(departmentSelected);
+    const selectedObject = departments.find(({ description }) => description === departmentSelected);
     if (!selectedObject) {
-      setRestrictionId(null);
+      setDepartmentId(null);
       return;
     }
-    setRestrictionId(selectedObject.id);
+    setDepartmentId(selectedObject.id);
   };
   const handleTransportTypeSelect = transportTypeSelected => {
     setTransportTypeSelectedString(transportTypeSelected);
@@ -101,34 +107,36 @@ const ModalCreateIntercom = () => {
     }
     setTransportTypeId(selectedObject.id);
   };
-  const handleExtensionByDepartmentSelect = extensionByDepartmentSelected => {
-    setExtensionByDepartmentSelectedString(extensionByDepartmentSelected);
-    if (!extensionByDepartmentSelected) {
-      return setIntercomCaller(null);
+  const handleAnexeByDepartment = selectedOptions => {
+    if (selectedOptions.length > 5) {
+      return setMessageErrorMcr('¡No puedes seleccionar más de 5 anexos!');
     }
-    const extensionNumber = parseInt(extensionByDepartmentSelected.match(/\d+/)[0]);
-    setIntercomCaller(extensionNumber);
+    setAnexesByDepartmentSelectedString(selectedOptions);
+    setAnexesByDepartmentSelectedValues(selectedOptions.map(option => option.value));
+    setMessageErrorMcr('');
   };
   const handleSubmit = async e => {
     e.preventDefault();
     actionsAfterSubmit();
 
+    const selectedValuesString = anexesByDepartmentSelectedValues.join(', ');
+
     try {
-      const url = '/intercom/create';
-      const intercomData = {
-        intercomNumber,
+      const url = '/mcr/create';
+      const McrData = {
+        mcrNumber,
         password,
+        mcrCallAnexes: selectedValuesString,
         transportTypeId,
-        restrictionId,
-        intercomCaller,
+        departmentId,
       };
-      await axiosClient.post(url, intercomData);
+      await axiosClient.post(url, McrData);
       setIsLoading(null);
-      setMessage('¡El intercomunicador ha sido creado exitosamente!');
-      setExtensionHasBeenCreated(true);
+      setMessage('¡El MCR ha sido creado exitosamente!');
+      setMcrHasBeenCreated(true);
     } catch (error) {
       setIsLoading(null);
-      setExtensionHasBeenCreated(false);
+      setMcrHasBeenCreated(false);
       if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
         const messageError = error.response.data.message;
         const inputWithError = error.response.data.input;
@@ -142,16 +150,17 @@ const ModalCreateIntercom = () => {
 
   // Support functions.
   const removeErrorMessage = () => {
-    setExtensionHasBeenCreated(null);
+    setMcrHasBeenCreated(null);
   };
   const actionsAfterSubmit = () => {
     // User experience.
     setIsLoading(true);
     setMessage('');
     // Validations.
-    setInputAnexHasError(false);
+    setInputMcrHasError(false);
     setInputPasswordHasError(false);
-    setExtensionHasBeenCreated(null);
+    setMcrHasBeenCreated(null);
+    setMessageErrorMcr('');
     // Event
     setSubmit(true);
   };
@@ -159,54 +168,59 @@ const ModalCreateIntercom = () => {
     // User Experience.
     setMessage('');
     // Data user.
-    setIntercomNumber('');
+    setMcrNumber('');
     setPassword('');
     setTransportTypeId(null);
-    setRestrictionId(null);
-    setRestrictionSelectedString('');
+    setDepartmentId(null);
+    setDepartmentSelectedString('');
     setTransportTypeSelectedString('');
-    setExtensionByDepartmentSelectedString('');
+    setAnexesByDepartmentSelectedString([]);
+    setAnexesByDepartmentSelectedValues([]);
     // Validations.
-    setExtensionHasBeenCreated(null);
+    setMcrHasBeenCreated(null);
     setSelectActionUsers(null);
-    setInputAnexHasError(false);
+    setInputMcrHasError(false);
     setInputPasswordHasError(false);
+    setMessageErrorMcr('');
   };
   const markInputWithError = inputType => {
     const inputMap = {
-      Anex: setInputAnexHasError,
+      MCR: setInputMcrHasError,
       Password: setInputPasswordHasError,
     };
     const setInputError = inputMap[inputType];
     setInputError?.(true);
   };
+  const customNoOptionsMessage = () => {
+    return 'No se encontraron resultados';
+  };
 
   return (
     <div>
       <button
-        id='create-Intercom'
+        id='create-MCR'
         className='text-xs text-white sm:text-base'
         onClick={() => handleToggleModal(false)}></button>
       {open && (
-        <div className='fade-in scroll-bar-secondary fixed inset-0 z-10 flex items-center justify-center overflow-x-auto bg-black bg-opacity-50 px-0 sm:px-20 lg:px-40 xl:px-72'>
+        <div className='fade-in scroll-bar-primary fixed inset-0 z-10 flex items-center justify-center overflow-x-auto bg-black bg-opacity-50 px-0 sm:px-20 lg:px-40 xl:px-72'>
           <div
-            className={`scale-in-center mx-5 mb-5 mt-60 flex w-full  flex-col  items-center overflow-auto rounded-lg border border-lime-400 bg-slate-200 bg-opacity-90 py-5 sm:mt-52 sm:w-11/12 lg:mt-10 lg:w-10/12 2xl:w-8/12`}>
+            className={` scroll-bar-primary  scale-in-center mx-5 mb-5 mt-60 flex w-full  flex-col  items-center overflow-auto rounded-lg border border-lime-400 bg-slate-200 bg-opacity-90 py-5 sm:mt-52 sm:w-11/12 lg:mt-10 lg:w-10/12 2xl:w-8/12`}>
             {/* Success or error message */}
-            {extensionHasBeenCreated != null ? (
+            {mcrHasBeenCreated != null ? (
               <div className='flex w-full justify-center px-3'>
                 <InformativeMessage
                   message={message}
-                  hasError={!extensionHasBeenCreated}
-                  hasSuccessful={extensionHasBeenCreated}
+                  hasError={!mcrHasBeenCreated}
+                  hasSuccessful={mcrHasBeenCreated}
                 />
               </div>
             ) : null}
             {/* Form */}
-            {!extensionHasBeenCreated ? (
+            {!mcrHasBeenCreated ? (
               <>
                 {/* Title */}
                 <div className='mt-2 flex items-center gap-2'>
-                  <h2 className='text-xl font-bold text-slate-700 md:text-2xl'>Crear Intercomunicador</h2>
+                  <h2 className='text-xl font-bold text-slate-700 md:text-2xl'>Crear Multi Call Ringing</h2>
                   <LabFill className='md:ext-xl text-lg text-slate-700' />
                 </div>
                 <form
@@ -217,17 +231,17 @@ const ModalCreateIntercom = () => {
                     <div className='block w-full justify-center gap-4 md:flex'>
                       <div className='w-full'>
                         <InputWithValidation
-                          label='Numero de intercomunicador'
+                          label='Numero de MCR'
                           required={true}
                           icon={<PhoneFill className={'text-sm text-slate-600 sm:text-base'} />}
                           type='text'
-                          value={intercomNumber}
-                          onChange={setIntercomNumber}
-                          placeholder='20000'
-                          validationType={'intercom'}
-                          error={submit && inputAnexHasError ? true : false}
-                          errorMessage='Por favor ingresa un intercomunicador correcto.'
-                          tooltip={'El número intercomunicador debe encontrarse en el rango de 20000 a 29999.'}
+                          value={mcrNumber}
+                          onChange={setMcrNumber}
+                          placeholder='30000'
+                          validationType={'mcr'}
+                          error={submit && inputMcrHasError ? true : false}
+                          errorMessage='Por favor ingresa un MCR correcto.'
+                          tooltip={'El número MCR debe encontrarse en el rango de 30000 a 39999.'}
                         />
                       </div>
                       <div className='w-full'>
@@ -251,14 +265,14 @@ const ModalCreateIntercom = () => {
                     <div className='block w-full justify-center gap-4 md:flex'>
                       <div className='w-full'>
                         <label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
-                          Restricción
+                          Departamento
                           <span className='text-red-500'>*</span>
                         </label>
                         <InputAutocomplete
-                          options={restrictionsTypes.map(department => department.description)}
+                          options={departments.map(department => department.description)}
                           onSelect={handleDepartmentSelect}
-                          placeholder='Seleccionar restricción'
-                          value={restrictionSelectedString}
+                          placeholder='Seleccionar departamento'
+                          value={departmentSelectedString}
                         />
                       </div>
                       <div className='w-full'>
@@ -274,25 +288,30 @@ const ModalCreateIntercom = () => {
                         />
                       </div>
                     </div>
-                    {restrictionId === 2 && (
-                      <div className='w-full'>
-                        <label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
-                          Número restringido
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <InputAutocomplete
-                          options={extensionsByDepartment.map(
-                            extensionByDepartment => extensionByDepartment.department.department_anex
-                          )}
-                          onSelect={handleExtensionByDepartmentSelect}
-                          placeholder='Seleccionar anexo'
-                          value={extensionByDepartmentSelectedString}
-                        />
-                      </div>
-                    )}
+                    <div className='w-full'>
+                      <label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>
+                        Anexos
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <Select
+                        options={extensionsByDepartment}
+                        components={animatedComponents}
+                        isMulti
+                        value={anexesByDepartmentSelectedString}
+                        onChange={handleAnexeByDepartment}
+                        placeholder='Selecciona máximo 5 anexos'
+                        noOptionsMessage={customNoOptionsMessage}
+                      />
+                      {messageErrorMcr && (
+                        <div className='ml-1 flex items-center gap-1 text-xs text-red-500 '>
+                          <InfoFill />
+                          {messageErrorMcr}
+                        </div>
+                      )}
+                    </div>
                   </div>
                   {/* Error message */}
-                  {extensionHasBeenCreated != null ? (
+                  {mcrHasBeenCreated != null ? (
                     <div className={`mt-4 block text-center text-xs font-medium text-red-600 md:hidden`}>{message}</div>
                   ) : null}
                   {isLoading && (
@@ -339,4 +358,4 @@ const ModalCreateIntercom = () => {
   );
 };
 
-export default ModalCreateIntercom;
+export default ModalCreateMultiCallRinging;

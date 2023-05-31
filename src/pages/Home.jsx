@@ -6,9 +6,10 @@ import {
   FilterTemplate,
   ModalCreateEmployee,
   ModalCreateExtension,
+  ModalCreateIntercom,
+  ModalCreateMultiCallRinging,
   ModalEditEmployee,
   ModalGenerateReport,
-  ModalCreateIntercom,
   ModalLogout,
   Phones,
   Title,
@@ -146,6 +147,7 @@ const Home = () => {
       <ModalLogout />
       <ModalCreateExtension />
       <ModalCreateIntercom />
+      <ModalCreateMultiCallRinging />
       <ModalCreateEmployee />
       <ModalEditEmployee />
       <ModalGenerateReport
