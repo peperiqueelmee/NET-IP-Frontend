@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
-import { LabFill, PadlockFill, PhoneFill, InfoFill } from '../../assets/icons';
+import { InfoFill, LabFill, PadlockFill, PhoneFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction, useAxios } from '../../hooks';
 import { RESPONSE_SERVER } from '../../utils/utils';
@@ -294,6 +294,7 @@ const ModalCreateMultiCallRinging = () => {
                         <span className='text-red-500'>*</span>
                       </label>
                       <Select
+                        menuPlacement='top'
                         options={extensionsByDepartment}
                         components={animatedComponents}
                         isMulti
