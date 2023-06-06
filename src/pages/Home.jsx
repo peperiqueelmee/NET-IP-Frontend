@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
 import {
@@ -26,9 +27,9 @@ const Home = () => {
   // Report.
   const { tableName, filename } = useReport();
   // Data user.
-  const token = localStorage.getItem('token');
-  const username = localStorage.getItem('username');
-  const userRut = localStorage.getItem('rut');
+  const token = useSelector(state => state.authentication.token);
+  const username = useSelector(state => state.authentication.username);
+  const userRut = useSelector(state => state.authentication.rut);
   // Navigation .
   const navigate = useNavigate();
   useEffect(() => {

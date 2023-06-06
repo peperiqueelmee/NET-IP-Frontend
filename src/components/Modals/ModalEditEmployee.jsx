@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { EmailFill, IdCardFill, PadlockFill, PencilFill, UserFill, UserSecretFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
@@ -27,7 +28,7 @@ const ModalEditEmployee = () => {
   const [statusSelected, setStatusSelected] = useState('');
   // Validations.
   const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
-  const userRut = localStorage.getItem('rut');
+  const userRut = useSelector(state => state.authentication.rut);
   const [inputRutHasError, setInputRutHasError] = useState(false);
   const [inputEmailHasError, setInputEmailHasError] = useState(false);
   const [inputUsernameHasError, setInputUsernameHasError] = useState(false);
@@ -72,11 +73,11 @@ const ModalEditEmployee = () => {
   }, [employee]);
 
   //Handles.
-  const handleToggleModal = (shouldClose) => {
+  const handleToggleModal = shouldClose => {
     setOpen(!shouldClose);
     clearForm();
   };
-  const handleRoleSelect = (roleSelected) => {
+  const handleRoleSelect = roleSelected => {
     setRoleSelected(roleSelected);
     const selectedObject = roles.find(({ description }) => description === roleSelected);
     if (!selectedObject) {
@@ -85,7 +86,7 @@ const ModalEditEmployee = () => {
     }
     setRole(selectedObject.id);
   };
-  const handleStatusSelect = (statusSelected) => {
+  const handleStatusSelect = statusSelected => {
     setStatusSelected(statusSelected);
     const selectedObject = statuses.find(({ description }) => description === statusSelected);
     if (!selectedObject) {
@@ -94,7 +95,7 @@ const ModalEditEmployee = () => {
     }
     setStatus(selectedObject.id);
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     setIsLoading(true);
     actionsAfterSubmit();
 
@@ -137,7 +138,7 @@ const ModalEditEmployee = () => {
   };
 
   // Support functions.
-  const uploadEmployeeData = (employee) => {
+  const uploadEmployeeData = employee => {
     setNames(employee.names);
     setLastnames(employee.lastnames);
     setRut(employee.rut);
@@ -192,7 +193,7 @@ const ModalEditEmployee = () => {
     };
     return urlMap[selectedActionUsers] ?? '/employee/employees';
   };
-  const markInputWithError = (inputType) => {
+  const markInputWithError = inputType => {
     const inputMap = {
       RUT: setInputRutHasError,
       Email: setInputEmailHasError,
@@ -326,7 +327,7 @@ const ModalEditEmployee = () => {
                       <div className='w-full'>
                         <label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>Permisos</label>
                         <InputAutocomplete
-                          options={roles.map((role) => role.description)}
+                          options={roles.map(role => role.description)}
                           onSelect={handleRoleSelect}
                           placeholder='Seleccionar permisos'
                           value={roleSelected}
@@ -335,7 +336,7 @@ const ModalEditEmployee = () => {
                       <div className='w-full'>
                         <label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>Estado</label>
                         <InputAutocomplete
-                          options={statuses.map((status) => status.description)}
+                          options={statuses.map(status => status.description)}
                           onSelect={handleStatusSelect}
                           placeholder='Seleccionar permisos'
                           value={statusSelected}

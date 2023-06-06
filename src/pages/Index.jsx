@@ -1,45 +1,40 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { PadlockFill, UserFill } from '../assets/icons';
-import {
-  InformativeMessage,
-  InputWithValidation,
-  Spinner,
-  Title,
-} from '../components';
+import { InformativeMessage, InputWithValidation, Spinner, Title } from '../components';
 import { useAxios } from '../hooks';
+import { addAuthentication } from '../features/authentication/authenticationSlice';
 
 const Register = () => {
   //Request.
   const { isLoading, message, makeRequest } = useAxios();
   // Data user.
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [authenticationData, setAuthenticationData] = useState({
+    username: '',
+    emp_password: '',
+  });
   // Event.
   const [submit, setSubmit] = useState(false);
   // Validation.
   const [IsInvalidCredentials, setIsInvalidCredentials] = useState(false);
   // Navigation.
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async e => {
     e.preventDefault();
     setSubmit(true);
-    if (!username || !password) {
+
+    const isFormFull = Object.values(authenticationData).every(value => value !== '');
+    if (!isFormFull) {
       return;
     }
-
     try {
       const url = '/employee/login';
-      const employeeData = {
-        username,
-        emp_password: password,
-      };
-      const { data } = await makeRequest(url, employeeData, 'POST');
-
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('rut', data.rut);
+      const { data } = await makeRequest(url, authenticationData, 'POST');
+      
+      dispatch(addAuthentication({ token: data.token, username: data.username, rut: data.rut }));
       navigate('/home');
     } catch (error) {
       setIsInvalidCredentials(true);
@@ -52,7 +47,7 @@ const Register = () => {
 
   return (
     <>
-      <div className='login-page mx-auto flex h-screen flex-col items-center justify-center overflow-y-auto px-6 lg:py-0 scroll-bar-primary'>
+      <div className='login-page scroll-bar-primary mx-auto flex h-screen flex-col items-center justify-center overflow-y-auto px-6 lg:py-0'>
         {/* Tittle */}
         <Title />
         {/* Error message */}
@@ -81,33 +76,33 @@ const Register = () => {
                 type='text'
                 placeholder='Tu usuario'
                 errorMessage={
-                  IsInvalidCredentials
-                    ? 'Credenciales incorrectas.'
-                    : 'Por favor ingresa tu nombre de usuario.'
+                  IsInvalidCredentials ? 'Credenciales incorrectas.' : 'Por favor ingresa tu nombre de usuario.'
                 }
-                value={username}
-                onChange={setUsername}
+                value={authenticationData.username}
+                onChange={value => {
+                  setAuthenticationData(prevData => ({
+                    ...prevData,
+                    username: value,
+                  }));
+                }}
                 icon={<UserFill className='text-slate-600' />}
-                error={
-                  (username.length === 0 && submit) || IsInvalidCredentials
-                }
+                error={(authenticationData.username.length === 0 && submit) || IsInvalidCredentials}
               />
               <InputWithValidation
                 label='Contraseña'
                 required={true}
                 type='password'
                 placeholder='Tu contraseña'
-                errorMessage={
-                  IsInvalidCredentials
-                    ? 'Credenciales incorrectas.'
-                    : 'Por favor ingresa tu contraseña.'
-                }
-                value={password}
-                onChange={setPassword}
+                errorMessage={IsInvalidCredentials ? 'Credenciales incorrectas.' : 'Por favor ingresa tu contraseña.'}
+                value={authenticationData.emp_password}
+                onChange={value => {
+                  setAuthenticationData(prevData => ({
+                    ...prevData,
+                    emp_password: value,
+                  }));
+                }}
                 icon={<PadlockFill className='text-slate-600' />}
-                error={
-                  (username.length === 0 && submit) || IsInvalidCredentials
-                }
+                error={(authenticationData.emp_password.length === 0 && submit) || IsInvalidCredentials}
               />
               <button
                 disabled={isLoading}
