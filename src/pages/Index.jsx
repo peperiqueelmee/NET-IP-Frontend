@@ -3,9 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { PadlockFill, UserFill } from '../assets/icons';
 import { InformativeMessage, InputWithValidation, Spinner, Title } from '../components';
-import { useAxios } from '../hooks';
 import { addAuthentication } from '../features/authentication/authenticationSlice';
-
+import { useAxios } from '../hooks';
 const Register = () => {
   //Request.
   const { isLoading, message, makeRequest } = useAxios();
@@ -20,6 +19,7 @@ const Register = () => {
   const [IsInvalidCredentials, setIsInvalidCredentials] = useState(false);
   // Navigation.
   const navigate = useNavigate();
+  // Status redux update.
   const dispatch = useDispatch();
 
   const handleSubmit = async e => {
@@ -33,7 +33,7 @@ const Register = () => {
     try {
       const url = '/employee/login';
       const { data } = await makeRequest(url, authenticationData, 'POST');
-      
+
       dispatch(addAuthentication({ token: data.token, username: data.username, rut: data.rut }));
       navigate('/home');
     } catch (error) {

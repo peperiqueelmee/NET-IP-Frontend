@@ -1,16 +1,18 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import { PencilFill } from '../../../assets/icons';
 import axiosClient from '../../../config/axios';
-import { useEmployee } from '../../../hooks';
+import { updateInfoEmployees } from '../../../features/employees/employeeSlice';
 
-const EmployeeResultsTable = ({ employees, totalResults }) => {
-  const { setEmployee } = useEmployee();
+const EmployeeResultsTable = () => {
+  const { employees, totalEmployees } = useSelector(state => state.employees);
+  const dispatch = useDispatch();
 
   const modalEditEmployee = async (e, rutEmployee) => {
     e.preventDefault();
     const employee = await getEmployee(rutEmployee);
-    setEmployee(employee);
+    dispatch(updateInfoEmployees({ employee }));
     document.getElementById('editEmployee').click();
   };
 
@@ -133,7 +135,7 @@ const EmployeeResultsTable = ({ employees, totalResults }) => {
             </table>
             <div className='sticky bottom-0 bg-stone-950 bg-opacity-70 py-1 text-center text-sm font-medium tracking-wide text-slate-200'>
               Mostrando <span className='font-bold text-blue-400'>{employees.length}</span> de{' '}
-              <span className='font-bold text-blue-500 '>{totalResults}</span>{' '}
+              <span className='font-bold text-blue-500 '>{totalEmployees}</span>{' '}
               {employees.length === 1 ? 'resultado' : 'resultados'}.
             </div>
           </div>

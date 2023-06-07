@@ -1,82 +1,66 @@
 import Grow from '@mui/material/Grow';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
-import { useAction, useEmployee } from '../../hooks';
+import { updateInfoEmployees } from '../../features/employees/employeeSlice';
+import { useAction } from '../../hooks';
+import { APPLICATION_STATES, USER_ACTIONS } from '../../utils/utils';
 import InfoTooltip from '../Others/InfoTooltip';
-import {
-  EmployeesResultsCards,
-  EmployeesResultsTable,
-  Spinner,
-} from '../index.js';
+import { EmployeesResultsCards, EmployeesResultsTable, Spinner } from '../index.js';
+
+const buttonStylesActivated = 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white';
+const buttonStylesNormal = 'rounded-2xl bg-gray-200 px-4 py-1 text-xs shadow hover:shadow-lime-400 xl:text-sm';
 
 const TrunkManagement = () => {
-  // User experience.
+  //User experience.
   const [isLoading, setLoading] = useState(null);
-  const { setEmployees, employees, totalEmployees, setTotalEmployees } =
-    useEmployee();
-  const { selectedAction, selectedActionUsers, setSelectActionUsers } =
-    useAction();
-  // Data user.
-  const [rut, setRut] = useState('');
+  const { selectedAction, selectedActionUsers, setSelectActionUsers } = useAction();
+  //Data.
+  const { employees } = useSelector(state => state.employees);
+  // Data user
+  const [employeeRut, setEmployeeRut] = useState('');
+  // Status update.
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setSelectActionUsers(null);
-    setEmployees(null);
-    setRut('');
+    dispatch(updateInfoEmployees({ employees: null }));
+    setEmployeeRut('');
   }, [selectedAction]);
 
   // Handles.
-  const handleButtonClick = index => {
+  const handleChangeAction = index => {
     setSelectActionUsers(index);
   };
-  const handleListAllEmployees = async () => {
+  const handleFetchEmployees = async (type, status = null, e = null) => {
     setLoading(true);
-    try {
-      const url = '/employee/employees';
-      const { data } = await axiosClient(url);
-      setEmployees(data.data);
-      setTotalEmployees(data.total);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
+    if (type === 'rut') {
+      if (!e) {
+        return;
+      }
+      e.preventDefault();
     }
-  };
-  const handleListEmployeeByRut = async e => {
-    if (!e) {
-      return;
-    }
-    e.preventDefault();
-    setLoading(true);
+    const urlPaths = {
+      all: '/employee/employees',
+      rut: `/employee/employees/${employeeRut}`,
+      status: `/employee/employees/status/${status}`,
+    };
+    const url = urlPaths[type];
     try {
-      const url = `/employee/employees/${rut}`;
       const { data } = await axiosClient(url);
-      setEmployees(data.data);
-      setTotalEmployees(data.total);
-      setLoading(false);
+      dispatch(updateInfoEmployees({ employees: data.data, totalEmployees: data.total }));
     } catch (error) {
+      dispatch(updateInfoEmployees({ employees: null }));
+    } finally {
       setLoading(false);
-      setEmployees('');
-    }
-  };
-  const handleListEmployeesByStatus = async status => {
-    setLoading(true);
-    try {
-      const url = `/employee/employees/status/${status}`;
-      const { data } = await axiosClient(url);
-      setEmployees(data.data);
-      setTotalEmployees(data.total);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      setEmployees('');
     }
   };
 
   //Support functions.
   const modalCreateEmployee = () => {
-    setEmployees(null);
-    document.getElementById('create-extension').click();
+    dispatch(updateInfoEmployees({ employees: null }));
+    document.getElementById('createEmployee').click();
   };
 
   return (
@@ -86,154 +70,104 @@ const TrunkManagement = () => {
         timeout={500}>
         <div className={`pb-14 ${selectedAction === 2 ? 'block' : 'hidden'} `}>
           {/* Container */}
-          <div className='bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950'>
-            <div className='flex w-full flex-col justify-center gap-1 rounded-none px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
-              {/* Trunk management */}
-              <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
-                <div className='text-lime-400'>Gestión de Troncales</div>
+          <div
+            className='flex w-full flex-col justify-center 
+									gap-1 rounded-none bg-gradient-to-r from-cyan-950 via-blue-950 to-cyan-950 px-1 py-1.5 opacity-90 lg:flex-row lg:gap-5'>
+            {/* User Management */}
+            <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
+              <div className='text-lime-400'>Gestión cuentas de usuario</div>
+              <div className='flex w-9/12 sm:w-6/12 lg:w-auto'>
                 <button
                   onClick={() => {
                     modalCreateEmployee();
-                    handleButtonClick(1);
+                    handleChangeAction(USER_ACTIONS.Create);
                   }}
-                  className={`w-9/12 rounded-2xl bg-gray-200 px-4 
-							py-1 text-xs shadow hover:shadow-lime-400 sm:w-6/12 lg:w-32 xl:text-sm
-							${
-                selectedActionUsers === 1
-                  ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                  : 'text-zinc-700'
-              }`}>
-                  Crear Troncal
-                </button>
-              </div>
-              {/* Trunk lists */}
-              <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
-                <div className='text-lime-400'>Listado de Troncales</div>
-                <div className='flex flex-col w-9/12 gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
-                  <button
-                    onClick={() => {
-                      handleListAllEmployees();
-                      handleButtonClick(2);
-                    }}
-                    className={`w-full rounded-2xl bg-gray-200 px-4
-											    py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-												${
-                          selectedActionUsers === 2
-                            ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                            : 'text-zinc-700 '
-                        }`}>
-                    Todos
-                  </button>
-                  <div className='flex justify-center gap-1'>
-                    <button
-                      onClick={() => {
-                        handleListEmployeesByStatus(1);
-                        handleButtonClick(3);
-                      }}
-                      className={`w-full rounded-2xl bg-gray-200 px-4 
-													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-													${
-                            selectedActionUsers === 3
-                              ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                              : 'text-zinc-700'
-                          }`}>
-                      Activos
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleListEmployeesByStatus(2);
-                        handleButtonClick(4);
-                      }}
-                      className={`w-full rounded-2xl bg-gray-200 px-4 
-													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
-													${
-                            selectedActionUsers === 4
-                              ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                              : 'text-zinc-700'
-                          }`}>
-                      Inactivos
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {/* Search by Trunk */}
-              <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 xl:text-sm'>
-                <div className='flex items-center gap-1'>
-                  <div className='text-lime-400'>Búsqueda por Troncal</div>
-                </div>
-                <form
-                  onSubmit={handleListEmployeeByRut}
-                  className='flex items-center w-9/12 sm:w-6/12 lg:w-auto'>
-                  <input
-                    value={rut}
-                    onChange={e => setRut(e.target.value)}
-                    onClick={() => handleButtonClick(5)}
-                    className='w-full h-6 pl-4 text-xs outline-none rounded-l-2xl text-zinc-500 focus:border focus:border-lime-400 xl:text-sm'
-                    type='text'
-                    placeholder='Ingrese Troncal'
-                  />
-                  <button
-                    type='submit'
-                    onClick={() => {
-                      handleListEmployeeByRut();
-                      handleButtonClick(5);
-                    }}
-                    className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 
-												shadow hover:shadow-lime-400 
-												${
-                          selectedActionUsers === 5
-                            ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
-                            : 'text-zinc-700'
-                        }`}>
-                    <SearchFill />
-                  </button>
-                </form>
-              </div>
-              {/* Trunk Extensions */}
-              <div className='flex flex-col items-center px-4 py-2 text-xs font-medium border rounded-lg justify-evenly gap-y-1 border-lime-400 lg:hidden xl:flex xl:text-sm'>
-                <div className='text-lime-400'>Generación de Reportes</div>
-                <button
-                  className={`w-9/12 rounded-2xl bg-gradient-to-r
-								            from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
-											text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
-											disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
-											sm:w-6/12  lg:w-40 xl:text-sm`}>
-                  Generar Reporte
+                  className={`w-full lg:w-32 ${buttonStylesNormal}
+							            ${selectedActionUsers === USER_ACTIONS.Create ? buttonStylesActivated : buttonStylesNormal}`}>
+                  Crear Usuario
                 </button>
               </div>
             </div>
-            <div className='hidden py-2 justify-evenly px-11 lg:flex xl:hidden'>
-              <div className='flex items-center w-full px-4 py-2 text-xs font-medium border rounded-lg gap-y-1 border-lime-400 lg:flex-col'>
-                <div className='text-lime-400'>Generación de Reportes</div>
+            {/* List of user accounts */}
+            <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
+              <div className='text-lime-400'>Listado cuentas de usuario</div>
+              <div className='flex w-9/12 flex-col gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
                 <button
-                  className={`w-9/12 rounded-2xl bg-gradient-to-r
-								            from-indigo-600 via-indigo-700 to-indigo-700 px-4 py-1 text-xs 
-											text-zinc-200 shadow hover:shadow-indigo-500  disabled:from-gray-400 
-											disabled:via-gray-500 disabled:to-gray-600 disabled:shadow-none
-											sm:w-6/12  lg:w-40 xl:text-sm`}>
-                  Generar Reporte
+                  onClick={() => {
+                    handleFetchEmployees('all');
+                    handleChangeAction(USER_ACTIONS.ListAll);
+                  }}
+                  className={`w-full lg:w-32 ${buttonStylesNormal}
+												${selectedActionUsers === USER_ACTIONS.ListAll ? buttonStylesActivated : 'text-zinc-700 '}`}>
+                  Todos
                 </button>
+                <div className='flex justify-center gap-1'>
+                  <button
+                    onClick={() => {
+                      handleFetchEmployees('status', APPLICATION_STATES.Active);
+                      handleChangeAction(USER_ACTIONS.ListActive);
+                    }}
+                    className={`w-full lg:w-32 ${buttonStylesNormal}
+													${selectedActionUsers === USER_ACTIONS.ListActive ? buttonStylesActivated : 'text-zinc-700'}`}>
+                    Activos
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleFetchEmployees('status', APPLICATION_STATES.Inactive);
+                      handleChangeAction(USER_ACTIONS.ListInactive);
+                    }}
+                    className={`w-full lg:w-32 ${buttonStylesNormal}
+													${selectedActionUsers === USER_ACTIONS.ListInactive ? buttonStylesActivated : 'text-zinc-700'}`}>
+                    Inactivos
+                  </button>
+                </div>
               </div>
+            </div>
+            {/* Search by rut */}
+            <div className='flex flex-col items-center justify-evenly gap-y-1 rounded-lg border border-lime-400 px-4 py-2 text-xs font-medium xl:text-sm'>
+              <div className='flex items-center gap-1'>
+                <div className='text-lime-400'>Búsqueda por RUT</div>
+                <div style={{ marginTop: '3px' }}>
+                  <InfoTooltip info={'El formato de rut debe ser 12345678-9'} />
+                </div>
+              </div>
+              <form
+                onSubmit={e => handleFetchEmployees('rut', null, e)}
+                className='flex w-9/12 items-center sm:w-6/12 lg:w-auto'>
+                <input
+                  value={employeeRut}
+                  onChange={e => setEmployeeRut(e.target.value)}
+                  onClick={() => handleChangeAction(USER_ACTIONS.ListByOne)}
+                  className='h-6 w-full rounded-l-2xl pl-4 text-xs text-zinc-500 outline-none focus:border focus:border-lime-400 xl:text-sm'
+                  type='text'
+                  placeholder='Ingresa RUT de usuario'
+                />
+                <button
+                  type='submit'
+                  onClick={() => {
+                    handleFetchEmployees('rut');
+                    handleChangeAction(USER_ACTIONS.ListByOne);
+                  }}
+                  className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 
+												shadow hover:shadow-lime-400 
+												${selectedActionUsers === USER_ACTIONS.ListByOne ? buttonStylesActivated : 'text-zinc-700'}`}>
+                  <SearchFill />
+                </button>
+              </form>
             </div>
           </div>
           {/* Spinner */}
           {isLoading && (
-            <div className='flex items-center justify-center h-12 bg-black opacity-70'>
+            <div className='flex h-12 items-center justify-center bg-black opacity-70'>
               <Spinner />
             </div>
           )}
           {/* Results employees table */}
           {employees !== null && isLoading === false && (
-            <EmployeesResultsTable
-              employees={employees}
-              totalResults={totalEmployees}
-            />
-          )}
-          {employees !== null && isLoading === false && (
-            <EmployeesResultsCards
-              employees={employees}
-              totalResults={totalEmployees}
-            />
+            <>
+              <EmployeesResultsTable />
+              <EmployeesResultsCards />
+            </>
           )}
         </div>
       </Grow>

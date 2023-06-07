@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
 import {
@@ -17,21 +17,21 @@ import {
   TrunkManagement,
   Users,
 } from '../components';
-import { useAxios, useEmployee, useReport } from '../hooks';
+import { updateInfoEmployees } from '../features/employees/employeeSlice';
+import { useAxios, useReport } from '../hooks';
 
 const Home = () => {
   //Request.
   const { makeRequest } = useAxios();
-  // Data form edit employee.
-  const { setEmployee } = useEmployee();
   // Report.
   const { tableName, filename } = useReport();
   // Data user.
-  const token = useSelector(state => state.authentication.token);
-  const username = useSelector(state => state.authentication.username);
-  const userRut = useSelector(state => state.authentication.rut);
+  const { token, username, rut } = useSelector(state => state.authentication);
   // Navigation .
   const navigate = useNavigate();
+  // Status redux update.
+  const dispatch = useDispatch();
+
   useEffect(() => {
     window.addEventListener('popstate', blockBackButton);
     if (!token) {
@@ -56,7 +56,7 @@ const Home = () => {
   const modalEditEmployee = async (e, rutEmployee) => {
     e.preventDefault();
     const employee = await getEmployee(rutEmployee);
-    setEmployee(employee);
+    dispatch(updateInfoEmployees({ employee }));
     document.getElementById('editEmployee').click();
   };
   const blockBackButton = () => {
@@ -74,7 +74,7 @@ const Home = () => {
           <div className='mb-6 mt-6 hidden flex-row gap-3 sm:flex lg:mt-0 lg:flex-row'>
             <div
               className='cursor-pointer rounded-full border-2 border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 px-4 py-1 text-xs tracking-wide text-gray-200 shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'
-              onClick={e => modalEditEmployee(e, userRut)}>
+              onClick={e => modalEditEmployee(e, rut)}>
               <div className='flex items-center gap-1'>
                 <UserFill className='text-xs text-lime-400 lg:text-sm' />
                 <span className='flex w-full justify-center'>{username}</span>
@@ -128,7 +128,7 @@ const Home = () => {
         <div className='flex h-12 items-center justify-between'>
           <div
             className='flex cursor-pointer flex-col items-center justify-center'
-            onClick={e => modalEditEmployee(e, userRut)}>
+            onClick={e => modalEditEmployee(e, rut)}>
             <UserFill className='text-base text-white' />
             <span className='text-xs text-slate-200'>{username}</span>
           </div>

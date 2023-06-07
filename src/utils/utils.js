@@ -52,4 +52,18 @@ const RESPONSE_SERVER = {
   BAD_REQUEST: 'ERR_BAD_REQUEST',
 };
 
-export { isInputInvalid, RESPONSE_SERVER };
+const APPLICATION_STATES = {
+  Active: 1,
+  Inactive: 2,
+  Blocked: 3,
+};
+
+const USER_ACTIONS = {
+  Create: 1,
+  ListAll: 2,
+  ListActive: 3,
+  ListInactive: 4,
+  ListByOne: 5,
+};
+
+export { isInputInvalid, RESPONSE_SERVER, APPLICATION_STATES, USER_ACTIONS };
