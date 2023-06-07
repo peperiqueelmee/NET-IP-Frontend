@@ -50,7 +50,7 @@ const ModalEditEmployee = () => {
         try {
           const url = '/role';
           const { data } = await axiosClient.get(url);
-          localStorage.setItem('roles', JSON.stringify(data.data));
+          localStorage.setItem('roles', JSON.stringify(data.data)); 
           setRoles(data.data);
         } catch (error) {
           console.log(error);
