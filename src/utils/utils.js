@@ -66,4 +66,11 @@ const USER_ACTIONS = {
   ListByOne: 5,
 };
 
-export { isInputInvalid, RESPONSE_SERVER, APPLICATION_STATES, USER_ACTIONS };
+const TYPES_ERRORS_INPUT = {
+  RUT: 'RUT',
+  Username: 'Username',
+  Password: 'Password',
+  Email: 'Email',
+};
+
+export { isInputInvalid, RESPONSE_SERVER, APPLICATION_STATES, USER_ACTIONS, TYPES_ERRORS_INPUT };

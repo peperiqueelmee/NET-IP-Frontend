@@ -2,16 +2,16 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { EmailFill, IdCardFill, PadlockFill, PencilFill, UserFill, UserSecretFill } from '../../assets/icons';
-import axiosClient from '../../config/axios';
-import { updateInfoEmployees } from '../../features/employees/employeeSlice';
-import { useAction } from '../../hooks';
-import { RESPONSE_SERVER } from '../../utils/utils';
+import { updateInfoEmployees, updateFormValidation } from '../../features';
+import { useAction, useAxios } from '../../hooks';
+import { TYPES_ERRORS_INPUT } from '../../utils/utils';
 
 const ModalEditEmployee = () => {
+  //Request.
+  const { makeRequest, isLoading } = useAxios();
   // User experience.
-  const [isLoading, setIsLoading] = useState(null);
-  const [message, setMessage] = useState('');
   const { selectedActionUsers } = useAction();
+  const { message, inputError, formOk } = useSelector(state => state.formValidation);
   // Data form.
   const { employee } = useSelector(state => state.employees);
   const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
@@ -27,15 +27,9 @@ const ModalEditEmployee = () => {
     role_id: null,
     status_id: null,
   });
-  const [roleSelected, setRoleSelected] = useState('');
-  const [statusSelected, setStatusSelected] = useState('');
-  // Validations.
-  const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
+  const [roleSelectedString, setRoleSelectedString] = useState('');
+  const [statusSelectedString, setStatusSelectedString] = useState('');
   const userRut = useSelector(state => state.authentication.rut);
-  const [inputRutHasError, setInputRutHasError] = useState(false);
-  const [inputEmailHasError, setInputEmailHasError] = useState(false);
-  const [inputUsernameHasError, setInputUsernameHasError] = useState(false);
-  const [inputPasswordHasError, setInputPasswordHasError] = useState(false);
   // Event.
   const [submit, setSubmit] = useState(false);
   //  Toggle modal.
@@ -44,31 +38,22 @@ const ModalEditEmployee = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function fetchData() {
-      // Get roles.
-      if (!roles.length) {
-        try {
-          const url = '/role';
-          const { data } = await axiosClient.get(url);
-          localStorage.setItem('roles', JSON.stringify(data.data)); 
-          setRoles(data.data);
-        } catch (error) {
-          console.log(error);
-        }
+    async function fetchData(path, setter, storageKey) {
+      if (localStorage.getItem(storageKey)) {
+        const data = JSON.parse(localStorage.getItem(storageKey));
+        setter(data);
+        return;
       }
-      // Get status.
-      if (!statuses.length) {
-        try {
-          const url = '/status/employee';
-          const { data } = await axiosClient.get(url);
-          localStorage.setItem('statuses', JSON.stringify(data.data));
-          setStatuses(data.data);
-        } catch (error) {
-          console.log(error);
-        }
+      try {
+        const { data } = await makeRequest(path);
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        setter(data);
+      } catch (error) {
+        console.error(error);
       }
     }
-    fetchData();
+    fetchData('/role', setRoles, 'roles');
+    fetchData('/status/employee', setStatuses, 'statuses');
   }, []);
 
   useEffect(() => {
@@ -82,66 +67,32 @@ const ModalEditEmployee = () => {
     setOpen(!shouldClose);
     clearForm();
   };
-  const handleRoleSelect = roleSelected => {
-    setRoleSelected(roleSelected);
-    const selectedObject = roles.find(({ description }) => description === roleSelected);
-    if (!selectedObject) {
-      setEmployeeData(prevData => ({
-        ...prevData,
-        role_id: null,
-      }));
-      return;
-    }
+
+  const selectOption = (setSelected, array, key, setEmployeeData) => selected => {
+    setSelected(selected);
+    const selectedObject = array.find(({ description }) => description === selected);
     setEmployeeData(prevData => ({
       ...prevData,
-      role_id: selectedObject.id,
+      [key]: selectedObject ? selectedObject.id : null,
     }));
   };
-  const handleStatusSelect = statusSelected => {
-    setStatusSelected(statusSelected);
-    const selectedObject = statuses.find(({ description }) => description === statusSelected);
-    if (!selectedObject) {
-      setEmployeeData(prevData => ({
-        ...prevData,
-        status_id: null,
-      }));
-      return;
-    }
-    setEmployeeData(prevData => ({
-      ...prevData,
-      status_id: selectedObject.id,
-    }));
-  };
+  const handleRoleSelect = selectOption(setRoleSelectedString, roles, 'role_id', setEmployeeData);
+  const handleStatusSelect = selectOption(setStatusSelectedString, statuses, 'status_id', setEmployeeData);
+
   const handleSubmit = async e => {
-    setIsLoading(true);
     actionsAfterSubmit();
-
     e.preventDefault();
-    try {
-      // Update employee.
-      const url = `/employee/update/${employee.id}`;
+    const url = `/employee/update/${employee.id}`;
+    const response = await makeRequest(url, employeeData, 'PUT');
 
-      await axiosClient.put(url, employeeData);
-      setIsLoading(null);
-      setMessage('¡El usuario ha sido editado exitosamente!');
-      setUserHasBeenCreated(true);
-
-      // Refresh data employee.
-      const urlEmployee = getUrlEmployee(selectedActionUsers, employeeData.rut);
-      const { data } = await axiosClient(urlEmployee);
-      dispatch(updateInfoEmployees({ employees: data.data, totalEmployees: data.total }));
-    } catch (error) {
-      setIsLoading(null);
-      setUserHasBeenCreated(false);
-      if (error.code === RESPONSE_SERVER.BAD_REQUEST) {
-        const messageError = error.response.data.message;
-        const inputWithError = error.response.data.input;
-        setMessage(messageError);
-
-        return markInputWithError(inputWithError);
-      }
-      setMessage('Error de servidor. Reintentar.');
+    if (!response || response.error) {
+      return;
     }
+    dispatch(updateFormValidation({ message: '¡El usuario ha sido editado exitosamente!' }));
+    // Refresh table employees.
+    const urlEmployee = getUrlEmployee(selectedActionUsers, employeeData.rut);
+    const { data, total } = await makeRequest(urlEmployee);
+    dispatch(updateInfoEmployees({ employees: data, totalEmployees: total }));
   };
 
   // Support functions.
@@ -156,29 +107,18 @@ const ModalEditEmployee = () => {
       role_id: employee.role_id,
       status_id: employee.status_id,
     });
-    setRoleSelected(employee.role.description);
-    setStatusSelected(employee.status.description);
+    setRoleSelectedString(employee.role.description);
+    setStatusSelectedString(employee.status.description);
   };
   const removeErrorMessage = () => {
-    setUserHasBeenCreated(null);
+    dispatch(updateFormValidation({ formOk: null }));
   };
   const actionsAfterSubmit = () => {
-    // User experience.
-    setIsLoading(true);
-    setMessage('');
-    // Validations.
-    setInputRutHasError(false);
-    setInputEmailHasError(false);
-    setInputUsernameHasError(false);
-    setInputPasswordHasError(false);
-    setUserHasBeenCreated(null);
-    // Event
+    dispatch(updateFormValidation({ message: '', inputError: null, formOk: null }));
     setSubmit(true);
   };
   const clearForm = async () => {
-    // User Experience.
-    setMessage('');
-    // Data user.
+    dispatch(updateFormValidation({ message: '', inputError: null, formOk: null }));
     setEmployeeData({
       names: '',
       lastnames: '',
@@ -189,12 +129,6 @@ const ModalEditEmployee = () => {
       role_id: null,
       status_id: null,
     });
-    // Validations.
-    setUserHasBeenCreated(null);
-    setInputRutHasError(false);
-    setInputEmailHasError(false);
-    setInputUsernameHasError(false);
-    setInputPasswordHasError(false);
   };
   const getUrlEmployee = (selectedActionUsers, rut) => {
     const urlMap = {
@@ -205,19 +139,9 @@ const ModalEditEmployee = () => {
     };
     return urlMap[selectedActionUsers] ?? '/employee/employees';
   };
-  const markInputWithError = inputType => {
-    const inputMap = {
-      RUT: setInputRutHasError,
-      Email: setInputEmailHasError,
-      Username: setInputUsernameHasError,
-      Password: setInputPasswordHasError,
-    };
-    const setInputError = inputMap[inputType];
-    setInputError?.(true);
-  };
 
   return (
-    <div>
+    <>
       <button
         id='editEmployee'
         className='text-xs text-white sm:text-base'
@@ -227,17 +151,17 @@ const ModalEditEmployee = () => {
           <div
             className={`scale-in-center mx-5 mb-5 mt-60 flex w-full  flex-col  items-center overflow-auto rounded-lg border border-lime-400 bg-slate-200 bg-opacity-90 py-5 sm:mt-52 sm:w-11/12 lg:mt-10 lg:w-10/12 2xl:w-8/12`}>
             {/* Success or error message */}
-            {userHasBeenCreated != null ? (
+            {formOk != null && (
               <div className='flex w-full justify-center px-3'>
                 <InformativeMessage
                   message={message}
-                  hasError={!userHasBeenCreated}
-                  hasSuccessful={userHasBeenCreated}
+                  hasError={!formOk}
+                  hasSuccessful={formOk}
                 />
               </div>
-            ) : null}
+            )}
             {/* Form */}
-            {!userHasBeenCreated ? (
+            {!formOk ? (
               <>
                 {/* Title */}
                 <div className='mt-2 flex items-center gap-2'>
@@ -298,7 +222,7 @@ const ModalEditEmployee = () => {
                           }}
                           placeholder='10123456-3'
                           validationType={'rut'}
-                          error={submit && inputRutHasError}
+                          error={submit && TYPES_ERRORS_INPUT.RUT === inputError}
                           errorMessage='Formato de RUT incorrecta y/o inválido.'
                           tooltip={'El formato de rut debe ser 12345678-9'}
                         />
@@ -317,7 +241,7 @@ const ModalEditEmployee = () => {
                           }}
                           placeholder='juancarlosbodoque@correo.cl'
                           validationType={'email'}
-                          error={submit && inputEmailHasError}
+                          error={submit && TYPES_ERRORS_INPUT.Email === inputError}
                           errorMessage='Por favor ingresa un correo válido.'
                         />
                       </div>
@@ -336,7 +260,7 @@ const ModalEditEmployee = () => {
                             }));
                           }}
                           placeholder='JcBodoque'
-                          error={submit && inputUsernameHasError}
+                          error={submit && TYPES_ERRORS_INPUT.Username === inputError}
                           errorMessage='Por favor ingresa un nombre de usuario valido.'
                         />
                       </div>
@@ -354,7 +278,7 @@ const ModalEditEmployee = () => {
                           }}
                           placeholder='Contraseña'
                           validationType={'password'}
-                          error={submit && inputPasswordHasError}
+                          error={submit && TYPES_ERRORS_INPUT.Password === inputError}
                           errorMessage='La contraseña no cumple con el formato de seguridad.'
                           tooltip={
                             'El formato de contraseña debe ser 6-10 caracteres, contener al menos: 1 mayúscula, 1 minúscula, 1 número.'
@@ -372,7 +296,7 @@ const ModalEditEmployee = () => {
                           options={roles.map(role => role.description)}
                           onSelect={handleRoleSelect}
                           placeholder='Seleccionar permisos'
-                          value={roleSelected}
+                          value={roleSelectedString}
                         />
                       </div>
                       <div className='w-full'>
@@ -381,13 +305,13 @@ const ModalEditEmployee = () => {
                           options={statuses.map(status => status.description)}
                           onSelect={handleStatusSelect}
                           placeholder='Seleccionar permisos'
-                          value={statusSelected}
+                          value={statusSelectedString}
                         />
                       </div>
                     </div>
                   </div>
                   {/* Error message */}
-                  {userHasBeenCreated != null ? (
+                  {formOk != null ? (
                     <div className={`mt-4 block text-center text-xs font-medium text-red-600 md:hidden`}>{message}</div>
                   ) : null}
                   {isLoading && (
@@ -429,7 +353,7 @@ const ModalEditEmployee = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

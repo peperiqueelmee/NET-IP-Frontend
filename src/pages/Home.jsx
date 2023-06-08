@@ -34,9 +34,9 @@ const Home = () => {
 
   useEffect(() => {
     window.addEventListener('popstate', blockBackButton);
-    if (!token) {
+    /* if (!token) {
       navigate('/');
-    }
+    } */
   }, []);
 
   // Support functions.
