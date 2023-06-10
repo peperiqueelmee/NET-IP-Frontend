@@ -66,9 +66,9 @@ const TrunkManagement = () => {
   return (
     <>
       <Grow
-        in={selectedAction === 2}
+        in={selectedAction === 1}
         timeout={500}>
-        <div className={`pb-14 ${selectedAction === 2 ? 'block' : 'hidden'} `}>
+        <div className={`pb-14 ${selectedAction === 1 ? 'block' : 'hidden'} `}>
           {/* Container */}
           <div
             className='flex w-full flex-col justify-center 

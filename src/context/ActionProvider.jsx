@@ -21,23 +21,12 @@ const ActionProvider = ({ children }) => {
   const getActions = (sizeIconLarge, sizeIconSmall) => {
     const actions = [
       {
-        id: 1,
-        name: 'Números Telefónicos',
-        icon: (
-          <PhoneCallOutline
-            className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
-              selectedAction === 0 ? 'text-white' : 'text-zinc-800'
-            }`}
-          />
-        ),
-      },
-      {
         id: 2,
         name: 'Gestión de Anexos',
         icon: (
           <NotebookFill
             className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
-              selectedAction === 1 ? 'text-white' : 'text-zinc-800'
+              selectedAction === 0 ? 'text-white' : 'text-zinc-800'
             }`}
           />
         ),
@@ -48,7 +37,7 @@ const ActionProvider = ({ children }) => {
         icon: (
           <ManagementOutline
             className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
-              selectedAction === 2 ? 'text-white' : 'text-zinc-800'
+              selectedAction === 1 ? 'text-white' : 'text-zinc-800'
             }`}
           />
         ),
@@ -59,7 +48,7 @@ const ActionProvider = ({ children }) => {
         icon: (
           <IntercomFill
             className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
-              selectedAction === 3 ? 'text-white' : 'text-zinc-800'
+              selectedAction === 2 ? 'text-white' : 'text-zinc-800'
             }`}
           />
         ),
@@ -70,7 +59,7 @@ const ActionProvider = ({ children }) => {
         icon: (
           <ConversationOutline
             className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
-              selectedAction === 4 ? 'text-white' : 'text-zinc-800'
+              selectedAction === 3 ? 'text-white' : 'text-zinc-800'
             }`}
           />
         ),
@@ -81,7 +70,7 @@ const ActionProvider = ({ children }) => {
         icon: (
           <UserFill
             className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
-              selectedAction === 5 ? 'text-white' : 'text-zinc-800'
+              selectedAction === 4 ? 'text-white' : 'text-zinc-800'
             }`}
           />
         ),
@@ -92,7 +81,7 @@ const ActionProvider = ({ children }) => {
         icon: (
           <QuestionCircleOutline
             className={`${mobileScreen ? sizeIconSmall : sizeIconLarge} ${
-              selectedAction === 6 ? 'text-white' : 'text-zinc-800'
+              selectedAction === 5 ? 'text-white' : 'text-zinc-800'
             }`}
           />
         ),

@@ -20,9 +20,6 @@ export { default as ModalCreateMultiCallRinging } from './Modals/ModalCreateMult
 export { default as ModalEditEmployee } from './Modals/ModalEditEmployee';
 export { default as ModalGenerateReport } from './Modals/ModalGenerateReport';
 export { default as ModalLogout } from './Modals/ModalLogout';
-export { default as Phones } from './filters/Phones';
-export { default as PhonesResultsCards } from './resultsTable/Phones/PhonesResultsCards';
-export { default as PhonesResultsTable } from './resultsTable/Phones/PhonesResultsTable';
 export { default as Spinner } from './Others/Spinner';
 export { default as Title } from './Others/Title';
 export { default as TrunkManagement } from './filters/TrunkManagement';

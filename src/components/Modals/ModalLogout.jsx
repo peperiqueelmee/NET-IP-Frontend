@@ -5,12 +5,13 @@ const ModalLogout = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
-  const handleToggleModal = (shouldClose) => {
+  const handleToggleModal = shouldClose => {
     setOpen(!shouldClose);
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
     navigate('/');
     setOpen(false);
   };

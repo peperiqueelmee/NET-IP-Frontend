@@ -73,4 +73,9 @@ const TYPES_ERRORS_INPUT = {
   Email: 'Email',
 };
 
-export { isInputInvalid, RESPONSE_SERVER, APPLICATION_STATES, USER_ACTIONS, TYPES_ERRORS_INPUT };
+const ROLE_TYPES = {
+  Administrator: 1,
+  Supervisor: 2,
+};
+
+export { isInputInvalid, RESPONSE_SERVER, APPLICATION_STATES, USER_ACTIONS, TYPES_ERRORS_INPUT, ROLE_TYPES };

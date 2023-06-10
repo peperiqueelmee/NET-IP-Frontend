@@ -34,7 +34,14 @@ const Register = () => {
       const url = '/employee/login';
       const { data } = await makeRequest(url, authenticationData, 'POST');
 
-      dispatch(addAuthentication({ token: data.token, username: data.username, rut: data.rut }));
+      dispatch(
+        addAuthentication({
+          token: data.token,
+          username: data.username,
+          rut: data.rut,
+          role: data.role,
+        })
+      );
       navigate('/home');
     } catch (error) {
       setIsInvalidCredentials(true);

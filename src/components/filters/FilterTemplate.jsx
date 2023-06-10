@@ -37,19 +37,19 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
 
   // Component rendering.
   const componentsTablesObj = {
-    1: (
+    0: (
       <AnexResultsTable
         anexes={anexes}
         totalResults={totalAnexes}
       />
     ),
-    3: (
+    2: (
       <IntercomsResultsTable
         intercoms={anexes}
         totalResults={totalAnexes}
       />
     ),
-    4: (
+    3: (
       <MCRResultsTable
         multiCallRingings={anexes}
         totalResults={totalAnexes}
@@ -57,19 +57,19 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
     ),
   };
   const componentsCardsObj = {
-    1: (
+    0: (
       <AnexesResultsCards
         anexes={anexes}
         totalResults={totalAnexes}
       />
     ),
-    3: (
+    2: (
       <IntercomsResultsCards
         intercoms={anexes}
         totalResults={totalAnexes}
       />
     ),
-    4: (
+    3: (
       <MCRResultsCards
         multiCallRingings={anexes}
         totalResults={totalAnexes}

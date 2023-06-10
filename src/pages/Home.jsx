@@ -12,7 +12,6 @@ import {
   ModalEditEmployee,
   ModalGenerateReport,
   ModalLogout,
-  Phones,
   Title,
   TrunkManagement,
   Users,
@@ -26,7 +25,7 @@ const Home = () => {
   // Report.
   const { tableName, filename } = useReport();
   // Data user.
-  const { token, username, rut } = useSelector(state => state.authentication);
+  const { rut, token, username } = useSelector(state => state.authentication);
   // Navigation .
   const navigate = useNavigate();
   // Status redux update.
@@ -34,9 +33,9 @@ const Home = () => {
 
   useEffect(() => {
     window.addEventListener('popstate', blockBackButton);
-    /* if (!token) {
+    if (!token) {
       navigate('/');
-    } */
+    }
   }, []);
 
   // Support functions.
@@ -99,22 +98,21 @@ const Home = () => {
         {/*  Actions */}
         <div className='block'>
           <Actions />
-          <Phones />
           <FilterTemplate
-            indexAction={1}
+            indexAction={0}
             pluralTitle={'Anexos'}
             singularTitle={'Anexo'}
             urlFetch={'regular_anex'}
           />
           <TrunkManagement />
           <FilterTemplate
-            indexAction={3}
+            indexAction={2}
             pluralTitle={'Intercomunicadores'}
             singularTitle={'Intercom'}
             urlFetch={'intercom'}
           />
           <FilterTemplate
-            indexAction={4}
+            indexAction={3}
             pluralTitle={'MCR'}
             singularTitle={'MCR'}
             urlFetch={'mcr'}

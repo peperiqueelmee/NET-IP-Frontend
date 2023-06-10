@@ -6,12 +6,14 @@ export const authenticationSlice = createSlice({
     token: null,
     username: null,
     rut: null,
+    role: null,
   },
   reducers: {
     addAuthentication: (state, action) => {
       state.token = action.payload.token;
       state.username = action.payload.username;
       state.rut = action.payload.rut;
+      state.role = action.payload.role;
     },
   },
 });

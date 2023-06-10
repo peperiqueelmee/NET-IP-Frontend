@@ -1,23 +1,18 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { UserFill } from '../assets/icons';
-import {
-  InformativeMessage,
-  InputWithValidation,
-  Spinner,
-  Title,
-} from '../components';
+import { InformativeMessage, InputWithValidation, Spinner, Title } from '../components';
+import { updateFormValidation } from '../features';
 import { useAxios } from '../hooks';
 
 const RecoverPassword = () => {
-  //Request.
-  const { isLoading, message, setMessage, makeRequest } = useAxios();
-  // Data user.
+  const { isLoading, makeRequest } = useAxios();
+  const { message } = useSelector(state => state.formValidation);
   const [username, setUsername] = useState('');
-  // Event.
   const [submit, setSubmit] = useState(false);
-  // Validation.
   const [IsUsernameInvalid, setIsUsernameInvalid] = useState(null);
+  const dispatch = useDispatch();
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -31,8 +26,7 @@ const RecoverPassword = () => {
         username,
       };
       const { data } = await makeRequest(url, employeeData, 'POST');
-
-      setMessage(`${data.name} revisa tu correo ${data.email} para continuar.`);
+      dispatch(updateFormValidation({ message: `${data.name} revisa tu correo ${data.email} para continuar.` }));
       setIsUsernameInvalid(false);
     } catch (error) {
       setIsUsernameInvalid(true);
@@ -45,23 +39,23 @@ const RecoverPassword = () => {
 
   return (
     <>
-      <div className='flex flex-col items-center justify-center h-screen px-6 mx-auto overflow-y-auto login-page lg:py-0 scroll-bar-primary'>
+      <div className='login-page scroll-bar-primary mx-auto flex h-screen flex-col items-center justify-center overflow-y-auto px-6 lg:py-0'>
         {/* Title */}
         <Title />
         {/* Success or error message */}
-        {IsUsernameInvalid !== null ? (
-          <div className='w-full mb-5 sm:max-w-md'>
+        {IsUsernameInvalid !== null && (
+          <div className='mb-5 w-full sm:max-w-md'>
             <InformativeMessage
               message={message}
               hasError={IsUsernameInvalid}
               hasSuccessful={!IsUsernameInvalid}
             />
           </div>
-        ) : null}
+        )}
         {/* Form */}
-        <div className='flex w-full border-2 shadow-md rounded-2xl border-lime-500 bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 opacity-90 shadow-lime-600 sm:max-w-md md:mt-0 xl:p-0'>
-          <div className='w-full p-6 mx-auto my-auto sm:px-8 sm:pb-5 sm:pt-8'>
-            <h1 className='text-xl font-bold leading-tight tracking-tight text-center text-slate-700 md:text-2xl'>
+        <div className='flex w-full rounded-2xl border-2 border-lime-500 bg-gradient-to-b from-gray-100 via-zinc-100 to-stone-100 opacity-90 shadow-md shadow-lime-600 sm:max-w-md md:mt-0 xl:p-0'>
+          <div className='mx-auto my-auto w-full p-6 sm:px-8 sm:pb-5 sm:pt-8'>
+            <h1 className='text-center text-xl font-bold leading-tight tracking-tight text-slate-700 md:text-2xl'>
               Recupera tu contraseña
             </h1>
             <form
@@ -74,19 +68,11 @@ const RecoverPassword = () => {
                 required={true}
                 type='text'
                 placeholder='Tu usuario'
-                errorMessage={
-                  IsUsernameInvalid
-                    ? 'Usuario no registrado.'
-                    : 'Por favor ingresa tu nombre de usuario.'
-                }
+                errorMessage={IsUsernameInvalid ? 'Usuario no registrado.' : 'Por favor ingresa tu nombre de usuario.'}
                 value={username}
                 onChange={setUsername}
                 icon={<UserFill className='text-slate-600' />}
-                error={
-                  (username.length === 0 && submit) || IsUsernameInvalid
-                    ? true
-                    : false
-                }
+                error={(username.length === 0 && submit) || IsUsernameInvalid ? true : false}
               />
 
               <button
@@ -99,17 +85,17 @@ const RecoverPassword = () => {
                 {isLoading ? <Spinner /> : 'Recuperar Contraseña'}
               </button>
             </form>
-            <div className='flex justify-center mt-5 text-xs font-medium transition-colors duration-700 text-slate-700 hover:text-slate-950 sm:text-sm'>
+            <div className='mt-5 flex justify-center text-xs font-medium text-slate-700 transition-colors duration-700 hover:text-slate-950 sm:text-sm'>
               <Link
                 to='/'
-                className='cursor-pointer animated-text-underline'>
+                className='animated-text-underline cursor-pointer'>
                 Iniciar Sesión
               </Link>
             </div>
           </div>
         </div>
         {/* Footer */}
-        <footer className='flex flex-col items-center mt-10 text-sm text-slate-100 lg:text-base'>
+        <footer className='mt-10 flex flex-col items-center text-sm text-slate-100 lg:text-base'>
           <p>Diseñado por TeleSoluciones Ltda.</p>
           <p>Viña del Mar, Chile 2023</p>
         </footer>
