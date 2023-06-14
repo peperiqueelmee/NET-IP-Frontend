@@ -5,7 +5,6 @@ import {
   IntercomFill,
   ManagementOutline,
   NotebookFill,
-  PhoneCallOutline,
   QuestionCircleOutline,
   UserFill,
 } from '../assets/icons';

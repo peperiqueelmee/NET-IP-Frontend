@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction, usePagination, useReport } from '../../hooks';
+import { APPLICATION_STATES, USER_ACTIONS } from '../../utils/utils';
 import {
   AnexResultsTable,
   AnexesResultsCards,
@@ -25,16 +26,6 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
   const { setTableName, setFilename } = useReport();
   // Data user.
   const [anexe, setAnexe] = useState('');
-  // Buttons.
-  const createAnex = 1;
-  const listAllAnexes = 2;
-  const listActiveAnexes = 3;
-  const listBlockedAnexes = 4;
-  const searchByAnex = 5;
-  // Status anexes.
-  const active = 1;
-  const blocked = 3;
-
   // Component rendering.
   const componentsTablesObj = {
     0: (
@@ -80,16 +71,18 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
   const cardRender = componentsCardsObj[indexAction];
 
   useEffect(() => {
-    handleSelectedAction();
+    if (page > 1) {
+      handleSelectedAction();
+    }
   }, [page]);
   useEffect(() => {
     resetPhones();
   }, [selectedAction]);
   useEffect(() => {
     if (
-      selectedActionUsers === listAllAnexes ||
-      selectedActionUsers === listActiveAnexes ||
-      selectedActionUsers === listBlockedAnexes
+      selectedActionUsers === USER_ACTIONS.ListAll ||
+      selectedActionUsers === USER_ACTIONS.ListActive ||
+      selectedActionUsers === USER_ACTIONS.ListInactive
     ) {
       cleanPaginationPhones();
     }
@@ -98,65 +91,48 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
   // Handles.
   const handleSelectedAction = async () => {
     switch (selectedActionUsers) {
-      case listAllAnexes:
-        await getAllAnexes();
+      case USER_ACTIONS.ListAll:
+        await handlePagination('all');
         break;
-      case listActiveAnexes:
-        await getAnexesByStatus(active);
+      case USER_ACTIONS.ListActive:
+        await handlePagination('status', APPLICATION_STATES.Active);
         break;
-      case listBlockedAnexes:
-        await getAnexesByStatus(blocked);
+      case USER_ACTIONS.ListInactive:
+        await handlePagination('status', APPLICATION_STATES.Blocked);
         break;
       default:
         break;
     }
   };
-  const handleButtonClick = index => {
+  const handleChangeAction = index => {
     setSelectActionUsers(index);
   };
-  const handleListAllAnexes = async () => {
+
+  const handleFetch = async (type, status = null, e = null) => {
     setLoading(true);
-    try {
-      const url = `/${urlFetch}`;
-      const { data } = await axiosClient(url);
-      console.log(data);
-      setAnexes(data.data);
-      setTotalAnexes(data.total);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
+    if (type === 'byNumber') {
+      if (!e) {
+        return;
+      }
+      e.preventDefault();
     }
-  };
-  const handleListAnexeByNumber = async e => {
-    if (!e) {
-      return;
-    }
-    e.preventDefault();
-    setLoading(true);
+    const urlPaths = {
+      all: `/${urlFetch}/?page=${1}`,
+      byNumber: `/${urlFetch}/${anexe}`,
+      status: `/${urlFetch}/status/${status}?page=${1}`,
+    };
+    const url = urlPaths[type];
     try {
-      const url = `/${urlFetch}/${anexe}`;
       const { data } = await axiosClient(url);
       setAnexes(data.data);
       setTotalAnexes(data.total);
-      setLoading(false);
     } catch (error) {
+      setAnexes(null);
+    } finally {
       setLoading(false);
-      setAnexes('');
     }
   };
-  const handleListAnexesByStatus = async status => {
-    setLoading(true);
-    try {
-      const url = `/${urlFetch}/status/${status}`;
-      const { data } = await axiosClient(url);
-      setAnexes(data.data);
-      setTotalAnexes(data.total);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      setAnexes('');
-    }
-  };
+
   const handleGenerateReport = () => {
     setTableName(`${pluralTitle}-table`);
     setFilename(`Reporte-${pluralTitle}`);
@@ -164,34 +140,26 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
   };
 
   // Pagination.
-  const getAllAnexes = async () => {
+  const handlePagination = async (type, status = null) => {
     if (anexes.length === totalAnexes) {
       return setHasMore(false);
     }
+    const urlPaths = {
+      all: `/${urlFetch}/?page=${page}`,
+      status: `/${urlFetch}/status/${status}?page=${page}`,
+    };
+    const url = urlPaths[type];
     try {
-      const url = `/${urlFetch}/?page=${page}`;
       const { data } = await axiosClient(url);
       setAnexes([...anexes, ...data.data]);
       if (anexes.length === totalAnexes) {
         setHasMore(false);
       }
     } catch (error) {
+      setAnexes(null);
       setHasMore(false);
-    }
-  };
-  const getAnexesByStatus = async status => {
-    if (anexes.length === totalAnexes) {
-      return setHasMore(false);
-    }
-    try {
-      const url = `/${urlFetch}/status/${status}?page=${page}`;
-      const { data } = await axiosClient(url);
-      setAnexes([...anexes, ...data.data]);
-      if (anexes.length === totalAnexes) {
-        setHasMore(false);
-      }
-    } catch (error) {
-      setHasMore(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -230,12 +198,12 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
                 <button
                   onClick={() => {
                     modalCreateAnex();
-                    handleButtonClick(createAnex);
+                    handleChangeAction(USER_ACTIONS.Create);
                   }}
                   className={`w-9/12 rounded-2xl bg-gray-200 px-4 
 							py-1 text-xs shadow hover:shadow-lime-400 sm:w-6/12 lg:w-32 xl:text-sm
 							${
-                selectedActionUsers === createAnex
+                selectedActionUsers === USER_ACTIONS.Create
                   ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                   : 'text-zinc-700'
               }`}>
@@ -248,13 +216,13 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
                 <div className='flex w-9/12 flex-col gap-2 sm:w-6/12 lg:w-auto lg:flex-row'>
                   <button
                     onClick={() => {
-                      handleListAllAnexes();
-                      handleButtonClick(listAllAnexes);
+                      handleFetch('all');
+                      handleChangeAction(USER_ACTIONS.ListAll);
                     }}
                     className={`w-full rounded-2xl bg-gray-200 px-4
 											    py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 												${
-                          selectedActionUsers === listAllAnexes
+                          selectedActionUsers === USER_ACTIONS.ListAll
                             ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                             : 'text-zinc-700 '
                         }`}>
@@ -263,13 +231,13 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
                   <div className='flex justify-center gap-1'>
                     <button
                       onClick={() => {
-                        handleListAnexesByStatus(active);
-                        handleButtonClick(listActiveAnexes);
+                        handleFetch('status', APPLICATION_STATES.Active);
+                        handleChangeAction(USER_ACTIONS.ListActive);
                       }}
                       className={`w-full rounded-2xl bg-gray-200 px-4 
 													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 													${
-                            selectedActionUsers === listActiveAnexes
+                            selectedActionUsers === USER_ACTIONS.ListActive
                               ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                               : 'text-zinc-700'
                           }`}>
@@ -277,13 +245,13 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
                     </button>
                     <button
                       onClick={() => {
-                        handleListAnexesByStatus(blocked);
-                        handleButtonClick(listBlockedAnexes);
+                        handleFetch('status', APPLICATION_STATES.Blocked);
+                        handleChangeAction(USER_ACTIONS.ListInactive);
                       }}
                       className={`w-full rounded-2xl bg-gray-200 px-4 
 													py-1 text-xs shadow hover:shadow-lime-400 lg:w-32 xl:text-sm
 													${
-                            selectedActionUsers === listBlockedAnexes
+                            selectedActionUsers === USER_ACTIONS.ListInactive
                               ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                               : 'text-zinc-700'
                           }`}>
@@ -298,12 +266,12 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
                   <div className='text-lime-400'>Búsqueda por {singularTitle}</div>
                 </div>
                 <form
-                  onSubmit={handleListAnexeByNumber}
+                  onSubmit={e => handleFetch('byNumber', null, e)}
                   className='flex w-9/12 items-center sm:w-6/12 lg:w-auto'>
                   <input
                     value={anexe}
                     onChange={e => setAnexe(e.target.value)}
-                    onClick={() => handleButtonClick(searchByAnex)}
+                    onClick={() => handleChangeAction(USER_ACTIONS.ListByOne)}
                     className='h-6 w-full rounded-l-2xl pl-4 text-xs text-zinc-500 outline-none focus:border focus:border-lime-400 xl:text-sm'
                     type='text'
                     placeholder={`Ingrese ${singularTitle}`}
@@ -311,13 +279,13 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
                   <button
                     type='submit'
                     onClick={() => {
-                      handleListAnexeByNumber();
-                      handleButtonClick(searchByAnex);
+                      handleFetch('byNumber');
+                      handleChangeAction(USER_ACTIONS.ListByOne);
                     }}
                     className={`flex h-6 w-9 cursor-pointer items-center justify-center rounded-r-2xl bg-gray-200 
 												shadow hover:shadow-lime-400 
 												${
-                          selectedActionUsers === searchByAnex
+                          selectedActionUsers === USER_ACTIONS.ListByOne
                             ? 'bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 text-white'
                             : 'text-zinc-700'
                         }`}>

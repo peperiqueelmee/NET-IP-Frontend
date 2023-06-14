@@ -7,7 +7,6 @@ const AnexResultsTable = ({ anexes, totalResults }) => {
     const element = document.getElementById('div-anexe-table');
     const tolerance = 1;
 
-    console.log(hasMore);
     if (hasMore && element.scrollHeight <= element.offsetHeight + element.scrollTop + tolerance) {
       setTimeout(() => {
         setPage(page + 1);
