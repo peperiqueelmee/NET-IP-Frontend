@@ -6,6 +6,8 @@ export const fetchSlice = createSlice({
     currentPagePagination: 1,
     resultsByPagination: 20,
     maximumPagePagination: null,
+    results: null,
+    totalResults: null,
   },
   reducers: {
     updatePagePagination: (state, action) => {
@@ -14,8 +16,20 @@ export const fetchSlice = createSlice({
         ...action.payload,
       };
     },
+    addResults: (state, action) => {
+      return {
+        ...state,
+        results: action.payload,
+      };
+    },
+    updateTotalResults: (state, action) => {
+      return {
+        ...state,
+        totalResults: action.payload,
+      };
+    },
   },
 });
 
-export const { updatePagePagination } = fetchSlice.actions;
+export const { updatePagePagination, addResults, updateTotalResults } = fetchSlice.actions;
 export default fetchSlice.reducer;

@@ -73,9 +73,23 @@ const TYPES_ERRORS_INPUT = {
   Email: 'Email',
 };
 
+const URLS_FETCH = {
+  0: 'regular_anex',
+  2: 'intercom',
+  3: 'mcr',
+};
+
 const ROLE_TYPES = {
   Administrator: 1,
   Supervisor: 2,
 };
 
-export { isInputInvalid, RESPONSE_SERVER, APPLICATION_STATES, USER_ACTIONS, TYPES_ERRORS_INPUT, ROLE_TYPES };
+export {
+  isInputInvalid,
+  RESPONSE_SERVER,
+  APPLICATION_STATES,
+  USER_ACTIONS,
+  TYPES_ERRORS_INPUT,
+  ROLE_TYPES,
+  URLS_FETCH,
+};

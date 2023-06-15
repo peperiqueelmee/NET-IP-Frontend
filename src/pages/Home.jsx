@@ -102,20 +102,17 @@ const Home = () => {
             indexAction={0}
             pluralTitle={'Anexos'}
             singularTitle={'Anexo'}
-            urlFetch={'regular_anex'}
           />
           <TrunkManagement />
           <FilterTemplate
             indexAction={2}
             pluralTitle={'Intercomunicadores'}
             singularTitle={'Intercom'}
-            urlFetch={'intercom'}
           />
           <FilterTemplate
             indexAction={3}
             pluralTitle={'MCR'}
             singularTitle={'MCR'}
-            urlFetch={'mcr'}
           />
           <Users />
         </div>

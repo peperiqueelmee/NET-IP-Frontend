@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePagePagination } from '../../../features';
 
-const MCR = ({ multiCallRingings, totalResults }) => {
-  const { currentPagePagination, maximumPagePagination } = useSelector(state => state.fetch);
+const MCR = () => {
+  const { currentPagePagination, maximumPagePagination, results, totalResults } = useSelector(state => state.fetch);
   const dispatch = useDispatch();
 
   const handleScroll = () => {
@@ -24,7 +24,7 @@ const MCR = ({ multiCallRingings, totalResults }) => {
         onScroll={handleScroll}
         id='div-mcr-table'
         style={{ height: '70vh' }}>
-        {multiCallRingings && multiCallRingings.length > 0 ? (
+        {results && results.length > 0 ? (
           <div>
             <table
               id='MCR-table'
@@ -69,7 +69,7 @@ const MCR = ({ multiCallRingings, totalResults }) => {
                 </tr>
               </thead>
               <tbody>
-                {multiCallRingings.map((multiCallRinging, index) => (
+                {results.map((multiCallRinging, index) => (
                   <tr
                     key={multiCallRinging.id}
                     className={`border-b text-center text-xs odd:bg-white even:bg-sky-50 xl:text-sm`}>
@@ -96,9 +96,9 @@ const MCR = ({ multiCallRingings, totalResults }) => {
               </tbody>
             </table>
             <div className='sticky bottom-0 bg-stone-950 bg-opacity-70 py-1 text-center text-sm font-medium tracking-wide text-slate-200'>
-              Mostrando <span className='font-bold text-blue-400'>{multiCallRingings.length}</span> de{' '}
+              Mostrando <span className='font-bold text-blue-400'>{results.length}</span> de{' '}
               <span className='font-bold text-blue-500 '>{totalResults}</span>{' '}
-              {multiCallRingings.length === 1 ? 'resultado' : 'resultados'}.
+              {results.length === 1 ? 'resultado' : 'resultados'}.
             </div>
           </div>
         ) : (

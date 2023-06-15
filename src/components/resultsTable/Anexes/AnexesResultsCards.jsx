@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updatePagePagination } from '../../../features';
 import { Badge } from '../../index.js';
 
-const AnexesResultsCards = ({ anexes, totalResults }) => {
-  const { currentPagePagination, maximumPagePagination } = useSelector(state => state.fetch);
+const AnexesResultsCards = () => {
+  const { currentPagePagination, maximumPagePagination, results, totalResults } = useSelector(state => state.fetch);
   const dispatch = useDispatch();
 
   const handleScroll = () => {
@@ -20,19 +20,19 @@ const AnexesResultsCards = ({ anexes, totalResults }) => {
   return (
     <>
       <div className='block lg:hidden'>
-        {anexes && anexes.length > 0 ? (
+        {results && results.length > 0 ? (
           <>
             <div className='rounded-b-md bg-stone-950 bg-opacity-70 py-1 text-center text-xs font-medium tracking-wide text-slate-200'>
-              Mostrando <span className='font-bold text-blue-400'>{anexes.length}</span> de{' '}
+              Mostrando <span className='font-bold text-blue-400'>{results.length}</span> de{' '}
               <span className='font-bold text-blue-500 '>{totalResults}</span>{' '}
-              {anexes.length === 1 ? 'resultado' : 'resultados'}.
+              {results.length === 1 ? 'resultado' : 'resultados'}.
             </div>
             <div
               className='scroll-bar-secondary overflow-y-auto'
               style={{ height: '50vh' }}
               onScroll={handleScroll}
               id='anexes-card'>
-              {anexes.map((anex, index) => (
+              {results.map((anex, index) => (
                 <div
                   key={anex.id}
                   className='relative mt-2 flex gap-5 rounded-lg border-2 border-lime-100 bg-gradient-to-r from-gray-50 to-slate-100 px-2 py-2 text-xs opacity-90 shadow-2xl'>

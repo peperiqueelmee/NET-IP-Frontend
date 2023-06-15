@@ -1,5 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { employeesReducer, formValidationReducer, authenticationReducer, fetchReducer } from '../features';
+import {
+  employeesReducer,
+  formValidationReducer,
+  authenticationReducer,
+  fetchReducer,
+} from '../features';
 import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer } from 'redux-persist';
 

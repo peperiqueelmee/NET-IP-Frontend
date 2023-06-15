@@ -1,7 +1,8 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { FreeMode, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { addResults, updatePagePagination } from '../../features';
 import { useAction } from '../../hooks';
 import { ROLE_TYPES } from '../../utils/utils';
 // Import Swiper styles
@@ -10,11 +11,12 @@ import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 
 const Actions = () => {
-  const { selectedAction, setSelectedAction, getActions } = useAction();
+  const { selectedAction, setSelectedAction, getActions, setSelectActionUsers} = useAction();
   const sizeIcon = 'text-3xl';
   const mobileScreenSizeIcon = 'text-2xl';
   const actions = getActions(sizeIcon, mobileScreenSizeIcon);
   const { role } = useSelector(state => state.authentication);
+  const dispatch = useDispatch();
 
   const breakpoints = [
     { max: 1023, slides: 5 },
@@ -34,6 +36,13 @@ const Actions = () => {
   if (role === ROLE_TYPES.Supervisor) {
     filteredActions = actions.filter(action => action.name !== 'Cuentas de Usuario');
   }
+
+  const handleChangeAction = index => {
+    setSelectedAction(index);
+    dispatch(addResults(null));
+    dispatch(updatePagePagination({ currentPagePagination: 1, maximumPagePagination: null }));
+    setSelectActionUsers(null)
+  };
 
   return (
     <>
@@ -61,7 +70,7 @@ const Actions = () => {
                   ? 'border border-lime-600 bg-gradient-to-r from-lime-500 to-lime-600 shadow-lg shadow-lime-600'
                   : 'border border-zinc-50 bg-gradient-to-r from-zinc-50 to-zinc-200 hover:shadow-md hover:shadow-lime-500'
               }`}
-                  onClick={() => setSelectedAction(index)}>
+                  onClick={() => handleChangeAction(index)}>
                   {/* Icon */}
                   <div className='py-2'>{icon}</div>
 
