@@ -1,8 +1,10 @@
 import Grow from '@mui/material/Grow';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { SearchFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
-import { useAction, usePagination, useReport } from '../../hooks';
+import { updatePagePagination } from '../../features';
+import { useAction, useReport } from '../../hooks';
 import { APPLICATION_STATES, USER_ACTIONS } from '../../utils/utils';
 import {
   AnexResultsTable,
@@ -16,7 +18,6 @@ import {
 
 const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) => {
   // User experience.
-  const { page, setPage, setHasMore } = usePagination();
   const [isLoading, setLoading] = useState(null);
   const [anexes, setAnexes] = useState([]);
   const [totalAnexes, setTotalAnexes] = useState(null);
@@ -26,6 +27,10 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
   const { setTableName, setFilename } = useReport();
   // Data user.
   const [anexe, setAnexe] = useState('');
+  const dispatch = useDispatch();
+  // Pagination.
+  const { resultsByPagination, currentPagePagination } = useSelector(state => state.fetch);
+
   // Component rendering.
   const componentsTablesObj = {
     0: (
@@ -71,12 +76,13 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
   const cardRender = componentsCardsObj[indexAction];
 
   useEffect(() => {
-    if (page > 1) {
+    if (currentPagePagination > 1) {
       handleSelectedAction();
     }
-  }, [page]);
+  }, [currentPagePagination]);
   useEffect(() => {
     resetPhones();
+    dispatch(updatePagePagination({ currentPagePagination: 1, maximumPagePagination: null }));
   }, [selectedAction]);
   useEffect(() => {
     if (
@@ -84,7 +90,7 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
       selectedActionUsers === USER_ACTIONS.ListActive ||
       selectedActionUsers === USER_ACTIONS.ListInactive
     ) {
-      cleanPaginationPhones();
+      setAnexes([]);
     }
   }, [selectedActionUsers]);
 
@@ -106,6 +112,7 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
   };
   const handleChangeAction = index => {
     setSelectActionUsers(index);
+    dispatch(updatePagePagination({ currentPagePagination: 1, maximumPagePagination: null }));
   };
 
   const handleFetch = async (type, status = null, e = null) => {
@@ -124,6 +131,8 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
     const url = urlPaths[type];
     try {
       const { data } = await axiosClient(url);
+      const maximumPagePagination = Math.ceil(data.total / resultsByPagination);
+      dispatch(updatePagePagination({ maximumPagePagination }));
       setAnexes(data.data);
       setTotalAnexes(data.total);
     } catch (error) {
@@ -141,23 +150,16 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
 
   // Pagination.
   const handlePagination = async (type, status = null) => {
-    if (anexes.length === totalAnexes) {
-      return setHasMore(false);
-    }
     const urlPaths = {
-      all: `/${urlFetch}/?page=${page}`,
-      status: `/${urlFetch}/status/${status}?page=${page}`,
+      all: `/${urlFetch}/?page=${currentPagePagination}`,
+      status: `/${urlFetch}/status/${status}?page=${currentPagePagination}`,
     };
     const url = urlPaths[type];
     try {
       const { data } = await axiosClient(url);
       setAnexes([...anexes, ...data.data]);
-      if (anexes.length === totalAnexes) {
-        setHasMore(false);
-      }
     } catch (error) {
       setAnexes(null);
-      setHasMore(false);
     } finally {
       setLoading(false);
     }
@@ -172,13 +174,6 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle, urlFetch }) =
     setSelectActionUsers(null);
     setAnexes(null);
     setAnexe('');
-    setHasMore(true);
-    setPage(1);
-  };
-  const cleanPaginationPhones = () => {
-    setPage(1);
-    setHasMore(true);
-    setAnexes([]);
   };
 
   return (

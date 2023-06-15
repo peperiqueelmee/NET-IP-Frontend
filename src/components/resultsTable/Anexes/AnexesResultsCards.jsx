@@ -1,17 +1,20 @@
-import { usePagination } from '../../../hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import { updatePagePagination } from '../../../features';
 import { Badge } from '../../index.js';
 
 const AnexesResultsCards = ({ anexes, totalResults }) => {
-  const { page, setPage, hasMore } = usePagination();
+  const { currentPagePagination, maximumPagePagination } = useSelector(state => state.fetch);
+  const dispatch = useDispatch();
 
   const handleScroll = () => {
+    if (currentPagePagination >= maximumPagePagination) {
+      return;
+    }
     const element = document.getElementById('anexes-card');
     const tolerance = 1;
 
-    if (hasMore && element.scrollHeight <= element.offsetHeight + element.scrollTop + tolerance) {
-      setTimeout(() => {
-        setPage(page + 1);
-      }, 50);
+    if (element.scrollHeight <= element.offsetHeight + element.scrollTop + tolerance) {
+      dispatch(updatePagePagination({ currentPagePagination: currentPagePagination + 1 }));
     }
   };
   return (
@@ -25,7 +28,7 @@ const AnexesResultsCards = ({ anexes, totalResults }) => {
               {anexes.length === 1 ? 'resultado' : 'resultados'}.
             </div>
             <div
-              className='overflow-y-auto scroll-bar-secondary'
+              className='scroll-bar-secondary overflow-y-auto'
               style={{ height: '50vh' }}
               onScroll={handleScroll}
               id='anexes-card'>

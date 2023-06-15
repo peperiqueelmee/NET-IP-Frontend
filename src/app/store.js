@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { employeesReducer, formValidationReducer, authenticationReducer } from '../features';
+import { employeesReducer, formValidationReducer, authenticationReducer, fetchReducer } from '../features';
 import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer } from 'redux-persist';
 
@@ -12,12 +12,20 @@ const rootReducer = {
   authentication: authenticationReducer,
   employees: employeesReducer,
   formValidation: formValidationReducer,
+  fetch: fetchReducer,
 };
 
 const persistedReducer = {};
 
+const reducersToPersist = ['authentication']; // Sólo estos slices serán persistentes
+
 for (let r in rootReducer) {
-  persistedReducer[r] = persistReducer(persistConfig, rootReducer[r]);
+  if (reducersToPersist.includes(r)) {
+    const persistConfigForReducer = { ...persistConfig, key: r };
+    persistedReducer[r] = persistReducer(persistConfigForReducer, rootReducer[r]);
+  } else {
+    persistedReducer[r] = rootReducer[r];
+  }
 }
 
 const store = configureStore({

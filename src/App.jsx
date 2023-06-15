@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { ActionProvider } from './context/ActionProvider';
-import { PaginationProvider } from './context/PaginationProvider';
 import { ReportProvider } from './context/ReportProvider';
 
 import ChangePassword from './pages/ChangePassword';
@@ -24,11 +23,9 @@ function App() {
           path='home'
           element={
             <ReportProvider>
-              <PaginationProvider>
-                  <ActionProvider>
-                    <Home />
-                  </ActionProvider>
-              </PaginationProvider>
+              <ActionProvider>
+                <Home />
+              </ActionProvider>
             </ReportProvider>
           }
         />
