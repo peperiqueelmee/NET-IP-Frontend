@@ -11,7 +11,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 
 const Actions = () => {
-  const { selectedAction, setSelectedAction, getActions, setSelectActionUsers} = useAction();
+  const { selectedAction, setSelectedAction, getActions, setSelectActionUsers } = useAction();
   const sizeIcon = 'text-3xl';
   const mobileScreenSizeIcon = 'text-2xl';
   const actions = getActions(sizeIcon, mobileScreenSizeIcon);
@@ -41,7 +41,7 @@ const Actions = () => {
     setSelectedAction(index);
     dispatch(addResults(null));
     dispatch(updatePagePagination({ currentPagePagination: 1, maximumPagePagination: null }));
-    setSelectActionUsers(null)
+    setSelectActionUsers(null);
   };
 
   return (
@@ -59,18 +59,18 @@ const Actions = () => {
               clickable: true,
             }}
             modules={[FreeMode, Pagination]}>
-            {filteredActions.map(({ id, name, icon }, index) => (
+            {filteredActions.map(({ id, name, icon }) => (
               <SwiperSlide key={id}>
                 {/*  Container */}
                 <div
                   className={`mr-4 flex h-20 w-24 flex-shrink-0 cursor-pointer flex-col items-center rounded-2xl 
 							bg-zinc-50 px-1 py-0.5 shadow-md transition duration-300 ease-in-out lg:h-24 lg:w-28
 							${
-                selectedAction === index
+                selectedAction === id
                   ? 'border border-lime-600 bg-gradient-to-r from-lime-500 to-lime-600 shadow-lg shadow-lime-600'
                   : 'border border-zinc-50 bg-gradient-to-r from-zinc-50 to-zinc-200 hover:shadow-md hover:shadow-lime-500'
               }`}
-                  onClick={() => handleChangeAction(index)}>
+                  onClick={() => handleChangeAction(id)}>
                   {/* Icon */}
                   <div className='py-2'>{icon}</div>
 
@@ -78,7 +78,7 @@ const Actions = () => {
                   <div className={`flex text-center`}>
                     <span
                       className={`text-xs font-medium tracking-tighter lg:text-sm  ${
-                        selectedAction === index ? 'text-white' : 'text-zinc-800'
+                        selectedAction === id ? 'text-white' : 'text-zinc-800'
                       }`}>
                       {name}
                     </span>
