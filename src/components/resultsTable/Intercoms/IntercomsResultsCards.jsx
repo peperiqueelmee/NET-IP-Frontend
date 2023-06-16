@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { updatePagePagination } from '../../../features';
+import { updateInfoChangeStatus, updatePagePagination } from '../../../features';
 import { Badge } from '../../index.js';
 
 const IntercomsResultsCards = () => {
@@ -17,6 +17,19 @@ const IntercomsResultsCards = () => {
       dispatch(updatePagePagination({ currentPagePagination: currentPagePagination + 1 }));
     }
   };
+  const handleModalChangeStatus = (number, statusId, id) => {
+    dispatch(
+      updateInfoChangeStatus({
+        id,
+        type: 'intercomunicador',
+        number,
+        statusId,
+        urlUpdate: '/intercom/change-status/',
+      })
+    );
+    document.getElementById('change-status').click();
+  };
+
   return (
     <>
       <div className='block lg:hidden'>
@@ -35,7 +48,7 @@ const IntercomsResultsCards = () => {
               {results.map((intercom, index) => (
                 <div
                   key={intercom.id}
-                  className='relative mt-2 flex gap-5 rounded-lg border-2 border-lime-100 bg-gradient-to-r from-gray-50 to-slate-100 px-2 py-2 text-xs opacity-90 shadow-2xl'>
+                  className='relative mt-2 flex gap-5 flex-col rounded-lg border-2 border-lime-100 bg-gradient-to-r from-gray-50 to-slate-100 px-2 py-2 text-xs opacity-90 shadow-2xl'>
                   {/*  Badge */}
                   <Badge index={index + 1} />
                   {/* Content */}
@@ -66,6 +79,15 @@ const IntercomsResultsCards = () => {
                         {intercom.status.description}
                       </div>
                     </div>
+                  </div>
+                  <div className='flex justify-center'>
+                    <button
+                      onClick={() => handleModalChangeStatus(intercom.number, intercom.status_id, intercom.id)}
+                      className='w-5/12 rounded-xl border border-blue-300
+												   bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600	
+												 py-1 text-xs font-bold text-slate-200 shadow-sm shadow-blue-400 hover:bg-gradient-to-r hover:from-blue-500 hover:via-blue-600 hover:to-blue-700'>
+                      Cambiar estado
+                    </button>
                   </div>
                 </div>
               ))}
