@@ -13,6 +13,7 @@ export { default as IntercomsResultsCards } from './resultsTable/Intercoms/Inter
 export { default as IntercomsResultsTable } from './resultsTable/Intercoms/IntercomsResultsTable';
 export { default as MCRResultsCards } from './resultsTable/MultiCallRinging/MCRResultsCards';
 export { default as MCRResultsTable } from './resultsTable/MultiCallRinging/MCRResultsTable';
+export { default as ModalChangeStatusAnexe } from './Modals/ModalChangeStatusAnexe';
 export { default as ModalCreateEmployee } from './Modals/ModalCreateEmployee';
 export { default as ModalCreateExtension } from './Modals/ModalCreateExtension';
 export { default as ModalCreateIntercom } from './Modals/ModalCreateIntercom';

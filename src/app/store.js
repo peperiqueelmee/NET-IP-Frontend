@@ -4,6 +4,7 @@ import {
   formValidationReducer,
   authenticationReducer,
   fetchReducer,
+  changeStatusReducer,
 } from '../features';
 import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -18,11 +19,12 @@ const rootReducer = {
   employees: employeesReducer,
   formValidation: formValidationReducer,
   fetch: fetchReducer,
+  changeStatus: changeStatusReducer,
 };
 
 const persistedReducer = {};
 
-const reducersToPersist = ['authentication']; // Sólo estos slices serán persistentes
+const reducersToPersist = ['authentication'];
 
 for (let r in rootReducer) {
   if (reducersToPersist.includes(r)) {

@@ -1,3 +1,4 @@
+export { default as ChangeOutline } from './ChangeOutline';
 export { default as CheckCircleFill } from './CheckCircleFill';
 export { default as CloseCircleFill } from './CloseCircleFill';
 export { default as ConversationOutline } from './ConversationOutline';

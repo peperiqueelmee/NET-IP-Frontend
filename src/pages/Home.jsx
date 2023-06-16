@@ -5,6 +5,7 @@ import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
 import {
   Actions,
   FilterTemplate,
+  ModalChangeStatusAnexe,
   ModalCreateEmployee,
   ModalCreateExtension,
   ModalCreateIntercom,
@@ -141,6 +142,7 @@ const Home = () => {
       </div>
       {/* Modals */}
       <ModalLogout />
+      <ModalChangeStatusAnexe />
       <ModalCreateExtension />
       <ModalCreateIntercom />
       <ModalCreateMultiCallRinging />

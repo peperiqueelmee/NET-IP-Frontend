@@ -47,7 +47,7 @@ const ModalCreateMultiCallRinging = () => {
         const url = '/regular_anex/by-department/active';
         const { data } = await makeRequest(url);
         const formattedOptions = data.map(item => ({
-          value: item.anex_number.toString(),
+          value: item.number.toString(),
           label: item.department.department_anex,
         }));
         setExtensionsByDepartment(formattedOptions);
