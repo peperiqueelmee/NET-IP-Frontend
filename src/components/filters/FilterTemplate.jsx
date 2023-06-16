@@ -72,10 +72,10 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle }) => {
     setSelectActionUsers(index);
     dispatch(addResults(null));
     dispatch(updatePagePagination({ currentPagePagination: 1, maximumPagePagination: null }));
-    setAnexe('');
   };
 
   const handleFetch = async (type, status = null, e = null) => {
+    console.log(type)
     setLoading(true);
     if (type === 'byNumber') {
       if (!e) {

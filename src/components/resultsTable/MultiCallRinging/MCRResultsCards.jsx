@@ -42,7 +42,7 @@ const MCRResultsCards = () => {
                   <div className='ml-3 mt-2 flex w-full flex-col gap-1 tracking-wide'>
                     <div className='flex w-full'>
                       <div className='w-1/2 font-bold text-gray-700'>Nro de MCR:</div>
-                      <div className='w-1/2'>{multiCallRinging.mcr_number}</div>
+                      <div className='w-1/2'>{multiCallRinging.number}</div>
                     </div>
                     <div className='flex w-full'>
                       <div className='w-1/2 font-bold text-gray-700'>Departamento:</div>

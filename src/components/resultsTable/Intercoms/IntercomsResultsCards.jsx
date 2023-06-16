@@ -42,7 +42,7 @@ const IntercomsResultsCards = () => {
                   <div className='ml-3 mt-2 flex w-full flex-col gap-1 tracking-wide'>
                     <div className='flex w-full'>
                       <div className='w-1/2 font-bold text-gray-700'>Nro de intercomunicador:</div>
-                      <div className='w-1/2'>{intercom.intercom_number}</div>
+                      <div className='w-1/2'>{intercom.number}</div>
                     </div>
                     <div className='flex w-full'>
                       <div className='w-1/2 font-bold text-gray-700'>T. Transporte:</div>

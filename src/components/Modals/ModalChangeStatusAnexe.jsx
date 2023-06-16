@@ -47,7 +47,7 @@ const ModalChangeStatusAnexe = () => {
           className='fade-in fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50'
           onClick={() => handleToggleModal(true)}>
           <div className='scale-in-top mx-2 flex w-96 flex-col items-center rounded-lg border border-lime-400 bg-white bg-opacity-90 p-4'>
-            <h2 className='mb-4 text-base font-medium'>
+            <h2 className='mb-4 text-base font-medium text-center'>
               ¿Estás seguro de{' '}
               <span className={`${statusId === APPLICATION_STATES.Active ? 'text-red-600' : 'text-green-600'}`}>
                 {statusId === APPLICATION_STATES.Active ? 'bloquear' : 'activar'}{' '}

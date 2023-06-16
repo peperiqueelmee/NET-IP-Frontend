@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { updatePagePagination } from '../../../features';
+import { Tooltip } from 'react-tooltip';
+import { ChangeOutline } from '../../../assets/icons';
+import { updatePagePagination, updateInfoChangeStatus } from '../../../features';
 
 const IntercomsResultsTable = () => {
   const { currentPagePagination, maximumPagePagination, results, totalResults } = useSelector(state => state.fetch);
@@ -15,6 +17,19 @@ const IntercomsResultsTable = () => {
     if (element.scrollHeight <= element.offsetHeight + element.scrollTop + tolerance) {
       dispatch(updatePagePagination({ currentPagePagination: currentPagePagination + 1 }));
     }
+  };
+
+  const handleModalChangeStatus = (number, statusId, id) => {
+    dispatch(
+      updateInfoChangeStatus({
+        id,
+        type: 'intercomunicador',
+        number,
+        statusId,
+        urlUpdate: '/intercom/change-status/',
+      })
+    );
+    document.getElementById('change-status').click();
   };
 
   return (
@@ -61,6 +76,11 @@ const IntercomsResultsTable = () => {
                     className='px-5 py-1'>
                     Estado
                   </th>
+                  <th
+                    scope='col'
+                    className='px-5 py-1'>
+                    Acción
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -69,7 +89,7 @@ const IntercomsResultsTable = () => {
                     key={intercom.id}
                     className={`border-b text-center text-xs odd:bg-white even:bg-sky-50 xl:text-sm`}>
                     <td className='px-2'>{index + 1}</td>
-                    <td className='border-x px-5'>{intercom.intercom_number}</td>
+                    <td className='border-x px-5'>{intercom.number}</td>
                     <td className='border-x px-5'>{intercom.transport_type.description}</td>
                     <td className={`border-x px-6`}>{intercom.restriction.description}</td>
                     <td className={`border-x px-6`}>
@@ -84,6 +104,16 @@ const IntercomsResultsTable = () => {
                               : 'border-red-200 from-red-400 via-red-500 to-red-600 shadow-red-200'
                           } w-20 rounded-md py-1`}>
                           {intercom.status.description}
+                        </div>
+                      </div>
+                    </td>
+                    <td className='border-x px-2 py-2'>
+                      <div className='flex justify-center gap-2'>
+                        <div
+                          data-tooltip-id='change-status-anexe'
+                          data-tooltip-delay-show={100}
+                          onClick={() => handleModalChangeStatus(intercom.number, intercom.status_id, intercom.id)}>
+                          <ChangeOutline className={'cursor-pointer text-lg text-blue-800'} />
                         </div>
                       </div>
                     </td>
@@ -103,6 +133,13 @@ const IntercomsResultsTable = () => {
           </div>
         )}
       </div>
+      <Tooltip
+        className='text-xs'
+        id='change-status-anexe'
+        place='bottom'
+        variant='info'
+        content='Cambiar estado'
+      />
     </>
   );
 };

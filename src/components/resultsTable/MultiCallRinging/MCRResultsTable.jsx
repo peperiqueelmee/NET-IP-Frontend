@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { updatePagePagination } from '../../../features';
+import { Tooltip } from 'react-tooltip';
+import { ChangeOutline } from '../../../assets/icons';
+import { updatePagePagination, updateInfoChangeStatus } from '../../../features';
 
 const MCR = () => {
   const { currentPagePagination, maximumPagePagination, results, totalResults } = useSelector(state => state.fetch);
@@ -15,6 +17,19 @@ const MCR = () => {
     if (element.scrollHeight <= element.offsetHeight + element.scrollTop + tolerance) {
       dispatch(updatePagePagination({ currentPagePagination: currentPagePagination + 1 }));
     }
+  };
+
+  const handleModalChangeStatus = (number, statusId, id) => {
+    dispatch(
+      updateInfoChangeStatus({
+        id,
+        type: 'multi call ringing',
+        number,
+        statusId,
+        urlUpdate: '/mcr/change-status/',
+      })
+    );
+    document.getElementById('change-status').click();
   };
 
   return (
@@ -66,6 +81,11 @@ const MCR = () => {
                     className='px-5 py-1'>
                     Estado
                   </th>
+                  <th
+                    scope='col'
+                    className='px-5 py-1'>
+                    Acción
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -74,7 +94,7 @@ const MCR = () => {
                     key={multiCallRinging.id}
                     className={`border-b text-center text-xs odd:bg-white even:bg-sky-50 xl:text-sm`}>
                     <td className='px-2'>{index + 1}</td>
-                    <td className='border-x px-5'>{multiCallRinging.mcr_number}</td>
+                    <td className='border-x px-5'>{multiCallRinging.number}</td>
                     <td className='border-x px-1'>{multiCallRinging.department.description}</td>
                     <td className='border-x px-5'>{multiCallRinging.transport_type.description}</td>
                     <td className={`border-x px-6`}>{multiCallRinging.restriction.description}</td>
@@ -88,6 +108,16 @@ const MCR = () => {
                               : 'border-red-200 from-red-400 via-red-500 to-red-600 shadow-red-200'
                           } w-20 rounded-md py-1`}>
                           {multiCallRinging.status.description}
+                        </div>
+                      </div>
+                    </td>
+                    <td className='border-x px-2 py-2'>
+                      <div className='flex justify-center gap-2'>
+                        <div
+                          data-tooltip-id='change-status-anexe'
+                          data-tooltip-delay-show={100}
+                          onClick={() => handleModalChangeStatus(multiCallRinging.number, multiCallRinging.status_id, multiCallRinging.id)}>
+                          <ChangeOutline className={'cursor-pointer text-lg text-blue-800'} />
                         </div>
                       </div>
                     </td>
@@ -107,6 +137,13 @@ const MCR = () => {
           </div>
         )}
       </div>
+      <Tooltip
+        className='text-xs'
+        id='change-status-anexe'
+        place='bottom'
+        variant='info'
+        content='Cambiar estado'
+      />
     </>
   );
 };
