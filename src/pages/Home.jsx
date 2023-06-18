@@ -5,8 +5,6 @@ import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
 import {
   Actions,
   FilterTemplate,
-  LogsResultsCards,
-  LogsTable,
   ModalChangeStatusAnexe,
   ModalCreateEmployee,
   ModalCreateExtension,
@@ -19,6 +17,8 @@ import {
   TrunkManagement,
   Users,
 } from '../components';
+import LogsResultsCards from '../components/resultsTable/Logs/LogsResultsCards';
+import LogsResultsTable from '../components/resultsTable/Logs/LogsResultsTable';
 import { updateInfoEmployees } from '../features/employees/employeeSlice';
 import { useAction, useAxios, useReport } from '../hooks';
 
@@ -121,7 +121,7 @@ const Home = () => {
           <Users />
           {selectedAction === 5 && (
             <>
-              <LogsTable /> <LogsResultsCards />
+              <LogsResultsTable /> <LogsResultsCards />
             </>
           )}
         </div>
