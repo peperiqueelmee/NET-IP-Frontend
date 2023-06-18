@@ -75,7 +75,6 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle }) => {
   };
 
   const handleFetch = async (type, status = null, e = null) => {
-    console.log(type)
     setLoading(true);
     if (type === 'byNumber') {
       if (!e) {

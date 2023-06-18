@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { LabFill, PadlockFill, PhoneFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction, useAxios } from '../../hooks';
-import { RESPONSE_SERVER } from '../../utils/utils';
+import { LOG_EVENTS, RESPONSE_SERVER } from '../../utils/utils';
 
 const ModalCreateIntercom = () => {
   //Request.
@@ -18,7 +19,7 @@ const ModalCreateIntercom = () => {
   );
   const [transportTypes, setTransportTypes] = useState(() => JSON.parse(localStorage.getItem('transport_types')) || []);
   const [extensionsByDepartment, setExtensionsByDepartment] = useState([]);
-  // Data user.
+  // Data Intercom.
   const [intercomNumber, setIntercomNumber] = useState('');
   const [password, setPassword] = useState('');
   const [restrictionId, setRestrictionId] = useState(null);
@@ -27,6 +28,8 @@ const ModalCreateIntercom = () => {
   const [transportTypeSelectedString, setTransportTypeSelectedString] = useState('');
   const [extensionByDepartmentSelectedString, setExtensionByDepartmentSelectedString] = useState('');
   const [intercomCaller, setIntercomCaller] = useState(null);
+  //Data user.
+  const { id } = useSelector(state => state.authentication);
   // Validations.
   const formIsFull =
     intercomNumber && password && restrictionId && transportTypeId && (restrictionId !== 2 || intercomCaller);
@@ -114,6 +117,7 @@ const ModalCreateIntercom = () => {
     actionsAfterSubmit();
 
     try {
+      // Create intercom.
       const url = '/intercom/create';
       const intercomData = {
         intercomNumber,
@@ -123,6 +127,12 @@ const ModalCreateIntercom = () => {
         intercomCaller,
       };
       await axiosClient.post(url, intercomData);
+      // Log.
+      await axiosClient.post('/log/create', {
+        logDescription: `Ha creado el intercomunicador ${intercomNumber}`,
+        employeeId: id,
+        eventId: LOG_EVENTS.Create,
+      });
       setIsLoading(null);
       setMessage('¡El intercomunicador ha sido creado exitosamente!');
       setExtensionHasBeenCreated(true);

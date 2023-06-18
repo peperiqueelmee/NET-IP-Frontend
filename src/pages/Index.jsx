@@ -5,6 +5,7 @@ import { PadlockFill, UserFill } from '../assets/icons';
 import { InformativeMessage, InputWithValidation, Spinner, Title } from '../components';
 import { addAuthentication } from '../features/authentication/authenticationSlice';
 import { useAxios } from '../hooks';
+
 const Register = () => {
   //Request.
   const { isLoading, message, makeRequest } = useAxios();
@@ -36,6 +37,7 @@ const Register = () => {
 
       dispatch(
         addAuthentication({
+          id: data.id,
           token: data.token,
           username: data.username,
           rut: data.rut,

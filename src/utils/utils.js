@@ -84,6 +84,12 @@ const ROLE_TYPES = {
   Supervisor: 2,
 };
 
+const LOG_EVENTS = {
+  Create: 1,
+  Edit: 2,
+  Delete: 3,
+};
+
 export {
   isInputInvalid,
   RESPONSE_SERVER,
@@ -92,4 +98,5 @@ export {
   TYPES_ERRORS_INPUT,
   ROLE_TYPES,
   URLS_FETCH,
+  LOG_EVENTS,
 };

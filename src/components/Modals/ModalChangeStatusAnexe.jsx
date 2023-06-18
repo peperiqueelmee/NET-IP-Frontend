@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateResults, deleteResult, updateInfoChangeStatus } from '../../features';
+import { deleteResult, updateInfoChangeStatus, updateResults } from '../../features';
 import { useAction, useAxios } from '../../hooks';
-import { APPLICATION_STATES } from '../../utils/utils';
+import { APPLICATION_STATES, LOG_EVENTS } from '../../utils/utils';
 
 const ModalChangeStatusAnexe = () => {
   const [open, setOpen] = useState(false);
   const { id, type, number, statusId, urlUpdate } = useSelector(state => state.changeStatus);
+  const { id: idUserName } = useSelector(state => state.authentication);
   const { selectedActionUsers } = useAction();
   const { makeRequest } = useAxios();
   const dispatch = useDispatch();
@@ -24,6 +25,16 @@ const ModalChangeStatusAnexe = () => {
     } else {
       dispatch(updateResults({ number }));
     }
+    // Log
+    await makeRequest(
+      '/log/create',
+      {
+        logDescription: `Ha cambiado el estado del ${type} ${number} de ${statusId === 1 ? 'Activo a Bloqueado' : 'Bloqueado a Activo'}`,
+        employeeId: idUserName,
+        eventId: LOG_EVENTS.Edit,
+      },
+      'POST'
+    );
 
     dispatch(
       updateInfoChangeStatus({
@@ -47,7 +58,7 @@ const ModalChangeStatusAnexe = () => {
           className='fade-in fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50'
           onClick={() => handleToggleModal(true)}>
           <div className='scale-in-top mx-2 flex w-96 flex-col items-center rounded-lg border border-lime-400 bg-white bg-opacity-90 p-4'>
-            <h2 className='mb-4 text-base font-medium text-center'>
+            <h2 className='mb-4 text-center text-base font-medium'>
               ¿Estás seguro de{' '}
               <span className={`${statusId === APPLICATION_STATES.Active ? 'text-red-600' : 'text-green-600'}`}>
                 {statusId === APPLICATION_STATES.Active ? 'bloquear' : 'activar'}{' '}

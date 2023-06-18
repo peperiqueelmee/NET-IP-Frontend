@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { InfoFill, LabFill, PadlockFill, PhoneFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction, useAxios } from '../../hooks';
-import { RESPONSE_SERVER } from '../../utils/utils';
+import { LOG_EVENTS, RESPONSE_SERVER } from '../../utils/utils';
 
 const animatedComponents = makeAnimated();
 
@@ -20,7 +21,7 @@ const ModalCreateMultiCallRinging = () => {
   const [departments, setDepartments] = useState(() => JSON.parse(localStorage.getItem('departments')) || []);
   const [transportTypes, setTransportTypes] = useState(() => JSON.parse(localStorage.getItem('transport_types')) || []);
   const [extensionsByDepartment, setExtensionsByDepartment] = useState([]);
-  // Data user.
+  // Data MCR.
   const [mcrNumber, setMcrNumber] = useState('');
   const [password, setPassword] = useState('');
   const [departmentId, setDepartmentId] = useState(null);
@@ -29,6 +30,8 @@ const ModalCreateMultiCallRinging = () => {
   const [transportTypeSelectedString, setTransportTypeSelectedString] = useState('');
   const [anexesByDepartmentSelectedString, setAnexesByDepartmentSelectedString] = useState([]);
   const [anexesByDepartmentSelectedValues, setAnexesByDepartmentSelectedValues] = useState([]);
+  //Data user.
+  const { id } = useSelector(state => state.authentication);
   // Validations.
   const formIsFull =
     mcrNumber && password && departmentId && transportTypeId && anexesByDepartmentSelectedString.length > 0;
@@ -122,6 +125,7 @@ const ModalCreateMultiCallRinging = () => {
     const selectedValuesString = anexesByDepartmentSelectedValues.join(', ');
 
     try {
+      // Create MCR.
       const url = '/mcr/create';
       const McrData = {
         mcrNumber,
@@ -131,6 +135,12 @@ const ModalCreateMultiCallRinging = () => {
         departmentId,
       };
       await axiosClient.post(url, McrData);
+      // Log.
+      await axiosClient.post('/log/create', {
+        logDescription: `Ha creado el multi call ringing ${mcrNumber}`,
+        employeeId: id,
+        eventId: LOG_EVENTS.Create,
+      });
       setIsLoading(null);
       setMessage('¡El MCR ha sido creado exitosamente!');
       setMcrHasBeenCreated(true);

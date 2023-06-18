@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { LabFill, PadlockFill, PhoneFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction, useAxios } from '../../hooks';
-import { RESPONSE_SERVER } from '../../utils/utils';
+import { RESPONSE_SERVER, LOG_EVENTS } from '../../utils/utils';
 
 const ModalCreateExtension = () => {
   //Request.
@@ -15,13 +16,15 @@ const ModalCreateExtension = () => {
   // Data form.
   const [departments, setDepartments] = useState(() => JSON.parse(localStorage.getItem('departments')) || []);
   const [transportTypes, setTransportTypes] = useState(() => JSON.parse(localStorage.getItem('transport_types')) || []);
-  // Data user.
+  // Data extension.
   const [extensionNumber, setExtensionNumber] = useState('');
   const [password, setPassword] = useState('');
   const [departmentId, setDepartmentId] = useState(null);
   const [departmentSelectedString, setDepartmentSelectedString] = useState('');
   const [transportTypeId, setTransportTypeId] = useState(null);
   const [transportTypeSelectedString, setTransportTypeSelectedString] = useState('');
+  //Data user.
+  const { id } = useSelector(state => state.authentication);
   // Validations.
   const formIsFull = extensionNumber && password && departmentId && transportTypeId;
   const [extensionHasBeenCreated, setExtensionHasBeenCreated] = useState(null);
@@ -33,7 +36,6 @@ const ModalCreateExtension = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // Get departments.
     async function getDepartments() {
       if (!departments.length) {
         try {
@@ -46,7 +48,6 @@ const ModalCreateExtension = () => {
         }
       }
     }
-    // Get transport types.
     async function getTransportTypes() {
       if (!transportTypes.length) {
         try {
@@ -91,6 +92,7 @@ const ModalCreateExtension = () => {
     actionsAfterSubmit();
 
     try {
+      //Create extension.
       const url = '/regular_anex/create';
       const extensionData = {
         anexNumber: extensionNumber,
@@ -99,6 +101,12 @@ const ModalCreateExtension = () => {
         department: departmentId,
       };
       await axiosClient.post(url, extensionData);
+      // Log.
+      await axiosClient.post('/log/create', {
+        logDescription: `Ha creado el anexo ${extensionNumber}`,
+        employeeId: id,
+        eventId: LOG_EVENTS.Create,
+      });
       setIsLoading(null);
       setMessage('¡El anexo ha sido creado exitosamente!');
       setExtensionHasBeenCreated(true);
@@ -163,7 +171,7 @@ const ModalCreateExtension = () => {
         className='text-xs text-white sm:text-base'
         onClick={() => handleToggleModal(false)}></button>
       {open && (
-        <div className='fade-in fixed inset-0 z-10 flex items-center justify-center overflow-x-auto bg-black bg-opacity-50 px-0 sm:px-20 lg:px-40 xl:px-72 scroll-bar-secondary'>
+        <div className='fade-in scroll-bar-secondary fixed inset-0 z-10 flex items-center justify-center overflow-x-auto bg-black bg-opacity-50 px-0 sm:px-20 lg:px-40 xl:px-72'>
           <div
             className={`scale-in-center mx-5 mb-5 mt-60 flex w-full  flex-col  items-center overflow-auto rounded-lg border border-lime-400 bg-slate-200 bg-opacity-90 py-5 sm:mt-52 sm:w-11/12 lg:mt-10 lg:w-10/12 2xl:w-8/12`}>
             {/* Success or error message */}

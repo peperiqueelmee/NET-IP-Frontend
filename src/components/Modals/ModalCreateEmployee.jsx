@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { EmailFill, IdCardFill, LabFill, PadlockFill, UserFill, UserSecretFill } from '../../assets/icons';
 import axiosClient from '../../config/axios';
 import { useAction } from '../../hooks';
-import { RESPONSE_SERVER } from '../../utils/utils';
+import { LOG_EVENTS, RESPONSE_SERVER } from '../../utils/utils';
 
 const ModalCreateEmployee = () => {
   // User experience.
@@ -12,7 +13,7 @@ const ModalCreateEmployee = () => {
   const [message, setMessage] = useState('');
   // Data form.
   const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
-  // Data user.
+  // Data employee.
   const [names, setNames] = useState('');
   const [lastnames, setLastnames] = useState('');
   const [rut, setRut] = useState('');
@@ -21,6 +22,8 @@ const ModalCreateEmployee = () => {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState(null);
   const [roleSelected, setRoleSelected] = useState('');
+  //Data user.
+  const { id } = useSelector(state => state.authentication);
   // Validations.
   const formIsFull = names && lastnames && rut && email && username && password && role;
   const [userHasBeenCreated, setUserHasBeenCreated] = useState(null);
@@ -51,11 +54,11 @@ const ModalCreateEmployee = () => {
   }, []);
 
   // Handles.
-  const handleToggleModal = (shouldClose) => {
+  const handleToggleModal = shouldClose => {
     setOpen(!shouldClose);
     clearForm();
   };
-  const handleRoleSelect = (roleSelected) => {
+  const handleRoleSelect = roleSelected => {
     setRoleSelected(roleSelected);
     const selectedObject = roles.find(({ description }) => description === roleSelected);
     if (!selectedObject) {
@@ -64,7 +67,7 @@ const ModalCreateEmployee = () => {
     }
     setRole(selectedObject.id);
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     actionsAfterSubmit();
 
@@ -81,6 +84,12 @@ const ModalCreateEmployee = () => {
         email,
       };
       await axiosClient.post(url, employeeData);
+      // Log.
+      await axiosClient.post('/log/create', {
+        logDescription: `Ha creado el usuario ${username}`,
+        employeeId: id,
+        eventId: LOG_EVENTS.Create,
+      });
       setIsLoading(null);
       setMessage('¡El usuario ha sido creado exitosamente!');
       setUserHasBeenCreated(true);
@@ -135,7 +144,7 @@ const ModalCreateEmployee = () => {
     setInputUsernameHasError(false);
     setInputPasswordHasError(false);
   };
-  const markInputWithError = (inputType) => {
+  const markInputWithError = inputType => {
     const inputMap = {
       RUT: setInputRutHasError,
       Email: setInputEmailHasError,
@@ -153,9 +162,9 @@ const ModalCreateEmployee = () => {
         className='text-xs text-white sm:text-base'
         onClick={() => handleToggleModal(false)}></button>
       {open && (
-        <div className='fade-in fixed inset-0 z-10 flex items-center justify-center overflow-x-auto bg-black bg-opacity-50 px-0 sm:px-20 lg:px-40 xl:px-72 scroll-bar-secondary'>
+        <div className='fade-in scroll-bar-secondary fixed inset-0 z-10 flex items-center justify-center overflow-x-auto bg-black bg-opacity-50 px-0 sm:px-20 lg:px-40 xl:px-72'>
           <div
-            className={`mx-5 mb-5 mt-60 flex w-full flex-col  items-center  overflow-auto rounded-lg border border-lime-400 bg-slate-200 bg-opacity-90 py-5 sm:mt-52 sm:w-11/12 lg:mt-10 lg:w-10/12 2xl:w-8/12 scale-in-center`}>
+            className={`scale-in-center mx-5 mb-5 mt-60 flex w-full  flex-col  items-center overflow-auto rounded-lg border border-lime-400 bg-slate-200 bg-opacity-90 py-5 sm:mt-52 sm:w-11/12 lg:mt-10 lg:w-10/12 2xl:w-8/12`}>
             {/* Success or error message */}
             {userHasBeenCreated != null ? (
               <div className='flex w-full justify-center px-3'>
@@ -274,7 +283,7 @@ const ModalCreateEmployee = () => {
                         <span className='text-red-500'>*</span>
                       </label>
                       <InputAutocomplete
-                        options={roles.map((role) => role.description)}
+                        options={roles.map(role => role.description)}
                         onSelect={handleRoleSelect}
                         placeholder='Seleccionar permisos'
                         value={roleSelected}

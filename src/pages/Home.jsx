@@ -5,6 +5,8 @@ import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
 import {
   Actions,
   FilterTemplate,
+  LogsResultsCards,
+  LogsTable,
   ModalChangeStatusAnexe,
   ModalCreateEmployee,
   ModalCreateExtension,
@@ -18,7 +20,7 @@ import {
   Users,
 } from '../components';
 import { updateInfoEmployees } from '../features/employees/employeeSlice';
-import { useAxios, useReport } from '../hooks';
+import { useAction, useAxios, useReport } from '../hooks';
 
 const Home = () => {
   //Request.
@@ -29,6 +31,7 @@ const Home = () => {
   const { rut, token, username } = useSelector(state => state.authentication);
   // Navigation .
   const navigate = useNavigate();
+  const { selectedAction } = useAction();
   // Status redux update.
   const dispatch = useDispatch();
 
@@ -116,6 +119,11 @@ const Home = () => {
             singularTitle={'MCR'}
           />
           <Users />
+          {selectedAction === 5 && (
+            <>
+              <LogsTable /> <LogsResultsCards />
+            </>
+          )}
         </div>
       </div>
       {/* RESPONSIVE components less than 1024px */}

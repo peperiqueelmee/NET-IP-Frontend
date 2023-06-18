@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { InformativeMessage, InputAutocomplete, InputWithValidation, Spinner } from '..';
 import { EmailFill, IdCardFill, PadlockFill, PencilFill, UserFill, UserSecretFill } from '../../assets/icons';
-import { updateInfoEmployees, updateFormValidation } from '../../features';
+import { updateFormValidation, updateInfoEmployees } from '../../features';
 import { useAction, useAxios } from '../../hooks';
-import { TYPES_ERRORS_INPUT } from '../../utils/utils';
+import { LOG_EVENTS, TYPES_ERRORS_INPUT } from '../../utils/utils';
 
 const ModalEditEmployee = () => {
   //Request.
@@ -16,7 +16,7 @@ const ModalEditEmployee = () => {
   const { employee } = useSelector(state => state.employees);
   const [roles, setRoles] = useState(() => JSON.parse(localStorage.getItem('roles')) || []);
   const [statuses, setStatuses] = useState(() => JSON.parse(localStorage.getItem('statuses')) || []);
-  // Data user.
+  // Data employee.
   const [employeeData, setEmployeeData] = useState({
     names: '',
     lastnames: '',
@@ -29,7 +29,8 @@ const ModalEditEmployee = () => {
   });
   const [roleSelectedString, setRoleSelectedString] = useState('');
   const [statusSelectedString, setStatusSelectedString] = useState('');
-  const userRut = useSelector(state => state.authentication.rut);
+  // Data user.
+  const { id, rut } = useSelector(state => state.authentication);
   // Event.
   const [submit, setSubmit] = useState(false);
   //  Toggle modal.
@@ -82,16 +83,28 @@ const ModalEditEmployee = () => {
   const handleSubmit = async e => {
     actionsAfterSubmit();
     e.preventDefault();
+    // Edit Employee.
     const url = `/employee/update/${employee.id}`;
     const response = await makeRequest(url, employeeData, 'PUT');
 
     if (!response || response.error) {
       return;
     }
+    // Log
+    await makeRequest(
+      '/log/create',
+      {
+        logDescription: `Ha editado el usuario ${employee.username}`,
+        employeeId: id,
+        eventId: LOG_EVENTS.Edit,
+      },
+      'POST'
+    );
     dispatch(updateFormValidation({ message: '¡El usuario ha sido editado exitosamente!' }));
     // Refresh table employees.
     const urlEmployee = getUrlEmployee(selectedActionUsers, employeeData.rut);
     const { data, total } = await makeRequest(urlEmployee);
+
     dispatch(updateInfoEmployees({ employees: data, totalEmployees: total }));
   };
 
@@ -288,7 +301,7 @@ const ModalEditEmployee = () => {
                     </div>
                     <div
                       className={`${
-                        userRut === employee.rut ? 'hidden' : 'block md:flex md:justify-center'
+                        rut === employee.rut ? 'hidden' : 'block md:flex md:justify-center'
                       } w-full  gap-4`}>
                       <div className='w-full'>
                         <label className='mb-2 block text-xs font-medium text-slate-600 sm:text-sm'>Permisos</label>

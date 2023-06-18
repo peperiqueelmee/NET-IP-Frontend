@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authenticationSlice = createSlice({
   name: 'authentication',
   initialState: {
+    id: null,
     token: null,
     username: null,
     rut: null,
@@ -10,6 +11,7 @@ export const authenticationSlice = createSlice({
   },
   reducers: {
     addAuthentication: (state, action) => {
+      state.id = action.payload.id;
       state.token = action.payload.token;
       state.username = action.payload.username;
       state.rut = action.payload.rut;
