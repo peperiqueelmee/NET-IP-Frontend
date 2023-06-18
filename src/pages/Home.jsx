@@ -17,8 +17,8 @@ import {
   TrunkManagement,
   Users,
 } from '../components';
-import LogsResultsCards from '../components/resultsTable/Logs/LogsResultsCards';
-import LogsResultsTable from '../components/resultsTable/Logs/LogsResultsTable';
+import LogsResultsCards from '../components/resultsTable/LogsTable/LogsResultsCards';
+import LogsResultsTable from '../components/resultsTable/LogsTable/LogsResultsTable';
 import { updateInfoEmployees } from '../features/employees/employeeSlice';
 import { useAction, useAxios, useReport } from '../hooks';
 
