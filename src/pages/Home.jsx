@@ -5,6 +5,8 @@ import { ExitDoorFill, HelpBuoyFill, UserFill } from '../assets/icons';
 import {
   Actions,
   FilterTemplate,
+  LogsResultsCards,
+  LogsResultsTable,
   ModalChangeStatusAnexe,
   ModalCreateEmployee,
   ModalCreateExtension,
@@ -15,10 +17,8 @@ import {
   ModalLogout,
   Title,
   TrunkManagement,
-  Users,
+  Users
 } from '../components';
-import LogsResultsCards from '../components/resultsTable/LogsTable/LogsResultsCards';
-import LogsResultsTable from '../components/resultsTable/LogsTable/LogsResultsTable';
 import { updateInfoEmployees } from '../features/employees/employeeSlice';
 import { useAction, useAxios, useReport } from '../hooks';
 
