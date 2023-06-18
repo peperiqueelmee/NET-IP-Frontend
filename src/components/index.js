@@ -11,8 +11,8 @@ export { default as InputAutocomplete } from './Inputs/InputAutoComplete';
 export { default as InputWithValidation } from './Inputs/InputWithValidation';
 export { default as IntercomsResultsCards } from './resultsTable/Intercoms/IntercomsResultsCards';
 export { default as IntercomsResultsTable } from './resultsTable/Intercoms/IntercomsResultsTable';
-export { default as LogsResultsCards } from './resultsTable/Logs/LogsResultsCards'
-export { default as LogsTable } from './resultsTable/Logs/LogsTable'
+export { default as LogsResultsCards } from './resultsTable/Logs/LogsResultsCards';
+export { default as LogsTable } from './resultsTable/Logs/LogsTable';
 export { default as MCRResultsCards } from './resultsTable/MultiCallRinging/MCRResultsCards';
 export { default as MCRResultsTable } from './resultsTable/MultiCallRinging/MCRResultsTable';
 export { default as ModalChangeStatusAnexe } from './Modals/ModalChangeStatusAnexe';
