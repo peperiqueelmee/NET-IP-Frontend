@@ -13,17 +13,17 @@ Frontend de aplicación web responsive que permite administrar una central telef
 - Material-UI
 
 ## Capturas de pantalla
-*Login*
+*Login*  
 ![Login](./src/assets/SS/login.jpg)
-*Home*
+*Home*  
 ![Home](./src/assets/SS/Home-Anexos.jpg)
-*Crear trabajador*
+*Crear trabajador*  
 ![Crear trabajador](./src/assets/SS/Home-Crear-Trabajador.jpg)
-*log*
+*log*  
 ![Log](./src/assets/SS/home-Log.jpg)
-*Vista responsive*
+*Vista responsive*  
 ![Responsive](./src/assets/SS/Responsive.jpg)
-*Cambiar contraseña*
+*Cambiar contraseña*  
 ![Cambiar contraseña](./src/assets/SS/Cambiar-contrasena.jpg)
 
 ## Instalación
