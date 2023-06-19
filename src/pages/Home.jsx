@@ -84,10 +84,13 @@ const Home = () => {
               </div>
             </div>
             <div className='cursor-pointer rounded-full border-2 border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 px-4 py-1 text-xs tracking-wide text-gray-200 shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'>
-              <div className='flex items-center gap-1'>
+              <a
+                className='flex items-center gap-1'
+                href='https://drive.google.com/uc?export=download&id=1bKHAcONbU0TSrDLtY0NCBRPmoOmMdUnw'
+                download>
                 <HelpBuoyFill className='text-xs text-lime-400 lg:text-sm' />
                 <span className='flex w-full justify-center'>Ayuda</span>
-              </div>
+              </a>
             </div>
             <div
               className='cursor-pointer rounded-full border-2 border-lime-500 bg-gradient-to-r from-zinc-600 via-zinc-700 to-zinc-800 px-4 py-1 text-xs tracking-wide text-gray-200 shadow-md hover:bg-gradient-to-r hover:from-zinc-700 hover:via-zinc-800 hover:to-zinc-900 md:text-sm'

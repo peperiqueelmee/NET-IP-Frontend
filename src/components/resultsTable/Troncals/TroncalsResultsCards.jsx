@@ -54,7 +54,7 @@ const TroncalsResultsCards = () => {
                   {/* Content */}
                   <div className='ml-3 mt-2 flex w-full flex-col gap-1 tracking-wide'>
                     <div className='flex w-full'>
-                      <div className='w-1/2 font-bold text-gray-700'>Nro de MCR:</div>
+                      <div className='w-1/2 font-bold text-gray-700'>Nro de Troncal:</div>
                       <div className='w-1/2'>{troncal.number}</div>
                     </div>
                     <div className='flex w-full'>
