@@ -16,8 +16,8 @@ import {
   ModalGenerateReport,
   ModalLogout,
   Title,
-  TrunkManagement,
-  Users
+  Users,
+  ModalCreateTroncal,
 } from '../components';
 import { updateInfoEmployees } from '../features/employees/employeeSlice';
 import { useAction, useAxios, useReport } from '../hooks';
@@ -107,7 +107,11 @@ const Home = () => {
             pluralTitle={'Anexos'}
             singularTitle={'Anexo'}
           />
-          <TrunkManagement />
+          <FilterTemplate
+            indexAction={1}
+            pluralTitle={'Troncales'}
+            singularTitle={'Troncal'}
+          />
           <FilterTemplate
             indexAction={2}
             pluralTitle={'Intercomunicadores'}
@@ -152,6 +156,7 @@ const Home = () => {
       <ModalLogout />
       <ModalChangeStatusAnexe />
       <ModalCreateExtension />
+      <ModalCreateTroncal />
       <ModalCreateIntercom />
       <ModalCreateMultiCallRinging />
       <ModalCreateEmployee />

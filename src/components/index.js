@@ -6,6 +6,7 @@ export { default as ModalCreateEmployee } from './Modals/ModalCreateEmployee';
 export { default as ModalCreateExtension } from './Modals/ModalCreateExtension';
 export { default as ModalCreateIntercom } from './Modals/ModalCreateIntercom';
 export { default as ModalCreateMultiCallRinging } from './Modals/ModalCreateMultiCallRinging';
+export { default as ModalCreateTroncal } from './Modals/ModalCreateTroncal';
 export { default as ModalEditEmployee } from './Modals/ModalEditEmployee';
 export { default as ModalGenerateReport } from './Modals/ModalGenerateReport';
 export { default as ModalLogout } from './Modals/ModalLogout';
@@ -15,7 +16,6 @@ export { default as InformativeMessage } from './Others/InformativeMessage';
 export { default as Spinner } from './Others/Spinner';
 export { default as Title } from './Others/Title';
 export { default as FilterTemplate } from './filters/FilterTemplate';
-export { default as TrunkManagement } from './filters/TrunkManagement';
 export { default as Users } from './filters/Users';
 export { default as AnexesResultsCards } from './resultsTable/Anexes/AnexesResultsCards';
 export { default as AnexResultsTable } from './resultsTable/Anexes/AnexesResultsTable';
@@ -27,4 +27,5 @@ export { default as LogsResultsCards } from './resultsTable/LogsTable/LogsResult
 export { default as LogsResultsTable } from './resultsTable/LogsTable/LogsResultsTable';
 export { default as MCRResultsCards } from './resultsTable/MultiCallRinging/MCRResultsCards';
 export { default as MCRResultsTable } from './resultsTable/MultiCallRinging/MCRResultsTable';
-
+export { default as TroncalsResultsCards } from './resultsTable/Troncals/TroncalsResultsCards';
+export { default as TroncalsResultsTable } from './resultsTable/Troncals/TroncalsResultsTable';

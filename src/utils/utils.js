@@ -36,6 +36,7 @@ const isInputInvalid = (input, validationType) => {
     email: () => !validateEmail(input.value),
     rut: () => !validateRut(input.value),
     extension: () => !validateNumberAnex(input.value, 1001, 9999),
+    troncal: () => !validateNumberAnex(input.value, 10000, 19999),
     intercom: () => !validateNumberAnex(input.value, 20000, 29999),
     mcr: () => !validateNumberAnex(input.value, 30000, 39999),
     default: () => !input.value,
@@ -75,6 +76,7 @@ const TYPES_ERRORS_INPUT = {
 
 const URLS_FETCH = {
   0: 'regular_anex',
+  1: 'troncal',
   2: 'intercom',
   3: 'mcr',
 };

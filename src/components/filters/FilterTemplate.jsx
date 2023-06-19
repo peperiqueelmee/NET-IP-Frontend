@@ -13,7 +13,9 @@ import {
   IntercomsResultsTable,
   MCRResultsCards,
   MCRResultsTable,
+  TroncalsResultsTable,
   Spinner,
+  TroncalsResultsCards,
 } from '../index.js';
 
 const FilterTemplate = ({ indexAction, pluralTitle, singularTitle }) => {
@@ -33,6 +35,10 @@ const FilterTemplate = ({ indexAction, pluralTitle, singularTitle }) => {
     0: {
       table: <AnexResultsTable />,
       card: <AnexesResultsCards />,
+    },
+    1: {
+      table: <TroncalsResultsTable />,
+      card: <TroncalsResultsCards />,
     },
     2: {
       table: <IntercomsResultsTable />,
