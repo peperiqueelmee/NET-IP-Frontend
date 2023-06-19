@@ -14,17 +14,17 @@ Frontend de aplicación web responsive que permite administrar una central telef
 
 ## Capturas de pantalla
 *Login*  
-![Login](./src/assets/SS/login.jpg)
+![Login](./src/assets/SS/login.jpg)  
 *Home*  
-![Home](./src/assets/SS/Home-Anexos.jpg)
+![Home](./src/assets/SS/Home-Anexos.jpg)  
 *Crear trabajador*  
-![Crear trabajador](./src/assets/SS/Home-Crear-Trabajador.jpg)
+![Crear trabajador](./src/assets/SS/Home-Crear-Trabajador.jpg)  
 *log*  
-![Log](./src/assets/SS/home-Log.jpg)
+![Log](./src/assets/SS/home-Log.jpg)  
 *Vista responsive*  
-![Responsive](./src/assets/SS/Responsive.jpg)
+![Responsive](./src/assets/SS/Responsive.jpg)  
 *Cambiar contraseña*  
-![Cambiar contraseña](./src/assets/SS/Cambiar-contrasena.jpg)
+![Cambiar contraseña](./src/assets/SS/Cambiar-contrasena.jpg)  
 
 ## Instalación
 Antes de proceder con la instalación de este repositorio, asegúrese de tener completamente operativo el backend. Una vez que esté listo con el backend, puede proseguir con los siguientes pasos sin problemas.
