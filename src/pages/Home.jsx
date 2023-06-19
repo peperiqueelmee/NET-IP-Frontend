@@ -143,10 +143,13 @@ const Home = () => {
             <UserFill className='text-base text-white' />
             <span className='text-xs text-slate-200'>{username}</span>
           </div>
-          <div className='flex cursor-pointer flex-col items-center justify-center'>
+          <a
+            className='flex cursor-pointer flex-col items-center justify-center'
+            href='https://drive.google.com/uc?export=download&id=1bKHAcONbU0TSrDLtY0NCBRPmoOmMdUnw'
+            download>
             <HelpBuoyFill className='text-base text-white' />
             <span className='text-xs text-slate-200'>Ayuda</span>
-          </div>
+          </a>
           <div
             className='flex cursor-pointer flex-col items-center justify-center'
             onClick={modalLogout}>
