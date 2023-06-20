@@ -29,8 +29,8 @@ Frontend de aplicación web responsive que permite administrar una central telef
 ## Instalación
 Antes de proceder con la instalación de este repositorio, asegúrese de tener completamente operativo el backend. Una vez que esté listo con el backend, puede proseguir con los siguientes pasos sin problemas.
 
-1. Clonar el repositorio: `https://github.com/peperiqueelmee/--DUOC---Project_Title.git`
-2. Navegar hasta el directorio del proyecto: `cd --DUOC---Project_Title`
+1. Clonar el repositorio: `https://github.com/peperiqueelmee/NET-IP-Frontend.git`
+2. Navegar hasta el directorio del proyecto: `cd NET-IP-Frontend`
 3. Instalar las dependencias: `npm install`
 
 ## Configuración del entorno
